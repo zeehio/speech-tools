@@ -36,7 +36,7 @@
  ##                       : by Richard Caley (rjc@cstr.ed.ac.uk)          ##
  ##                   Date: June 1997                                     ##
  ## --------------------------------------------------------------------- ##
- ## Default Makefile rules includede everywhere.                          ##
+ ## Default Makefile rules included everywhere.                           ##
  ##                                                                       ##
  ###########################################################################
 
