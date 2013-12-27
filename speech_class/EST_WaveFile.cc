@@ -43,8 +43,8 @@
 #include "EST_cutils.h"
 #include "EST_Option.h"
 #include "EST_io_aux.h"
-#include "stdio.h"
-#include "math.h"
+#include <cstdio>
+#include <cmath>
 
 void extract(EST_Wave &sig, EST_Option &al);
 

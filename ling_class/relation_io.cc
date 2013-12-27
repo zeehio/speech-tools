@@ -278,7 +278,8 @@ EST_read_status read_label_portion(EST_TokenStream &ts, EST_Relation &s,
 				   int sample)
 {
     EST_Item *item;
-    float hstart, hend;
+    /*float hstart;*/
+    float hend;
     EST_String str;
     
     while(!ts.eof())
@@ -289,7 +290,7 @@ EST_read_status read_label_portion(EST_TokenStream &ts, EST_Relation &s,
 	
 	item = s.append();
 	
-	hstart = convert_long_num_string_to_time(str,sample);
+	/*hstart = convert_long_num_string_to_time(str,sample);*/
 	str = ts.get().string();
 	hend = convert_long_num_string_to_time(str,sample);
 	

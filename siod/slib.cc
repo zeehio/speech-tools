@@ -1520,10 +1520,15 @@ void set_type_hooks(long type,
 }
 
 int f_getc(FILE *f)
-{long iflag,dflag;
+{long iflag;
+ #ifdef VMS
+    long dflag;
+ #endif
  int c;
  iflag = no_interrupt(1);
+ #ifdef VMS
  dflag = interrupt_differed;
+ #endif
  c = getc(f);
  if ((c == '\n') && (f == stdin) && (siod_interactive))
  {

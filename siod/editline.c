@@ -1039,7 +1039,8 @@ STATIC STATUS h_risearch()
     CONST char	*old_prompt;
     char *pat, *hist, *nhist;
     char *nprompt;
-    int patsize, patend, i;
+    /*int patsize; */
+    int patend, i;
     ECHAR	c;
     int lpos,cpos;
 
@@ -1048,7 +1049,7 @@ STATIC STATUS h_risearch()
     nprompt = walloc(char,80+160);
     pat = walloc(char,80);
     patend=0;
-    patsize=80;
+    /*patsize=80;*/
     pat[0] = '\0';
     hist = "";
     lpos = H.Pos;   /* where the search has to start from */

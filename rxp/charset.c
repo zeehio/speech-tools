@@ -233,15 +233,14 @@ CharacterEncoding InternalCharacterEncoding;
 void init_charset(void)
 {
     int i, j;
-    union {char b[2]; short s;} bytes;
-
-    /* Determine internal encoding */
-
-    bytes.s = 1;
-
+    
 #if CHAR_SIZE == 8
     InternalCharacterEncoding = CE_unspecified_ascii_superset;
 #else
+    union {char b[2]; short s;} bytes;
+
+    /* Determine internal encoding */
+    bytes.s = 1;
     InternalCharacterEncoding = (bytes.b[0] == 0) ? CE_UTF_16B : CE_UTF_16L;
 #endif
 
