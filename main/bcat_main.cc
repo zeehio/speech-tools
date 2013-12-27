@@ -45,6 +45,8 @@
 #include "EST_String.h"
 #include "EST_error.h"
 
+using namespace std;
+
 #define BUFFER_SIZE (1024)
 
 int main(int argc, char *argv[]) 

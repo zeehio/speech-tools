@@ -20,6 +20,7 @@
 #include "EST_Val.h"
 #include "siod_defs.h"
 
+
 int siod_init(int heap_size=DEFAULT_HEAP_SIZE);
 int siod_repl(int interactive);
 void siod_print_welcome(EST_String extra_info);

@@ -40,6 +40,8 @@
 #include "siod.h"
 #include "EST_SiodServer.h"
 
+using std::cout;
+
 static bool have_read_table=FALSE;
 
 static int tc_siod_server= -1;

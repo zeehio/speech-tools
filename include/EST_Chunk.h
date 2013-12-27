@@ -46,7 +46,7 @@
 #define HAVE_WALLOC_H (1)
 
 #include <iostream>
-using namespace std;
+
 #include <climits>
 #include <sys/types.h>
 
@@ -86,6 +86,8 @@ using namespace std;
 #endif
 
 #endif
+
+using std::ostream;
 
  /************************************************************************/
  /*                                                                      */

@@ -42,6 +42,9 @@
 #include "EST_TNamedEnum.h"
 #include "EST_String.h"
 
+using namespace std;
+
+
 // #if defined(__GNUC__)
 // #    define InfoType EST_String
 // #else

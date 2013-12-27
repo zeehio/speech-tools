@@ -43,6 +43,8 @@
 #include "EST_matrix_support.h"
 #include "EST_bool.h"
 
+using namespace std;
+
 const int EST_CURRENT=-1;
 const int EST_ALL=-1;
 

@@ -36,8 +36,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "EST_bool.h"
 
 /** @class EST_THandle
@@ -146,7 +144,7 @@ public:
   friend int operator != (const EST_THandle< BoxT, ObjectT > &a, const EST_THandle< BoxT, ObjectT > & b)
     { return !( a==b ); }
 
-  friend ostream & operator << (ostream &s, const EST_THandle< BoxT, ObjectT > &a)
+  friend std::ostream & operator << (std::ostream &s, const EST_THandle< BoxT, ObjectT > &a)
     { return s << "HANDLE"; }
 };
 

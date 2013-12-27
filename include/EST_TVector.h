@@ -41,7 +41,7 @@
 #define __EST_TVector_H__
 
 #include <iostream>
-using namespace std;
+
 #include "EST_bool.h"
 #include "EST_rw_status.h"
 
@@ -130,8 +130,8 @@ extern const int EST_ALL;
      #include "../base_class/EST_Tvectlist.cc"
        
      template class EST_TVector<FooBar>;
-     template ostream& operator << 
-          (ostream &st, const EST_TVector<FooBar> &v);
+     template std::ostream& operator << 
+          (std::ostream &st, const EST_TVector<FooBar> &v);
      @endcode
 
      The EST library already has template vector instantiations for
@@ -308,11 +308,11 @@ public:
   /// Create a sub vector.
   void sub_vector(EST_TVector<T> &sv, int start_c=0, int len=-1);
   /// print out vector.
-    friend ostream& operator << (ostream &st, const EST_TVector<T> &m)
+    friend std::ostream& operator << (std::ostream &st, const EST_TVector<T> &m)
     {
         int i; 
         for (i = 0; i < m.n(); ++i) 
-            st << m(i) << " "; st << endl; 
+            st << m(i) << " "; st << std::endl; 
         return st;
     }
 

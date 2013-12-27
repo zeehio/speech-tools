@@ -47,8 +47,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "instantiate/EST_TIteratorI.h"
 
 #define Instantiate_TList_T_MIN(TYPE, TAG) \

@@ -44,7 +44,6 @@
 
 #ifdef __cplusplus
 #include <cstdlib>
-using namespace std;
 #else
 #include <stdlib.h>
 #endif

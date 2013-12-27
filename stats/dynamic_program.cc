@@ -41,6 +41,8 @@
 #include "EST_math.h"
 #include "ling_class/EST_Utterance.h"
 
+using namespace std;
+
 typedef EST_TVector<EST_Item*> EST_Item_ptr_Vector;
 
 static EST_Item *const def_val_item_ptr = NULL;

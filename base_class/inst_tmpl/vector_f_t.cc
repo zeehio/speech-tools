@@ -59,9 +59,9 @@ EST_write_status save(const EST_String &filename, const EST_TVector<float> &a)
     ostream *outf;
     EST_String s;
     if (filename == "-")
-	outf = &cout;
+	outf = &std::cout;
     else
-	outf = new ofstream(filename);
+	outf = new std::ofstream(filename);
     
     if (!(*outf)) return misc_write_error;
 
@@ -69,9 +69,9 @@ EST_write_status save(const EST_String &filename, const EST_TVector<float> &a)
     {
       *outf << a(i) << "\t";
     }
-    *outf << endl;
+    *outf << std::endl;
     
-    if (outf != &cout)
+    if (outf != &std::cout)
 	delete outf;
     return write_ok;
 }

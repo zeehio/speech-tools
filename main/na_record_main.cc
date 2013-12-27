@@ -49,6 +49,7 @@ int record_voxware_wave(EST_Wave &inwave, EST_Option &al);
 int win_record_wave(EST_Wave &wave,  EST_Option &al);
 #endif
 
+using namespace std;
 
 int main (int argc, char *argv[])
 {

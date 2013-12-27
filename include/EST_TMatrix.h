@@ -43,8 +43,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "EST_rw_status.h"
 #include "EST_TVector.h"
 #include "instantiate/EST_TMatrixI.h"
@@ -308,11 +306,11 @@ public:
   EST_write_status save(const class EST_String &filename) const;
 
   /// print matrix.
-  friend ostream& operator << (ostream &st,const EST_TMatrix<T> &a)
+  friend std::ostream& operator << (std::ostream &st,const EST_TMatrix<T> &a)
     {int i, j; 
         for (i = 0; i < a.num_rows(); ++i) {
             for (j = 0; j < a.num_columns(); ++j) 
-                st << a.a_no_check(i, j) << " "; st << endl;
+                st << a.a_no_check(i, j) << " "; st << std::endl;
         }
         return st;
     }

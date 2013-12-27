@@ -45,7 +45,6 @@
 /* force this to be loaded first */
 #ifdef __cplusplus
 #include <iostream>
-using namespace std;
 #endif
 
 #ifdef __cplusplus

@@ -49,6 +49,8 @@
 
 #include "ling_class_init.h"
 
+using namespace std;
+
 #if defined(ESTLIBDIRC)
 #    define __STRINGIZE(X) #X
 #    define ESTLIBDIR __STRINGIZE(ESTLIBDIRC)

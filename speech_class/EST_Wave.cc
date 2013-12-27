@@ -53,6 +53,8 @@
 
 #include "waveP.h"
 
+using namespace std;
+
 const EST_String DEF_FILE_TYPE = "riff";
 const EST_String DEF_SAMPLE_TYPE = "short";
 

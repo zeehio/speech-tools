@@ -1,5 +1,6 @@
 
 #include <cstdio>
+using namespace std;
 
 /** @example program_example
   * @author Write-Your-Name

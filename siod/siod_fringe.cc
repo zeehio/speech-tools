@@ -40,6 +40,8 @@
 #include "siod.h"
 #include "EST_FringeServer.h"
 
+using std::cout;
+
 static bool have_read_table=FALSE;
 
 static int tc_fringe_server= -1;

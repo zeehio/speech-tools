@@ -45,6 +45,8 @@
 #include "EST_simplestats.h"
 #include "EST_WFST.h"
 
+using namespace std;
+
 static int wfst_run_main(int argc, char **argv);
 
 

@@ -50,6 +50,8 @@
 #include "EST_cutils.h"
 #include "EST_error.h"
 
+using namespace std;
+
 const EST_String EST_Token_Default_WhiteSpaceChars = " \t\n\r";
 const EST_String EST_Token_Default_SingleCharSymbols = "(){}[]";
 const EST_String EST_Token_Default_PrePunctuationSymbols = "\"'`({[";

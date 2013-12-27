@@ -44,6 +44,8 @@
 #include "EST_math.h"
 #include <ctime>
 
+using namespace std;
+
 bool polynomial_fit(EST_FVector &x, EST_FVector &y, 
 		    EST_FVector &co_effs, int order)
 {

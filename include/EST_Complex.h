@@ -42,7 +42,6 @@
 
 #include <iostream>
 #include <cmath>
-using namespace std;
 
 
 #ifndef PI
@@ -104,7 +103,7 @@ friend EST_Complex operator / (const EST_Complex &z, float x);
 friend EST_Complex operator / (float x, const EST_Complex &z);
 
 
-friend ostream& operator<< (ostream& s,  const EST_Complex& a)
+friend std::ostream& operator<< (std::ostream& s,  const EST_Complex& a)
 { s << a.r << " " << a.i; return s;}
 };  
 

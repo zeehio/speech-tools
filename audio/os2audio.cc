@@ -7,6 +7,9 @@
 /*                                          Samuel Audet <guardia@cam.org>  */
 /* DeviceID is setup in here.  Can be used as an external variable!         */
 
+using namespace std;
+
+
 #ifdef SUPPORT_OS2AUDIO 
 
 #include "EST_cutils.h" 

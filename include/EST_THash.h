@@ -38,8 +38,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "EST_String.h"
 #include "EST_system.h"
 #include "EST_bool.h"

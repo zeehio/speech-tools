@@ -41,6 +41,8 @@
 #include "EST_audio.h"
 #include "EST_cmd_line_options.h"
 
+using namespace std;
+
 int main (int argc, char *argv[])
 {
     EST_Wave sig;

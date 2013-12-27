@@ -46,6 +46,7 @@
 #include "EST_sigpr.h"
 #include "EST_error.h"
 
+using namespace std;
 
 int main(void)
 

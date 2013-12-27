@@ -42,6 +42,8 @@
 #include "EST_Option.h"
 #include "audioP.h"
 
+using namespace std;
+
 #ifdef SUPPORT_PULSE
 
 #include <pulse/simple.h>

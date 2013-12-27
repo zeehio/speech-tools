@@ -45,6 +45,7 @@
 #include "EST_cmd_line_options.h"
 #include "sigpr/EST_filter_design.h"
 
+using namespace std;
 
 int main (int argc, char *argv[])
 {

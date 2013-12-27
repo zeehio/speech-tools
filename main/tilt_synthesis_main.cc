@@ -43,6 +43,7 @@
 #include "ling_class/EST_relation_aux.h"
 #include "EST_string_aux.h"
 
+using namespace std;
 
 void extract_channels(EST_Wave &single, const EST_Wave &multi,  EST_IList &ch_list);
 

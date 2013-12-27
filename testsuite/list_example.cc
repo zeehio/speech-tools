@@ -43,6 +43,9 @@
 #include "EST_String.h"
 #include "EST_util_class.h"
 #include "EST_types.h"
+
+using namespace std;
+
 bool second_char_gt(const EST_UItem *uv1, const EST_UItem *uv2);
 
 

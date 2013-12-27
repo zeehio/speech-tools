@@ -34,6 +34,8 @@
 #include "EST_ling_class.h"
 #include "ling_class/EST_item_aux.h"
 
+using namespace std;
+
 #if defined(DATAC)
 #    define __STRINGIZE(X) #X
 #    define DATA __STRINGIZE(DATAC)

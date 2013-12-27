@@ -57,6 +57,8 @@
 #include "EST.h"
 #include "EST_WFST.h"
 
+using namespace std;
+
 static int wfst_build_main(int argc, char **argv);
 
 

@@ -44,6 +44,8 @@
 #include "EST_inline_utils.h"
 #include "EST_sigpr.h"
 
+using namespace std;
+
 /**@name Signal processing example code
   * 
   * @toc

@@ -46,6 +46,8 @@
 #include "EST_wave_aux.h"
 #include "EST.h"
 
+using namespace std;
+
 void wave_extract_channel(EST_Wave &single, const EST_Wave &multi,  EST_IList &ch_list);
 
 

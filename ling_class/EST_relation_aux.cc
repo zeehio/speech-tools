@@ -48,6 +48,8 @@
 #include "EST_Option.h"
 #include "EST_Token.h"
 
+using namespace std;
+
 static int is_in_class(const EST_String &name, EST_StrList &s);
 
 bool dp_match(const EST_Relation &lexical,
