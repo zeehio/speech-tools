@@ -611,6 +611,9 @@ static int recover_from_error(snd_pcm_t *pcm_handle, ssize_t res)
 {
   if (res == -EPIPE) /* xrun */
   {
+	EST_warning("xrun has occured. This suggests ALSA buffer is "
+	            "underflowing. Possibly change audio output methods "
+	            "or use a faster or more lightly loaded device");
 	res = snd_pcm_prepare(pcm_handle);
 	if (res < 0) 
 	{
@@ -870,14 +873,14 @@ int play_linux_wave(EST_Wave &inwave, EST_Option &al)
 {
     (void)inwave;
     (void)al;
-    cerr << "MacOS X audio support not compiled." << endl;
+    cerr << "ALSA audio support not compiled." << endl;
     return -1;
 }
 int record_linux_wave(EST_Wave &inwave, EST_Option &al)
 {
     (void)inwave;
     (void)al;
-    cerr << "MacOS X audio support not compiled." << endl;
+    cerr << "ALSA audio support not compiled." << endl;
     return -1;
 }
 
