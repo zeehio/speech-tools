@@ -427,7 +427,11 @@ EST_write_status EST_WFST::save(const EST_String &filename,
 static float get_float(FILE *fd,int swap)
 {
     float f;
-    fread(&f,4,1,fd);
+    if (fread(&f,4,1,fd) != 1)
+    {
+        cerr << "Could not get float from WFST" << endl;
+        return 0;
+    }
     if (swap) swapfloat(&f);
     return f;
 }
@@ -435,7 +439,11 @@ static float get_float(FILE *fd,int swap)
 static int get_int(FILE *fd,int swap)
 {
     int i;
-    fread(&i,4,1,fd);
+    if (fread(&i,4,1,fd) != 1)
+    {
+        cerr << "Could not get int from WFST" << endl;
+        return 0;
+    }
     if (swap) 
 	return SWAPINT(i);
     else
