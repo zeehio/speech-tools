@@ -30,9 +30,10 @@ dnl ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF       ##
 dnl THIS SOFTWARE.                                                       ##
 dnl                                                                      ##
 dnl########################################################################
-AC_INIT(include/EST.h)
+AC_INIT()
+AC_CONFIG_SRCDIR([include/EST.h])
 
-AC_CANONICAL_SYSTEM
+AC_CANONICAL_TARGET
 AC_PROG_CC
 if test "x$GCC" = "xyes"; then
 	CFLAGS="$CFLAGS -Wall"
@@ -50,45 +51,14 @@ AC_SUBST(TERMCAPLIB)
 
 dnl Which version of GCC do we have here
 COMPILERTYPE=gcc
-AC_TRY_COMPILE([#include <stdio.h>],
-               [int j= 
-                #if __GNUC__ == 2 && __GNUC_MINOR__ == 95
-                3;
-                #endif ],
-               [COMPILERTYPE=gcc295])
-AC_TRY_COMPILE([#include <stdio.h>],
-               [int j= 
-                #if __GNUC__ == 3 
-                3;
-                #endif ],
-               [COMPILERTYPE=gcc32])
-AC_TRY_COMPILE([#include <stdio.h>],
-               [ int j=
-                #if __GNUC__ == 2 && __GNUC_MINOR__ == 96
-                3;
-                #endif ],
-               [COMPILERTYPE=gcc296])
-AC_TRY_COMPILE([#include <stdio.h>],
-               [int j=
-                #if __GNUC__ == 2 && __GNUC_MINOR__ == 91
-                3;
-                #endif ],
-               [COMPILERTYPE=egcs])
-AC_TRY_COMPILE([#include <stdio.h>],
-               [int j=
-                #if __GNUC__ == 2 && __GNUC_MINOR__ == 8
-                3;
-                #endif ],
-               [COMPILERTYPE=gcc28])
 AC_SUBST(COMPILERTYPE)
 
 LINUXAUDIO=none
-AC_TRY_COMPILE([#include <alsa/version.h>],
-               [int j=
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <alsa/version.h>]], [[int j=
                 #if SND_LIB_SUBMINOR >= 11
                 3;
-                #endif],
-              [LINUXAUDIO="alsa"])
+                #endif]])],[LINUXAUDIO="alsa"],[])
 AC_SUBST(LINUXAUDIO)
 
-AC_OUTPUT(config/config)
+AC_CONFIG_FILES([config/config])
+AC_OUTPUT
