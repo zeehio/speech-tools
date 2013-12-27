@@ -39,11 +39,12 @@
 #ifndef __EST_CONTENTS_H__
 #define __EST_CONTENTS_H__
 
-/** A class for containing some other (arbitrary) class    
- Not general enough to call itself a run-time type system  
- Is designed to solve the problem of holding user          
- specified information.
- Keeps reference count to know when to delete contents     
+/** \class EST_Content_Data
+    \brief A class for containing some other (arbitrary) class.
+Not general enough to call itself a run-time type system  
+Is designed to solve the problem of holding user          
+specified information.
+Keeps reference count to know when to delete contents     
                                                            
  This is done on two levels EST_Contents and Contents_Data 
 */

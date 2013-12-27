@@ -46,66 +46,66 @@
 /**@name List traversal functions */
 //@{
 
-/** return next item of <parameter>n</parameter>
+/** return next item of `n`
  */
 inline EST_Item *next(const EST_Item *n) { return n->next(); }
 
-/** return previous item of <parameter>n</parameter>
+/** return previous item of `n`
  */
 inline EST_Item *prev(const EST_Item *n) { return n->prev(); }
 
-/** return last item in <parameter>n</parameter>'s relation
+/** return last item in `n`'s relation
  */
 inline EST_Item *last(const EST_Item *n) { return n->last(); }
 
-/** return first item in <parameter>n</parameter>'s relation
+/** return first item in `n`'s relation
  */
 inline EST_Item *first(const EST_Item *n) { return n->first(); }
 
-/** return next item of <parameter>n</parameter> as seen from relation
-<parameter>relname</parameter> */
+/** return next item of `n` as seen from relation
+`relname` */
 inline EST_Item *next(const EST_Item *n,const char *relname)
     { return next(as(n,relname)); }
 
-/** return previous item of <parameter>n</parameter> as seen from relation
-<parameter>relname</parameter> */
+/** return previous item of `n` as seen from relation
+`relname` */
 inline EST_Item *prev(const EST_Item *n,const char *relname)
     { return prev(as(n,relname)); }
 
-/** return first item of <parameter>n</parameter> as seen from relation
-<parameter>relname</parameter> */
+/** return first item of `n` as seen from relation
+`relname` */
 inline EST_Item *first(const EST_Item *n,const char *relname) 
     { return first(as(n,relname)); }
 
-/** return last item of <parameter>n</parameter> as seen from relation
-<parameter>relname</parameter> */
+/** return last item of `n` as seen from relation
+`relname` */
 inline EST_Item *last(const EST_Item *n,const char *relname) 
     { return last(as(n,relname)); }
 
 #endif
 
-/** Given a node <parameter>l</parameter>, return true if
-    <parameter>c</parameter> after it in a list relation. */
+/** Given a node `l`, return true if
+    `c` after it in a list relation. */
 int in_list(const EST_Item *c, const  EST_Item *l);
 
 
-/** Add a item after node <parameter>n</parameter>, and return the new
-item. If <parameter>n</parameter> is the first item in the list, the 
+/** Add a item after node `n`, and return the new
+item. If `n` is the first item in the list, the 
 new item becomes the head of the list, otherwise it is inserted between
-<parameter>n</parameter> and it's previous current item.
-If <parameter>p</parameter> is 0, make a new node for the new
-item, otherwise add <parameter>p</parameter> to this relation as the
-next item in <parameter>n</parameter>'s relation.  */
+`n` and it's previous current item.
+If `p` is 0, make a new node for the new
+item, otherwise add `p` to this relation as the
+next item in `n`'s relation.  */
 
 EST_Item *add_after(const EST_Item *n, EST_Item *p=0);
 
-/** Add a item before node <parameter>n</parameter>, and return the new
-item. If <parameter>n</parameter> is the first item in the list, the 
+/** Add a item before node `n`, and return the new
+item. If `n` is the first item in the list, the 
 new item becomes the head of the list, otherwise it is inserted between
-<parameter>n</parameter> and it's previous current item.
-If <parameter>p</parameter> is 0, make a new node for the new
-item, otherwise add <parameter>p</parameter> to this relation as the
-previous item in <parameter>n</parameter>'s relation.  */
+`n` and it's previous current item.
+If `p` is 0, make a new node for the new
+item, otherwise add `p` to this relation as the
+previous item in `n`'s relation.  */
 
 EST_Item *add_before(const EST_Item *n, EST_Item *p=0);
 

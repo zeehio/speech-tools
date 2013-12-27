@@ -37,7 +37,8 @@
 
 #include <iostream>
 
-/** A time index for a container. The container defines how to get an
+/** @class EST_TTI_Entry
+  * A time index for a container. The container defines how to get an
   * object and so on, this lets you find a point in the container not
   * far before the entry you want.
   * 

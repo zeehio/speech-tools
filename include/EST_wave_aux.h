@@ -42,7 +42,7 @@
 Auxiliary functions for processing waveforms.
   */
 
-//@{
+///@{
 
 #ifndef __EST_WAVE_AUX_H__
 #define __EST_WAVE_AUX_H__
@@ -119,4 +119,4 @@ extern EST_TNamedEnum<EST_sample_type_t> EST_sample_type_map;
 
 #endif /* __EST_WAVE_AUX_H__ */
 
-//@}
+///@}

@@ -46,6 +46,13 @@
 #include "EST_TMatrix.h"
 #include "instantiate/EST_TSimpleMatrixI.h"
 
+/** \class EST_TSimpleMatrix
+ *  \brief  A subclass of EST_TMatrix which copies using memcopy.
+ *  \ingroup containerclasses
+ * 
+ * This isn't suitable for matrices of class objects which have to be copied      
+ * using a constructor or specialised assignment operator.
+ */
 template<class T>
 class EST_TSimpleMatrix : public EST_TMatrix<T> {
 protected:
