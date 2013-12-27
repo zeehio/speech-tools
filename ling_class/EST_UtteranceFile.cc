@@ -421,14 +421,27 @@ EST_read_status EST_UtteranceFile::load_apml(EST_TokenStream &ts,
   long pos=ftell(stream);
 
   {
-  char buf[80];
 
-  fgets(buf, 80, stream);
-
+  char buf[81];
+  buf[0] = 0;
+  if (fgets(buf, 80, stream) == NULL)
+  {
+    if (ferror(stream)) {
+      cerr << "Error reading xml header" << endl;
+      return read_error;
+    }
+  }
   if (strncmp(buf, "<?xml", 5) != 0)
     return read_format_error;
 
-  fgets(buf, 80, stream);
+  buf[0] = 0;
+  if (fgets(buf, 80, stream) == NULL)
+  {
+    if (ferror(stream)) {
+      cerr << "Error reading DOCTYPE apml header" << endl;
+      return read_error;
+    }
+  }
 
   if (strncmp(buf, "<!DOCTYPE apml", 14) != 0)
     return read_format_error;
@@ -459,10 +472,16 @@ EST_read_status EST_UtteranceFile::load_genxml(EST_TokenStream &ts,
   long pos=ftell(stream);
 
   {
-  char buf[80];
-
-  fgets(buf, 80, stream);
-
+  char buf[81];
+  buf[0] = 0;
+  if (fgets(buf, 80, stream) == NULL)
+  {
+    if (ferror(stream)) {
+      cerr << "Error reading xml header" << endl;
+      return read_error;
+    }
+    
+  }
   if (strncmp(buf, "<?xml", 5) != 0)
     return read_format_error;
   }

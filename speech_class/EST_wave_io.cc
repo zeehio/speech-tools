@@ -166,6 +166,7 @@ enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
 {
     char header[NIST_HDR_SIZE];
     int samps,sample_width,data_length,actual_bo;
+    int system_return;
     unsigned char *file_data;
     enum EST_sample_type_t actual_sample_type;
     char *byte_order, *sample_coding;
@@ -210,7 +211,14 @@ enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
 	sprintf(cmdstr,"cstrshorten %s %s",
 		(const char*)ts.filename(),tmpfile);
 	printf("Command: %s\n", cmdstr);
-	system(cmdstr);
+	system_return = system(cmdstr);
+    if (system_return != 0)
+    {
+        fprintf(stderr, "Command failed. Could not read nist file\n");
+        fprintf(stderr, "To read embedded-shorten-v1.1 nist files, \n");
+        fprintf(stderr, "shorten utility from Tony Robinson is required\n");
+        return misc_read_error;
+    }
 	EST_TokenStream tt;
 	tt.open(tmpfile);
 	
@@ -312,7 +320,7 @@ enum EST_write_status save_wave_nist(FILE *fp, const short *data, int offset,
     strcat(h, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); 
     
     if (fwrite(&h, 1024, 1, fp) != 1)
-	return misc_write_error;
+	    return misc_write_error;
     
     return save_raw_data(fp,data,offset,num_samples,num_channels,
 			 sample_type,bo);
@@ -447,7 +455,8 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 	return wrong_format;
 
     /* We've got a riff file */
-    ts.fread(&dsize,4,1);
+    /* Next 4 bytes are the file size */
+    if(ts.fread(&dsize,4,1) != 1) return misc_read_error;
     /* .wav files are always little endian */
     if (EST_BIG_ENDIAN) dsize = SWAPINT(dsize);
     if ((ts.fread(info,sizeof(char),4) != 4) ||
@@ -460,9 +469,9 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 	(strncmp(info,"fmt ",4) != 0))
 	return misc_read_error;	/* something else wrong */
 
-    ts.fread(&dsize,4,1);
+    if (ts.fread(&dsize,4,1) != 1) return misc_read_error;
     if (EST_BIG_ENDIAN) dsize = SWAPINT(dsize);
-    ts.fread(&shortdata,2,1);
+    if (ts.fread(&shortdata,2,1) != 1) return misc_read_error;
     if (EST_BIG_ENDIAN) shortdata = SWAPSHORT(shortdata);
 
     switch (shortdata)
@@ -474,7 +483,7 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
     case WAVE_FORMAT_MULAW:
 	actual_sample_type = st_mulaw; break;
     case WAVE_FORMAT_ADPCM:
-	fprintf(stderr, "RIFF file: unsupported proprietary sample format ADPCM\n"); 
+	fprintf(stderr, "RIFF file: unsupported proprietary sample format ADPCM\n");
 	actual_sample_type = st_short;
 	break;
 	/*	  actual_sample_type = st_adpcm; break; */ /* yes but which adpcm ! */
@@ -484,16 +493,16 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 	actual_sample_type = st_short;
 	/*	return misc_read_error; */
     }
-    ts.fread(&shortdata,2,1);
+    if (ts.fread(&shortdata,2,1) != 1) return misc_read_error;
     if (EST_BIG_ENDIAN) shortdata = SWAPSHORT(shortdata);
     *num_channels = shortdata;
-    ts.fread(sample_rate,4,1);
+    if (ts.fread(sample_rate,4,1) != 1) return misc_read_error;
     if (EST_BIG_ENDIAN) *sample_rate = SWAPINT(*sample_rate);
-    ts.fread(&intdata,4,1);	/* average bytes per second -- ignored */
+    if (ts.fread(&intdata,4,1) != 1) return misc_read_error; /* average bytes per second -- ignored */
     if (EST_BIG_ENDIAN) intdata = SWAPINT(intdata);
-    ts.fread(&shortdata,2,1);	/* block align ? */
+    if (ts.fread(&shortdata,2,1) != 1) return misc_read_error;	/* block align ? */
     if (EST_BIG_ENDIAN) shortdata = SWAPSHORT(shortdata);
-    ts.fread(&shortdata,2,1);
+    if (ts.fread(&shortdata,2,1) != 1) return misc_read_error;
     if (EST_BIG_ENDIAN) shortdata = SWAPSHORT(shortdata);
 
     sample_width = (shortdata+7)/8;
@@ -510,14 +519,14 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 	}
 	if (strncmp(info,"data",4) == 0)
 	{
-	    ts.fread(&samps,4,1);
+	    if (ts.fread(&samps,4,1) != 1) return misc_read_error;
 	    if (EST_BIG_ENDIAN) samps = SWAPINT(samps);
 	    samps /= (sample_width*(*num_channels));
 	    break;
 	}
 	else if (strncmp(info,"fact",4) == 0)
 	{			/* some other type of chunk -- skip it */
-	    ts.fread(&samps,4,1);
+	    if (ts.fread(&samps,4,1) != 1) return misc_read_error;
 	    if (EST_BIG_ENDIAN) samps = SWAPINT(samps);
 	    ts.seek(samps+ts.tell());	/* skip rest of header */
 	    /* Hope this is the right amount */
@@ -527,7 +536,7 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
             //	    fprintf(stderr,"Ignoring unsupported chunk type \"%c%c%c%c\" in RIFF file\n",
             //    info[0],info[1],info[2],info[3]);
 	    //return misc_read_error;
-	    ts.fread(&dsize,4,1);
+	    if(ts.fread(&dsize,4,1) != 1) return misc_read_error;
 	    if (EST_BIG_ENDIAN) dsize = SWAPINT(dsize);
 	    ts.seek(dsize+ts.tell());     /* skip this chunk */
 	}
@@ -669,7 +678,7 @@ enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
 	return wrong_format;
 
     /* We've got an aiff file, I hope */
-    ts.fread(&dsize,4,1);
+    if (ts.fread(&dsize,4,1) != 1) return misc_read_error;
     if (EST_LITTLE_ENDIAN)	/* file is in different byte order */
 	dsize = SWAPINT(dsize);
     if ((ts.fread(info,sizeof(char),4) != 4) ||
@@ -679,7 +688,7 @@ enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
 	return misc_read_error; 
     }
     
-    for ( ; ts.fread(&chunk,1,sizeof(chunk)) == sizeof(chunk) ; )
+    for ( ; ts.fread(&chunk, sizeof(chunk), 1) == 1 ; )
     {				/* for each chunk in the file */
 	if (EST_LITTLE_ENDIAN)	/* file is in different byte order */
 	    chunk.size = SWAPINT(chunk.size);
@@ -690,10 +699,13 @@ enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
 		fprintf(stderr,"AIFF chunk: bad size\n");
 		return misc_read_error;
 	    }
-	    ts.fread(&comm_channels,1,sizeof(short));
-	    ts.fread(&comm_samples,1,sizeof(int));
-	    ts.fread(&comm_bits,1,sizeof(short));
-	    if (ts.fread(ieee_ext_sample_rate,1,10) != 10)
+	    if (ts.fread(&comm_channels, sizeof(short), 1) != 1)
+            return misc_read_error;
+	    if (ts.fread(&comm_samples, sizeof(int), 1) != 1)
+            return misc_read_error;
+	    if (ts.fread(&comm_bits, sizeof(short), 1) != 1)
+            return misc_read_error;
+	    if (ts.fread(ieee_ext_sample_rate, 10, 1) != 1)
 	    {
 		fprintf(stderr,"AIFF chunk: eof within COMM chunk\n");
 		return misc_read_error;
@@ -708,7 +720,7 @@ enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
 	}
 	else if (strncmp(chunk.id,"SSND",4) == 0)
 	{
-	    if (ts.fread(&ssndchunk,1,sizeof(ssndchunk)) != sizeof(ssndchunk))
+	    if (ts.fread(&ssndchunk, sizeof(ssndchunk), 1) != 1)
 	    {
 		fprintf(stderr,"AIFF chunk: eof within SSND chunk\n");
 		return misc_read_error;
@@ -843,34 +855,34 @@ enum EST_read_status load_wave_ulaw(EST_TokenStream &ts, short **data, int
 {
     unsigned char *ulaw;
     int data_length,samps;
-    
+
     ts.seek_end();
     samps = ts.tell();
-    
+
     if (length == 0)
 	data_length = samps - offset;
     else
 	data_length = length;
-    
+
     ulaw = walloc(unsigned char, data_length);
     ts.seek(offset);
     if (ts.fread(ulaw,1,data_length) != data_length)
     {
-	wfree(ulaw); 
+	wfree(ulaw);
 	return misc_read_error;
     }
-    
+
     *data = walloc(short,data_length);
     ulaw_to_short(ulaw,*data,data_length);
     wfree(ulaw);
-    
+
     *num_samples = data_length;
     *sample_rate = 8000;
     *num_channels = 1;
     *sample_type = st_short;
     *word_size = 2;
     *bo = EST_NATIVE_BO;
-    
+
     return format_ok;
 }
 
@@ -913,7 +925,8 @@ enum EST_read_status load_wave_snd(EST_TokenStream &ts, short **data, int
     int current_pos;
     
     current_pos = ts.tell();
-    ts.fread(&header, sizeof(Sun_au_header), 1);
+    if (ts.fread(&header, sizeof(Sun_au_header), 1) != 1)
+        return misc_read_error;
     
     /* test for magic number */
     if ((EST_LITTLE_ENDIAN) && 
@@ -1109,12 +1122,16 @@ enum EST_read_status load_wave_audlab(EST_TokenStream &ts, short **data, int
     
     /* Read header structures from char array */
     current_pos = ts.tell();
-    ts.fread(&fh, sizeof(struct audlabfh), 1);
+
+    if (ts.fread(&fh, sizeof(struct audlabfh), 1) != 1)
+        return misc_read_error;
     if (strcmp(fh.file_type, "Sample") != 0) 
 	return wrong_format;
     
-    ts.fread(&sh, sizeof(struct audlabsh), 1);
-    ts.fread(&sd, sizeof(struct audlabsd), 1);
+    if (ts.fread(&sh, sizeof(struct audlabsh), 1) != 1)
+        return misc_read_error;
+    if (ts.fread(&sd, sizeof(struct audlabsd), 1) != 1)
+        return misc_read_error;
     hdr_length = sizeof(struct audlabfh) +
 	sizeof(struct audlabsh) +
 	    sizeof(struct audlabsd);

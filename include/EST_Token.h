@@ -334,7 +334,7 @@ class EST_TokenStream{
     {	if (!peeked_tokp) get();
 	peeked_tokp = TRUE; return current_tok; }
     /// Reading binary data, (don't use peek() immediately beforehand)
-    int fread(void *buff,int size,int nitems);
+    int fread(void *buff,int size,int nitems) EST_WARN_UNUSED_RESULT;
     ///@}
     /**@name stream initialization functions */
     ///@{

@@ -33,8 +33,7 @@ static LISP lsetenv(LISP name,LISP value)
 
 static LISP lsystem(LISP name)
 {
-    system(get_c_string(name));
-    return NIL;
+    return flocons((double)system(get_c_string(name)));
 }
 
 static LISP lpwd(void)
@@ -50,17 +49,23 @@ static LISP lchdir(LISP args, LISP env)
 {
     (void)env;
     char *home;
-    
+    int chdir_result;
     if (siod_llength(args) == 0)
     {
 	home = getenv("HOME");
-	chdir(home);
-	return rintern(home);
+	chdir_result = chdir(home);
+    if (chdir_result == 0)
+        return rintern(home);
+    else
+        return NIL;
     }
     else
     {
-	chdir(get_c_string(leval(car(args),env)));
-	return (car(args));
+	chdir_result = chdir(get_c_string(leval(car(args),env)));
+    if (chdir_result == 0)
+        return (car(args));
+    else
+        return NIL;
     }
 }
 

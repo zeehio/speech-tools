@@ -375,7 +375,11 @@ EST_read_status EST_TrackFile::load_est(const EST_String filename,
 static float get_float(EST_TokenStream &ts,int swap)
 {
     float f;
-    ts.fread(&f,4,1);
+    if (ts.fread(&f,4,1) != 1)
+    {
+        cerr << "Could not get_float" << endl;
+        return 0.0;
+    }
     if (swap) swapfloat(&f);
     return f;
 }
@@ -531,7 +535,11 @@ EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
 	  }
 	}
 	else{
-	  ts.fread( frame, sizeof(float), num_channels );
+	  if (ts.fread( frame, sizeof(float), num_channels ) != num_channels)
+      {
+          cerr << "Could not read frame " << i << "/" << num_frames << endl;
+          return misc_read_error;
+      }
 	  if( swap )
 	    for( j=0; j<num_channels; ++j ){
 	      swapfloat( &frame[j] );

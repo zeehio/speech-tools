@@ -17,6 +17,7 @@ int siod_server_socket = -1;
 
 LISP siod_send_lisp_to_client(LISP x)
 {
+    int check_write;
     // Send x to the client
     if (siod_server_socket == -1)
     {
@@ -38,10 +39,12 @@ LISP siod_send_lisp_to_client(LISP x)
 	fwrite("\n",1,1,fd);
 	fclose(fd);
 #ifdef WIN32
-	send(siod_server_socket,"LP\n",3,0);
+	check_write = send(siod_server_socket,"LP\n",3,0);
 #else
-	write(siod_server_socket,"LP\n",3);
+	check_write = write(siod_server_socket,"LP\n",3);
 #endif
+    if (check_write != 3)
+        cerr << "Could not send LP to socket" << endl;
 	socket_send_file(siod_server_socket,tmpfile);
 	unlink(tmpfile);
     }
@@ -53,25 +56,30 @@ void sock_acknowledge_error()
 {
     // Called to let client know if server gets an error
     // Thanks to mcb for pointing out this omission
-    
-    if (siod_server_socket != -1)
+    int i;
+    if (siod_server_socket != -1) {
 #ifdef WIN32
-	send(siod_server_socket,"ER\n",3,0);
+	i = send(siod_server_socket,"ER\n",3,0);
 #else
-	write(siod_server_socket,"ER\n",3);
+	i = write(siod_server_socket,"ER\n",3);
 #endif
-
+    if (i!=3)
+        cerr << "Could not acknowledge error to client." << endl;
+    }
 }
     
 static void acknowledge_sock_print(LISP x)
 {   // simple return "OK" -- used in server socket mode
-
+    int i=0;
     siod_send_lisp_to_client(x);
 #ifdef WIN32
-    send(siod_server_socket,"OK\n",3,0);
+    i = send(siod_server_socket,"OK\n",3,0);
 #else
-    write(siod_server_socket,"OK\n",3);
+
+    i = write(siod_server_socket,"OK\n",3);
 #endif
+    if (i!=3)
+        cerr << "Could not write acknowledge" << endl;
 }
 
 static void ignore_puts(char *x)

@@ -89,6 +89,7 @@ int edit_labels(EST_Relation &a, EST_String sedfile)
     FILE *fp;
     strcpy(sf, sedfile);
     EST_String file1, file2;
+    int system_result;
     file1 = make_tmp_filename();
     file2 = make_tmp_filename();
 
@@ -113,7 +114,12 @@ int edit_labels(EST_Relation &a, EST_String sedfile)
     strcat(command, file2);
 
     printf("command: %s\n", command);
-    system(command);
+    system_result = system(command);
+    if (system_result != 0)
+    {
+        fprintf(stderr, "Error running command. Command returned %d\n",
+                system_result);
+    }
 
     fp = fopen(file2, "rb");
     if (fp == NULL)
@@ -124,9 +130,10 @@ int edit_labels(EST_Relation &a, EST_String sedfile)
     }
     for (a_ptr = a.head(); a_ptr != 0; a_ptr = a_ptr->next())
     {
-	fscanf(fp, "%s", newname);
+        if (fscanf(fp, "%99s", newname) != 1)
+            cerr << "Error reading newname from file" << endl;
 //	cout << "oldname: " << a_ptr->name() << " newname: " << newname << endl;
-	a_ptr->set_name(newname);
+        a_ptr->set_name(newname);
     }
     fclose(fp);
     return 0;

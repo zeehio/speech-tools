@@ -188,14 +188,24 @@ EST_read_status EST_TrackFile::load_ssff_ts(EST_TokenStream &ts, EST_Track &tr, 
 	    type = channels.S(EST_String("Channel_")+ itoString(j)+".type");
 	    if (type == "DOUBLE")
 	    {
-		ts.fread(dbuff,sizeof(double),1);
+		if (ts.fread(dbuff,sizeof(double),1) != 1)
+        {
+            cerr << "Failed to read frame " << i << ", channel " <<
+                    j << endl;
+            return misc_read_error;
+        }
 		if (swap)
 		    swap_bytes_double(dbuff,1);
 		tr(i,j) = *dbuff;
 	    }
 	    else if (type == "SHORT")
 	    {
-		ts.fread(sbuff,sizeof(short),1);
+		if (ts.fread(sbuff,sizeof(short),1) != 1)
+        {
+            cerr << "Failed to read short from frame" << i <<
+                    ", channel " << j << endl;
+            return misc_read_error;
+        }
 		if (swap)
 		    swap_bytes_short(sbuff,1);
 		tr(i,j) = (float)(*sbuff);

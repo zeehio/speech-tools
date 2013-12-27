@@ -55,7 +55,21 @@
 /*  I should add, this wasn't easy to write, though I'm much better at   */
 /*  octal and hex dumps now.                                             */
 /*=======================================================================*/
-
+/* Sergio Oller:
+ * FIXME:
+ * This code assumes that the size of a struct is equal to the sum of
+ * its members. This is not generally true, as the compiler is allowed
+ * to insert padding bytes between struct members (for instance for
+ * memory alignment issues. Therefore, one cannot assume when reading
+ * from a file that fread(..., sizeof(ESPS_FIXED_HDR)...) may work, 
+ * given that ESPS_FIXED_HDR is a structure and it does not have a fixed
+ * size across compilers/systems.
+ * 
+ * Fixing this is possible, but I don't know if this is
+ * used anymore and I don't have any test suite to test this.
+ * Also, I don't have much time for this :-S
+ * 
+ */
 #include <cstdio>
 #include <cstdlib>
 #include "EST_unix.h"
@@ -933,7 +947,12 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
     int swap;
     short name_flag;
 
-    fread(&preamble,sizeof(preamble),1,fd);
+    if (fread(&preamble,sizeof(preamble),1,fd) != 1)
+    {
+        cerr << "Could not read ESPS header." << endl;
+        cerr << "see speech_tools/speech_class/esps_utils.cc for an explanation" << endl;
+        return misc_read_error;
+    }
     if (preamble.check == ESPS_MAGIC)
 	swap = FALSE;
     else if (preamble.check == SWAPINT(ESPS_MAGIC))

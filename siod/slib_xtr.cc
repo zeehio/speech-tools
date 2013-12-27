@@ -338,11 +338,14 @@ static LISP make_list(LISP x,LISP v)
  return(l);}
 
 static void put_long(long i,FILE *f)
-{fwrite(&i,sizeof(long),1,f);}
+{if (fwrite(&i,sizeof(long),1,f) != 1)
+  cerr << "Could not put long to file" << endl;
+}
 
 static long get_long(FILE *f)
-{long i;
- fread(&i,sizeof(long),1,f);
+{long i=0;
+ if (fread(&i,sizeof(long),1,f) != 1)
+  cerr << "Could not get long" << endl;
  return(i);}
 
 static long fast_print_table(LISP obj,LISP table)
@@ -459,16 +462,18 @@ static LISP fast_read(LISP table)
       return(l);
     case tc_flonum:
       tmp = newcell(tc_flonum);
-      fread(&tmp->storage_as.flonum.data,
+      if (fread(&tmp->storage_as.flonum.data,
 	    sizeof(tmp->storage_as.flonum.data),
 	    1,
-	    f);
+	    f) != 1 )
+        cerr << "Could not read float from file" << endl;
       return(tmp);
     case tc_symbol:
       len = get_long(f);
       if (len >= TKBUFFERN)
 	err("symbol name too long",NIL);
-      fread(tkbuffer,len,1,f);
+      if (fread(tkbuffer,len,1,f) != 1)
+        cerr << "Could not read symbol" << endl;
       tkbuffer[len] = 0;
       return(rintern(tkbuffer));
     default:
@@ -520,7 +525,8 @@ static LISP array_fast_read(int code,LISP table)
    {case tc_string:
       len = get_long(f);
       ptr = strcons(len,NULL);
-      fread(ptr->storage_as.string.data,len,1,f);
+      if (fread(ptr->storage_as.string.data,len,1,f) != 1)
+        cerr << "Could not read string" << endl;
       ptr->storage_as.string.data[len] = 0;
       return(ptr);
     case tc_double_array:
@@ -530,7 +536,8 @@ static LISP array_fast_read(int code,LISP table)
       ptr->storage_as.double_array.dim = len;
       ptr->storage_as.double_array.data =
 	(double *) must_malloc(len * sizeof(double));
-      fread(ptr->storage_as.double_array.data,sizeof(double),len,f);
+      if (fread(ptr->storage_as.double_array.data,sizeof(double),len,f) != (long unsigned)len)
+        cerr << "Could not read double array" << endl;
       no_interrupt(iflag);
       return(ptr);
     case tc_long_array:
@@ -540,7 +547,8 @@ static LISP array_fast_read(int code,LISP table)
       ptr->storage_as.long_array.dim = len;
       ptr->storage_as.long_array.data =
 	(long *) must_malloc(len * sizeof(long));
-      fread(ptr->storage_as.long_array.data,sizeof(long),len,f);
+      if (fread(ptr->storage_as.long_array.data,sizeof(long),len,f) != (long unsigned) len)
+         cerr << "Could not read long array" << endl;
       no_interrupt(iflag);
       return(ptr);
     case tc_lisp_array:
