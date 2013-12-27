@@ -6,7 +6,13 @@
 ##
 ##  Specific config file for local installation
 ##
-
+###########################################################################
+## Even though these variables are defined, this build system is not     ##
+## able to perform out of tree builds.                                   ##
+## Maybe in a future $(TOP) is replaced by these variables               ##
+TOP_BUILDDIR = @abs_top_builddir@
+TOP_SRCDIR = @abs_top_srcdir@
+##
 ###########################################################################
 ## Where the speech_tools tree will be installed.
 ## 
