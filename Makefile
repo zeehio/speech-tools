@@ -50,7 +50,7 @@ TEMPLATE_DIRS=include audio utils base_class base_class/string \
 EXTRA_DIRS=siod java rxp wrappers
 ALL_DIRS = include $(BUILD_DIRS) $(EXTRA_DIRS) config doc 
 VERSION=$(PROJECT_VERSION)
-CONFIG=configure configure.in config.sub config.guess \
+CONFIG=configure configure.ac config.sub config.guess \
        missing install-sh mkinstalldirs
 FILES=Makefile README INSTALL $(CONFIG)
 
@@ -58,8 +58,6 @@ LOCAL_CLEAN= Build.trace Test.trace Templates.DB
 
 ALL = .config_error .sub_directories
 
-# Try and say if config hasn't been created
-config_dummy := $(shell test -f config/config || ( echo '*** '; echo '*** Making default config file ***'; echo '*** '; ./configure; )  >&2)
 
 # force a check on the system file
 system_dummy := $(shell $(MAKE) -C $(TOP)/config -f make_system.mak TOP=.. system.mak)
@@ -105,12 +103,9 @@ rebuild_and_test:
 		exit 2 ;\
 	fi
 
-config/config: config/config.in config.status
-	./config.status
 
-configure: configure.in
+configure: configure.ac
 	autoconf
-
 
 documentation:
 	(cd doc; make doc)

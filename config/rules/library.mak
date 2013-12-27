@@ -102,15 +102,32 @@ endif
  ##                                                                       ##
  ###########################################################################
 
-lib%.so : lib%.a
-	@echo Make Shared Library $*
-	@if [ ! -d shared_space ] ; then mkdir shared_space ; else $(RM) -f shared_space/*.o ; fi
-	@(cd shared_space ; $(AR) x ../$< ) 
-	@echo Link Shared Library $*
-	if [ -n "$(PROJECT_LIBRARY_NEEDS_SYSLIBS_$*)" ] ; then libs='$(JAVA_PROJECT_LIBS)' ; fi ;\
-	$(subst XXX,$@.$(PROJECT_LIBRARY_VERSION_$*),$(MAKE_SHARED_LIB)) shared_space/*.o $(PROJECT_LIBRARY_USES_$*:%=-L. -l%) $$libs
-	@$(RM) -f shared_space/*.o $@
-	@ln -s $@.$(PROJECT_LIBRARY_VERSION_$*) $@
+libestools.so : libestools.a
+	echo Make Shared Library estools
+	if [ ! -d shared_space ] ; then mkdir shared_space ; else $(RM) -f shared_space/*.o ; fi
+	(cd shared_space ; $(AR) x ../$< )
+	echo Link Shared Library estools
+	if [ -n "$(PROJECT_LIBRARY_NEEDS_SYSLIBS_estools)" ] ; then libs='$(JAVA_PROJECT_LIBS)' ; fi ;\
+	$(subst YYY,$@.$(PROJECT_LIBRARY_VERSION_estools),\
+		$(subst XXX,$@.$(PROJECT_VERSION),$(MAKE_SHARED_LIB))) \
+		shared_space/*.o $(PROJECT_LIBRARY_USES_estools:%=-L. -l%) $$libs -L. -lestbase -leststring -lncurses
+	$(RM) -f shared_space/*.o $@
+	-ln -sf $@.$(PROJECT_VERSION) $@.$(PROJECT_LIBRARY_VERSION_estools)
+	-ln -sf $@.$(PROJECT_LIBRARY_VERSION_estools) $@
+
+libestbase.so : libestbase.a
+	echo Make Shared Library estbase
+	if [ ! -d shared_space ] ; then mkdir shared_space ; else $(RM) -f shared_space/*.o ; fi
+	(cd shared_space ; $(AR) x ../$< )
+	echo Link Shared Library estbase
+	if [ -n "$(PROJECT_LIBRARY_NEEDS_SYSLIBS_estbase)" ] ; then libs='$(JAVA_PROJECT_LIBS)' ; fi ;\
+	$(subst YYY,$@.$(PROJECT_LIBRARY_VERSION_estbase),\
+		$(subst XXX,$@.$(PROJECT_VERSION),$(MAKE_SHARED_LIB))) \
+		shared_space/*.o $(PROJECT_LIBRARY_USES_estbase:%=-L. -l%) $$libs -L.
+	$(RM) -f shared_space/*.o $@
+	-ln -sf $@.$(PROJECT_VERSION) $@.$(PROJECT_LIBRARY_VERSION_estbase)
+	-ln -sf $@.$(PROJECT_LIBRARY_VERSION_estbase) $@
+
 
  ###########################################################################
  ##                                                                       ##

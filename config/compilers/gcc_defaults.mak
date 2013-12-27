@@ -79,7 +79,7 @@ SHARED_CXXFLAGS  = -fPIC
 SHARED_LINKFLAGS = 
 
 ifndef GCC_MAKE_SHARED_LIB
-    MAKE_SHARED_LIB = $(CXX) -shared -o XXX
+    MAKE_SHARED_LIB = $(CXX) -shared -o XXX -Wl,-soname -Wl,YYY
 else
     MAKE_SHARED_LIB = $(GCC_MAKE_SHARED_LIB)
 endif
