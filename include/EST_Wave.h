@@ -273,7 +273,6 @@ public:
       `offset` to the sample position from the beginning and
       `length` to the number of required samples after this.
   */
-
   EST_read_status load_file(const EST_String filename, 
 			    const EST_String filetype, int sample_rate, 
 			    const EST_String sample_type, int bo, int nc,
