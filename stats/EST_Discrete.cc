@@ -151,7 +151,7 @@ Discretes::~Discretes()
  
     for (i=0; i<next_free; i++)
 	delete discretes[i];
-    delete discretes;
+    delete[] discretes;
 }
 
 const int Discretes::def(const EST_StrList &vocab)
@@ -165,7 +165,7 @@ const int Discretes::def(const EST_StrList &vocab)
 	for (i=0; i<next_free; i++)
 	    new_discretes[i] = discretes[i];
 	max *= 2;
-	delete discretes;
+	delete[] discretes;
 	discretes = new_discretes;
     }
 
