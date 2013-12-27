@@ -209,7 +209,7 @@ public:
 
   /// Create an iterator ready to run over the given container.
   EST_TStructIterator(const Container &over)
-    { begin(over); }
+    { this->begin(over); }
 
   const Entry *operator ->() const
     {return &this->current();}
@@ -289,7 +289,7 @@ public:
 
   /// Create an iterator ready to run over the given container.
   EST_TRwStructIterator(Container &over)
-    { begin(over); }
+    { this->begin(over); }
 
   Entry *operator ->() const
     {return &this->current();}

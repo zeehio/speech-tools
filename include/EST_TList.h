@@ -268,6 +268,12 @@ bool operator==(const EST_TList<T> &a, const EST_TList<T> &b)
 }
 
 template<class T> 
+bool operator!=(const EST_TList<T> &a, const EST_TList<T> &b)
+{ 
+    return !(a==b); 
+}
+
+template<class T> 
 int index(EST_TList<T> &l, T& val, bool (*eq)(const EST_UItem *, const EST_UItem *) = NULL)
 { 
   EST_TItem<T> item(val);

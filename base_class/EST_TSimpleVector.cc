@@ -43,6 +43,7 @@
 #include "EST_TSimpleVector.h"
 #include "EST_matrix_support.h"
 #include <fstream>
+#include <cstring>
 #include "EST_cutils.h"
 
 template<class T> void EST_TSimpleVector<T>::copy(const EST_TSimpleVector<T> &a)
@@ -50,7 +51,7 @@ template<class T> void EST_TSimpleVector<T>::copy(const EST_TSimpleVector<T> &a)
   if (this->p_column_step==1 && a.p_column_step==1)
     {
     resize(a.n(), FALSE);
-    memcpy((void *)(this->p_memory), (const void *)(a.p_memory), this->n() * sizeof(T));
+    std::memcpy((void *)(this->p_memory), (const void *)(a.p_memory), this->n() * sizeof(T));
     }
 else
   ((EST_TVector<T> *)this)->copy(a);
@@ -70,7 +71,7 @@ template<class T> void EST_TSimpleVector<T>::resize(int newn, int set)
   int old_offset = this->p_offset;
   unsigned int q;
 
-  just_resize(newn, &old_vals);
+  this->just_resize(newn, &old_vals);
 
   if (set && old_vals)
     {
@@ -140,7 +141,7 @@ template<class T> EST_TSimpleVector<T> &EST_TSimpleVector<T>::operator=(const ES
 template<class T> void EST_TSimpleVector<T>::zero()
 {
   if (this->p_column_step==1)
-    memset((void *)(this->p_memory), 0, this->n() * sizeof(T));
+    std::memset((void *)(this->p_memory), 0, this->n() * sizeof(T));
   else
     ((EST_TVector<T> *)this)->fill(*this->def_val);
 }

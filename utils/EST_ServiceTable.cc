@@ -278,6 +278,8 @@ void EST_ServiceTable::names(EST_TList<EST_String> &names, const EST_String type
       names.append(them->k);
 }
 
+Declare_KVL_T(EST_String, EST_ServiceTable::Entry, EST_String_ST_entry)
+
 const EST_ServiceTable::Entry &EST_ServiceTable::lookup(const EST_String name,
 						       const EST_String type)
 {
@@ -338,8 +340,6 @@ const EST_ServiceTable::Entry &EST_ServiceTable::create(const EST_String name,
 }
 
 
-
-Declare_KVL_T(EST_String, EST_ServiceTable::Entry, EST_String_ST_entry)
 
 #if defined(INSTANTIATE_TEMPLATES)
 
