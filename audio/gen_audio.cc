@@ -174,9 +174,10 @@ static int play_socket_wave(EST_Wave &inwave, EST_Option &al)
 static int play_aucomm_wave(EST_Wave &inwave, EST_Option &al)
 {
     // Play wave by specified command 
-    EST_String usrcommand, otype;
+    EST_String usrcommand, otype, finalcommand;
     char tmpfile[2048];
     char pref[2048];
+    int system_result;
 
     if (al.present("-command"))
 	usrcommand = al.val("-command");
@@ -206,11 +207,16 @@ static int play_aucomm_wave(EST_Wave &inwave, EST_Option &al)
 
     sprintf(pref,"FILE=%s;SR=%d;",tmpfile,inwave.sample_rate());
 
-    system((EST_String)pref+usrcommand.unquote('"'));
-
+    finalcommand = (EST_String)pref+usrcommand.unquote('"');
+    system_result = system(finalcommand);
+    if (system_result != 0)
+    {
+        cerr << "Command \"" << finalcommand << "\" returned error " <<
+                system_result << endl;
+    }
     unlink(tmpfile);  // so we don't fill up /tmp
 
-    return 0;
+    return system_result;
 }
 
 static int play_sunau_wave(EST_Wave &inwave, EST_Option &al)
