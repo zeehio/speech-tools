@@ -1596,6 +1596,7 @@ enum EST_write_status save_wave_sd_header(FILE *fp,
 		}
     /* I believe all of the following are necessary and in this order */
     add_field(hdr,"samples",esps_type,num_channels);
+    /* FIXME: What is doing this path here?? */
     add_fea_special(hdr,ESPS_FEA_DIRECTORY,"margo:/disk/disk10/home/awb/projects/speech_tools/main");
     add_fea_special(hdr,ESPS_FEA_COMMAND,
 		    "EDST waveform written as ESPS FEA_SD.\n\
