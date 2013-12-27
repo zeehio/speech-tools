@@ -42,7 +42,7 @@ DIRNAME=audio
 LOCAL_DEFAULT_LIBRARY = estbase
 
 H = audioP.h
-CPPSRCS = gen_audio.cc nas.cc esd.cc sun16audio.cc \
+CPPSRCS = gen_audio.cc nas.cc sun16audio.cc \
           mplayer.cc win32audio.cc irixaudio.cc os2audio.cc \
           macosxaudio.cc linux_sound.cc
 
@@ -58,17 +58,4 @@ include $(TOP)/config/common_make_rules
 
 DEFINES += $(AUDIO_DEFINES)
 INCLUDES += $(AUDIO_INCLUDES)
-
-
-
-
-
-
-
-
-
-
-
-
-
 

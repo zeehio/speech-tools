@@ -79,8 +79,6 @@ OPTIMISE_sigpr = 3
 ## NCD's network audio system.
 # INCLUDE_MODULES += NAS_AUDIO
 
-## Elightenment Sound Demon, for KDE etc.
-# INCLUDE_MODULES += ESD_AUDIO
 
 ## Native audio for your platform (sun, linux, freebsd, irix, macosx, windows)
 INCLUDE_MODULES += NATIVE_AUDIO

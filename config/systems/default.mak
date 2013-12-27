@@ -61,12 +61,6 @@ NAS_INCLUDE = /usr/X11R6/include
 NAS_LIB = /usr/X11R6/lib
 
 ###########################################################################
-## Where to find Enlightenment Speech Demon
-
-ESD_INCLUDE = /usr/local/include
-ESD_LIB = /usr/local/lib
-
-###########################################################################
 ## Where to find X11
 
 X11_INCLUDE = /usr/X11R6/include
