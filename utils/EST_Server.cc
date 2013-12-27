@@ -228,7 +228,7 @@ void EST_Server::initClient(const EST_ServiceTable::Entry &entry, ostream *trace
   p_serv_addr = serv_addr;
   struct hostent *serverhost;
   
-  memset(serv_addr, 0, sizeof(serv_addr));
+  memset(serv_addr, 0, sizeof(struct sockaddr_in));
 
   if (p_entry.address != "")
     {
