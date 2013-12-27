@@ -154,7 +154,7 @@ suitble.  In some circumstances the default.s generated from this
 may not be what you want and you may wish to edit this file.
 
 For Linux we now fully support shared libraries and even recommend
-them. However if you are going to do alot of development and don't
+them. However if you are going to do a lot of development and don't
 understand the consequences of shared libraries and getting
 LD_LIBRARY_PATH correct (or what that is) we recommend you compile
 unshared, the default. If you are going to simply run the speech tools
