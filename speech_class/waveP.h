@@ -51,7 +51,17 @@ enum EST_read_status load_wave_raw(EST_TokenStream &ts, short **data, int
 enum EST_write_status save_wave_raw(FILE *fp, const short *data, int offset,
 			       int num_samples, int num_channels, 
 			       int sample_rate,
-			       enum EST_sample_type_t sample_type, int bo)   ;
+			       enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_raw_header(FILE *fp,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_raw_data(FILE *fp, const short *data, int offset,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
 
 enum EST_read_status load_wave_ulaw(EST_TokenStream &ts, short **data, int
 	 *num_samples, int *num_channels, int *word_size, int
@@ -61,6 +71,16 @@ enum EST_write_status save_wave_ulaw(FILE *fp, const short *data, int offset,
 				int length, int num_channels, 
 				int sample_rate,
 				enum EST_sample_type_t, int bo);
+
+enum EST_write_status save_wave_ulaw_header(FILE *fp,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_ulaw_data(FILE *fp, const short *data, int offset,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
 
 enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
 	 *num_samples, int *num_channels, int *word_size, int
@@ -72,6 +92,16 @@ enum EST_write_status save_wave_nist(FILE *fp, const short *data, int offset,
 			       int sample_rate,
 			       enum EST_sample_type_t sample_type, int bo);
 
+enum EST_write_status save_wave_nist_header(FILE *fp,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_nist_data(FILE *fp, const short *data, int offset,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
 enum EST_read_status load_wave_est(EST_TokenStream &ts, short **data, int
 	 *num_samples, int *num_channels, int *word_size, int
 	 *sample_rate,  enum EST_sample_type_t *sample_type, int *bo, int
@@ -81,6 +111,16 @@ enum EST_write_status save_wave_est(FILE *fp, const short *data, int offset,
 			       int num_samples, int num_channels, 
 			       int sample_rate,
 			       enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_est_header(FILE *fp,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_est_data(FILE *fp, const short *data, int offset,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
 
 enum EST_read_status load_wave_sd(EST_TokenStream &ts, short **data, int
 	 *num_samples, int *num_channels, int *word_size, int
@@ -92,6 +132,16 @@ enum EST_write_status save_wave_sd(FILE *fp, const short *data, int offset,
 			      int sample_rate, 
 			      enum EST_sample_type_t sample_type, int bo);
 
+enum EST_write_status save_wave_sd_header(FILE *fp,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_sd_data(FILE *fp, const short *data, int offset,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
 enum EST_read_status load_wave_audlab(EST_TokenStream &ts, short **data, int
 	 *num_samples, int *num_channels, int *word_size, int
 	 *sample_rate,  enum EST_sample_type_t *sample_type, int *bo, int
@@ -101,6 +151,16 @@ enum EST_write_status save_wave_audlab(FILE *fp, const short *data, int offset,
 			       int num_samples, int num_channels, 
 			       int sample_rate, 
 			       enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_audlab_header(FILE *fp,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_audlab_data(FILE *fp, const short *data, int offset,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
 
 enum EST_read_status load_wave_snd(EST_TokenStream &ts, short **data, int
 	 *num_samples, int *num_channels, int *word_size, int
@@ -112,6 +172,16 @@ enum EST_write_status save_wave_snd(FILE *fp, const short *data, int offset,
 			       int sample_rate, 
 			       enum EST_sample_type_t sample_type, int bo);
 
+enum EST_write_status save_wave_snd_header(FILE *fp,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_snd_data(FILE *fp, const short *data, int offset,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
 enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
 	 *num_samples, int *num_channels, int *word_size, int
 	 *sample_rate,  enum EST_sample_type_t *sample_type, int *bo, int
@@ -122,6 +192,16 @@ enum EST_write_status save_wave_aiff(FILE *fp, const short *data, int offset,
 				int sample_rate,
 				enum EST_sample_type_t sample_type, int bo);
 
+enum EST_write_status save_wave_aiff_header(FILE *fp,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_aiff_data(FILE *fp, const short *data, int offset,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
 enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 	 *num_samples, int *num_channels, int *word_size, int
 	 *sample_rate,  enum EST_sample_type_t *sample_type, int *bo, int
@@ -129,6 +209,16 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 
 enum EST_write_status save_wave_riff(FILE *fp, const short *data, int offset,
 				int num_samples, int num_channels, 
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_riff_header(FILE *fp,
+				int num_samples, int num_channels,
+				int sample_rate,
+				enum EST_sample_type_t sample_type, int bo);
+
+enum EST_write_status save_wave_riff_data(FILE *fp, const short *data, int offset,
+				int num_samples, int num_channels,
 				int sample_rate,
 				enum EST_sample_type_t sample_type, int bo);
 
