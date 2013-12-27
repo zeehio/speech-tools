@@ -145,6 +145,15 @@ INCLUDE_MODULES += RXP
 # INCLUDE_MODULES += DMALLOC
 
 ###################################################################
+## Documentation required tools
+## xsltproc (used for extracting a description of the parameters
+##           of the speech tools programs
+XSLTPROC = xsltproc
+
+## Doxygen:
+DOXYGEN = doxygen
+
+###################################################################
 ## Wrappers for selected EST Classes and functionality for
 ## various high level scripted languages, such as Perl
 
