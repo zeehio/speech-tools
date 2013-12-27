@@ -329,6 +329,7 @@ int EST_String::gsub_internal (const char *os, int olength, const char *s, int l
 	  p += length;
 	  at=end;
 	}
+   if (p != from+at)
       memcpy(p, from+at, size-at);
 
       p += size-at;
