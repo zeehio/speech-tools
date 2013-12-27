@@ -79,6 +79,8 @@ OPTIMISE_sigpr = 3
 ## NCD's network audio system.
 # INCLUDE_MODULES += NAS_AUDIO
 
+## PulseAudio sound server
+# INCLUDE_MODULES += PULSE_AUDIO
 
 ## Native audio for your platform (sun, linux, freebsd, irix, macosx, windows)
 INCLUDE_MODULES += NATIVE_AUDIO

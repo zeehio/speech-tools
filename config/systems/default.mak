@@ -61,6 +61,13 @@ NAS_INCLUDE = /usr/X11R6/include
 NAS_LIB = /usr/X11R6/lib
 
 ###########################################################################
+## Where to find PulseAudio
+
+PULSE_INCLUDE = /usr/include
+PULSE_LIB = /usr/lib
+
+
+###########################################################################
 ## Where to find X11
 
 X11_INCLUDE = /usr/X11R6/include

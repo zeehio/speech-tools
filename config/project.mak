@@ -109,6 +109,8 @@ PROJECT_LIBRARY_VERSION_eststring = 1.2
 PROJECT_LIBRARY_VERSION_estjava = $(PROJECT_VERSION).1
 
 PROJECT_LIBRARY_NEEDS_SYSLIBS_estjava=1
+# This line allows estbase to link with libpulse among others
+PROJECT_LIBRARY_NEEDS_SYSLIBS_estbase=1
 
 PROJECT_DEFAULT_LIBRARY = estools
 

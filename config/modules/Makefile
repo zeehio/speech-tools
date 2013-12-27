@@ -41,7 +41,7 @@ RULESETS = efence.mak dmalloc.mak debugging.mak \
 	psola_tm.mak editline.mak tcl.mak \
 	freebsd16_audio.mak irix_audio.mak linux16_audio.mak \
 	sun16_audio.mak win32_audio.mak macosx_audio.mak \
-	mplayer_audio.mak nas_audio.mak
+	mplayer_audio.mak nas_audio.mak pulse_audio.mak
 
 FILES = Makefile descriptions $(RULESETS) 
 
