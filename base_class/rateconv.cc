@@ -384,7 +384,8 @@ static int filtering_on_buffers
 	    }
 	    fir_stereo(inp + inoffset + inbaseidx,
 		       coep + cycctr * firlen, firlen,
-		       outp + outidx++, outp + outidx++);
+		       outp + outidx, outp + outidx + 1);
+        outidx += 2;
 	    cycctr++;
 	    if (!(cycctr %= up))
 		inbaseidx += 2*down;
