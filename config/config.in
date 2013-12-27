@@ -54,14 +54,21 @@ CONFIGURATION =
 ###########################################################################
 ## Compilation options.
 ##
-## OPTIMISE=4 will turn off DEBUG
+## 
 
+# enable with OPTIMISE=3 (or any other optimization level)
+# OPTIMISE=4 will turn off DEBUG
 OPTIMISE=3
-WARN=1
-# VERBOSE=1
-#DEBUG=1
-# PROFILE=gprof
-#SHARED=2
+# enable with WARN=1       
+WARN=0   
+# enable with VERBOSE=1 
+VERBOSE=0 
+# enable with DEBUG=1
+DEBUG=0 
+# enable with PROFILE=gprof
+PROFILE=0
+# enable with SHARED=2
+SHARED=0  
 
 ## Directory specific selections which override the above
 
