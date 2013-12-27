@@ -229,17 +229,24 @@ extern char	*tgetstr();
 extern int	tgetent();
 extern int	tgetnum();
 #endif	/* defined(USE_TERMCAP) */
-
+
 /*
 **  TTY input/output functions.
 */
 
 void TTYflush()
 {
+    int i;
     if (ScreenCount) {
-	if (el_no_echo == 0)
-	    (void)write(1, Screen, ScreenCount);
-	ScreenCount = 0;
+        if (el_no_echo == 0) {
+            while(ScreenCount > 0)
+            {
+                i = write(1, Screen, ScreenCount);
+                if (i >= 0)
+                    ScreenCount -= i;
+            }
+        ScreenCount = 0;
+        }
     }
 }
 
