@@ -71,7 +71,7 @@ ifdef ALL_DIRS
 	@ for i in $(ALL_DIRS) ; \
 	do \
 	   echo "clean in $(DIRNAME)/$$i" ;\
-	   $(MAKE) --no-print-directory -C $$i clean ; \
+	   $(MAKE) --no-print-directory -C $$i NO_DEPEND=1 clean ; \
 	done
 endif
 ifdef EXTRA_LIB_BUILD_DIRS
