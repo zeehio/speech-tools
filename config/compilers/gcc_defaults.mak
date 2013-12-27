@@ -39,16 +39,14 @@
  ###########################################################################
 
 CC=gcc
-CXX=gcc
-ifeq ($(OSTYPE),Darwin)
 CXX=g++
-endif
 
 COMPILER_DESC=FSF gcc
 COMPILER_VERSION_COMMAND=$(CXX) -v 2>&1 | tail -1 | sed -e 's/^....//'
 
-CFLAGS  = $(GCC_SYSTEM_OPTIONS) $(CC_OTHER_FLAGS)
-CXXFLAGS  =  $(GCC_SYSTEM_OPTIONS) -fno-implicit-templates $(CC_OTHER_FLAGS)
+CFLAGS    += $(GCC_SYSTEM_OPTIONS) $(CC_OTHER_FLAGS) $(CPPFLAGS)
+CXXFLAGS  +=  $(GCC_SYSTEM_OPTIONS) $(CC_OTHER_FLAGS) $(CPPFLAGS)
+LINKFLAGS +=  $(LDFLAGS)
 
 DEBUG_CCFLAGS   = -g
 DEBUG_CXXFLAGS  = -g
@@ -81,7 +79,7 @@ SHARED_CXXFLAGS  = -fPIC
 SHARED_LINKFLAGS = 
 
 ifndef GCC_MAKE_SHARED_LIB
-    MAKE_SHARED_LIB = $(CXX) -shared -fno-shared-data -o XXX
+    MAKE_SHARED_LIB = $(CXX) -shared -o XXX
 else
     MAKE_SHARED_LIB = $(GCC_MAKE_SHARED_LIB)
 endif
@@ -98,7 +96,7 @@ TEMPLATE_ARGS =
 ## The -lgcc here is redundant - gcc does this anyway - but it
 ## helps java know what needs to be loaded.
 
-COMPILERLIBS= $(COMPILER_LIBS_DIR:%=-L%) -lstdc++ -lgcc
+COMPILERLIBS= $(COMPILER_LIBS_DIR:%=-L%)
 
 ## special ways of doing things, blank means default
 
