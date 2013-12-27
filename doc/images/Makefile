@@ -30,38 +30,23 @@
 ##  THIS SOFTWARE.                                                       ##
 ##                                                                       ##
 ###########################################################################
-##                     Author :  Paul Taylor                             ##
-##                     Date   :  March 1995                              ##
+##                     Author :  Sergio Oller                            ##
+##                     Date   :  September 2013                          ##
 ##-----------------------------------------------------------------------##
 ##                                                                       ##
-##                    Documentation directory                            ##
+##                    Documentation images directory                     ##
 ##                                                                       ##
 ##=======================================================================##
 TOP=../..
-DIRNAME=doc/man
+DIRNAME=doc/images
 
-PROGRAMS = align bcat ch_lab ch_track ch_utt ch_wave design_filter \
-           dp fringe_client na_play na_record ngram_build ngram_test \
-           ols ols_test pda pitchmark scfg_make scfg_parse scfg_test \
-           scfg_train sig2fv sigfilter siod spectgen tilt_analysis \
-           tilt_synthesis viterbi wagon wagon_test wfst_build wfst_run \
-           wfst_train xml_parser
+SVGIMAGES = relations_2.svg relations.svg tilt-f0-representation.svg \
+            tilt-search-region.svg typical-pitch-accent.svg
 
-BODYFILES = $(addsuffix _man.dox.body, $(PROGRAMS))
-DOXFILES = $(addsuffix _man.dox, $(PROGRAMS))
+EPSIMAGES = relations_2.eps relations.eps tilt-f0-representation.eps \
+            tilt-search-region.eps typical-pitch-accent.eps
 
-
-XSLT_FILES = convert-options.xslt convert-synopsis.xslt
-SCRIPTS = create_dox.sh
-
-FILES = $(BODYFILES) $(XSLT_FILES) $(SCRIPTS)
-
-LOCAL_CLEAN = $(DOXFILES)
+IMAGES = $(SVGIMAGES) $(EPSIMAGES)
 
 -include $(TOP)/config/common_make_rules
-
-%_man.dox: %_man.dox.body
-	./create_dox.sh $(TOP_BUILDDIR)/main/$* $@.body || exit 1
-
-all_dox: $(DOXFILES)
 

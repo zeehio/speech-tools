@@ -39,55 +39,27 @@
 ##=======================================================================##
 TOP=..
 DIRNAME=doc
-ALL_DIRS = man arch_doc
-
-DOCNAME=speechtools
-
-DSSL_SANE_DB=sane_to_docbook.dsl
-DSSSL_HTML=cstr.dssl
-DSSSL=$(DSSSL_HTML)
-TEX_SCALE=1.5
-
-# Temporarilly we explicitly list the programs which have been documented
-
-MAIN_TO_DOCUMENT=ch_wave ch_track ch_lab tilt_analysis tilt_synthesis sig2fv \
-	sigfilter pda pitchmark spectgen design_filter dp ngram_build \
-	na_play ngram_test viterbi wagon xml_parser wfst_build wfst_run \
-	scfg_make scfg_train scfg_parse scfg_test siod ols ols_test \
-	fringe_client bcat na_record
-
-EXAMPLE_TO_DOCUMENT=matrix ling track sigpr deq error handle hash kvl \
-	list matrix named_enum pathname string token xml
-
-SGMLFILES = cstr_defs.dtd speechtools.sgml estbaseclass.sgml estexec.sgml \
-	estgram.sgml esttilt.sgml estxml.sgml estserver.sgml estjavaapp.sgml \
-	estspeechclass.sgml estsigpr.sgml estintro.sgml estint.sgml \
-        estwagon.sgml estutil.sgml
-
-DSSSLFILES = $(DSSSL_HTML) $(DSSL_SANE_DB)
-
-DOCXXIMAGES = edcrest.gif cstr.gif est.jpg est_small.jpg
-DOCXXFILES=  classHeader.inc hierHeader.inc indexHeader.inc \
-	     banner.inc $(DOCXXIMAGES)
-
-HTML_REQUIREMENTS = $(DOCXXIMAGES) cstrdoc.css arch_doc
-
-FILES = $(DOCXXFILES) cstrdoc.css sane.dtd \
-	$(SGMLFILES) Makefile $(DSSSLFILES)
-LOCAL_CLEAN = *.aux *.cp *.fn *.ky *.log *.pg *.toc *.tp *.vr
-
-ALL=new_doc_help
-
-include $(TOP)/config/common_make_rules
-include $(TOP)/config/rules/doc.mak
+ALL_DIRS = man images
 
 
+#EXAMPLE_TO_DOCUMENT=matrix ling track sigpr deq error handle hash kvl \
+#	list matrix named_enum pathname string token xml
 
+IMAGES = cstr.gif edcrest.gif est.jpg
 
+DOXYGEN_DOCUMENTATION = bibliography.bib estbaseclass.dox estexec.md \
+        estgram.md estintro.md estlicence.md estling.md estmanuals.md \
+        estserver.md estsigpr.md estspeechclass.md esttilt.md \
+        estutil.md estwagon.md estwagon.sgml estxml.md index.md
 
+FILES = DoxyFile $(DOXYGEN_DOCUMENTATION) $(IMAGES)
 
+LOCAL_CLEAN = doxygen
 
+-include $(TOP)/config/common_make_rules
 
-
+doc:
+	(cd $(TOP_BUILDDIR)/doc/man; make all_dox)
+	$(DOXYGEN) $(TOP)/doc/DoxyFile
 
 
