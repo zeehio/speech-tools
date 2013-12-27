@@ -54,7 +54,7 @@ endif
 # if we requested a shared library, build it
 
 ifdef SHARED
-ifneq ($(SHARED),0)
+ifneq ($(strip $(SHARED)),0)
 ifndef MAKE_SHARED_LIB
 .config_error:: FORCE
 	@echo "+-----------------------------------------------------"
@@ -63,7 +63,7 @@ ifndef MAKE_SHARED_LIB
 	@exit 1
 endif
 
-ifeq ($(SHARED),2)
+ifeq ($(strip $(SHARED)),2)
     PROJECT_SHARED_LIBRARIES:=$(PROJECT_ALL_LIBRARIES)
 endif
 
@@ -128,6 +128,19 @@ libestbase.so : libestbase.a
 	-ln -sf $@.$(PROJECT_VERSION) $@.$(PROJECT_LIBRARY_VERSION_estbase)
 	-ln -sf $@.$(PROJECT_LIBRARY_VERSION_estbase) $@
 
+libeststring.so : libeststring.a
+	echo Make Shared Library eststring
+	if [ ! -d shared_space ] ; then mkdir shared_space ; else $(RM) -f shared_space/*.o ; fi
+	(cd shared_space ; $(AR) x ../$< )
+	echo Link Shared Library eststring
+	if [ -n "$(PROJECT_LIBRARY_NEEDS_SYSLIBS_eststring)" ] ; then libs='$(JAVA_PROJECT_LIBS)' ; fi ;\
+	$(subst YYY,$@.$(PROJECT_LIBRARY_VERSION_eststring),\
+		$(subst XXX,$@.$(PROJECT_VERSION),$(MAKE_SHARED_LIB))) \
+		shared_space/*.o $(PROJECT_LIBRARY_USES_eststring:%=-L. -l%) $$libs -L.
+	$(RM) -f shared_space/*.o $@
+	-ln -sf $@.$(PROJECT_VERSION) $@.$(PROJECT_LIBRARY_VERSION_eststring)
+	-ln -sf $@.$(PROJECT_LIBRARY_VERSION_eststring) $@
+
 
  ###########################################################################
  ##                                                                       ##
@@ -164,7 +177,7 @@ libestbase.so : libestbase.a
 	done
 	@echo
 	@echo
-ifdef SHARED
+ifneq ($(strip $(SHARED)),0)
 ifneq (,$(PROJECT_SHARED_LIBRARIES))
 	@$(ECHO_N) "Install shared libraries '$(PROJECT_SHARED_LIBRARIES)':"
 	@for l in $(PROJECT_SHARED_LIBRARIES:%=lib%.so) ;\
