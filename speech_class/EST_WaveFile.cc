@@ -465,6 +465,44 @@ EST_write_status EST_WaveFile::save_ulaw_header(FILE *fp,
     return save_header_using(save_wave_ulaw_header, fp, localwv, stype, bo);
 }
 
+EST_read_status EST_WaveFile::load_alaw(EST_TokenStream &ts,
+  EST_Wave &wv,
+  int rate,
+  EST_sample_type_t stype, int bo, int nchan,
+  int offset, int length)
+{
+  return load_using(load_wave_alaw,
+    ts, wv, rate, 
+    stype, bo, nchan,
+    offset, length);
+}
+
+EST_write_status EST_WaveFile::save_alaw_header(FILE *fp,
+					 const EST_Wave &wv,
+					 EST_sample_type_t stype, int bo)
+{
+    EST_Wave localwv = wv;
+    localwv.resample(8000);
+    return save_header_using(save_wave_alaw_header, fp, localwv, stype, bo);
+}
+
+EST_write_status EST_WaveFile::save_alaw_data(FILE *fp,
+					 const EST_Wave &wv,
+					 EST_sample_type_t stype, int bo)
+{
+    EST_Wave localwv = wv;
+    localwv.resample(8000);
+    return save_using(save_wave_alaw_data, fp, localwv, stype, bo);
+}
+
+EST_write_status EST_WaveFile::save_alaw(FILE *fp,
+ const EST_Wave &wv,
+ EST_sample_type_t stype, int bo)
+{
+    EST_Wave localwv = wv;
+    localwv.resample(8000);
+    return save_using(save_wave_alaw, fp, localwv, stype, bo);
+}
 
 static int parse_esps_r_option(EST_String arg, int &offset, int &length)
 {
@@ -536,6 +574,11 @@ EST_read_status read_wave(EST_Wave &sig, const EST_String &in_file,
 	al.add_item("-itype","ulaw");
 	al.add_item("-f","8000");
     }
+    if (al.present("-alaw"))
+    {
+al.add_item("-itype","alaw");
+al.add_item("-f","8000");
+    }
     if (al.present("-iswap"))
 	al.add_item("-ibo","other");
 
@@ -605,6 +648,11 @@ EST_read_status read_wave(EST_Wave &sig, const EST_String &in_file,
 	if (in_file == "-") unlink(fname);
 	cerr << "Cannot recognize file format or cannot access file: \"" << in_file << "\"\n";
 	return read_error;
+    }
+    if (file_type == "alaw")
+    {
+sample_rate = 8000;
+sample_type = "alaw";
     }
 
     if (al.present("-start") || al.present("-end") 
@@ -732,6 +780,10 @@ EST_TValuedEnumDefinition<EST_WaveFileType, const char *, EST_WaveFile::Info> wa
     { FALSE,  EST_WaveFile::load_ulaw,  EST_WaveFile::save_ulaw,
       EST_WaveFile::save_ulaw_header, EST_WaveFile::save_ulaw_data,
       "Headerless 8K ulaw  File" } },
+  { wff_alaw,	{ "alaw", "basic" }, 
+    { FALSE,  EST_WaveFile::load_alaw,  EST_WaveFile::save_alaw,
+      EST_WaveFile::save_alaw_header, EST_WaveFile::save_alaw_data,
+      "Headerless 8K alaw  File" } },
   { wff_none,	{NULL} }
 };
 

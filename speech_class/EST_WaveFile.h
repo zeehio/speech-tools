@@ -57,7 +57,8 @@ typedef enum EST_WaveFileType{
   wff_aiff,
   wff_riff,
   wff_raw,
-  wff_ulaw
+  wff_ulaw,
+  wff_alaw
 } EST_WaveFileType;
 
 class EST_WaveFile {
@@ -144,6 +145,11 @@ public:
   static EST_write_status save_ulaw_header(SaveWave_TokenStreamArgs);
   static EST_write_status save_ulaw_data(SaveWave_TokenStreamArgs);
   static EST_read_status load_ulaw(LoadWave_TokenStreamArgs);
+
+  static EST_write_status save_alaw(SaveWave_TokenStreamArgs);
+  static EST_write_status save_alaw_header(SaveWave_TokenStreamArgs);
+  static EST_write_status save_alaw_data(SaveWave_TokenStreamArgs);
+  static EST_read_status load_alaw(LoadWave_TokenStreamArgs);
 
   static EST_TNamedEnumI<EST_WaveFileType, Info> map;
 
