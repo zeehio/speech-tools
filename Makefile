@@ -111,5 +111,9 @@ config/config: config/config.in config.status
 configure: configure.in
 	autoconf
 
+
+documentation:
+	(cd doc; make doc)
+
 include $(TOP)/config/rules/top_level.mak
 include $(TOP)/config/rules/install.mak
