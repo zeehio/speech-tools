@@ -45,38 +45,6 @@
 #include "EST_cmd_line_options.h"
 #include "sigpr/EST_filter_design.h"
 
-/** @name <command>design_filter</command>
-  * @id designfilter-manual
-  * @toc
- */
-
-//@{
-
-/**@name Synopsis
-  */
-//@{
-
-//@synopsis
-
-/**
-<command>designfilter</command> computes the coefficients of a FIR
-filter with a given frequency response. The user supplies the
-frequency response as a vector of evenly spaced gains ranging from 0
-to half the sampling frequency. The length of this vector must be a
-power of 2. The filter coefficients can be used by the \Ref{sigfilter}
-program.
-
-*/
-
-//@}
-
-/**@name Options
-  */
-//@{
-
-//@options
-
-//@}
 
 int main (int argc, char *argv[])
 {
@@ -161,7 +129,7 @@ $ design_filter -o filter.coefficients filter.freq_response
 </para>
 <para>
 where filter.freq_response is the above file, and filter.coefficients
-is the output file which can be used by \Ref{sigfilter}.
+is the output file which can be used by \ref sigfilter .
 </para>
 
 */

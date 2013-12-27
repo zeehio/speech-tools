@@ -45,35 +45,6 @@
 
 int check_vocab(EST_Relation &a, EST_StrList &vocab);
 
-/** @name <command>ch_lab</command> <emphasis>Label file manipulation</emphasis>
-    @id ch_lab_manual
-  * @toc
- */
-
-//@{
-
-/**@name Synopsis
-  */
-//@{
-
-//@synopsis
-
-/**
-ch_lab is used to manipulate the format of label files and 
-serves as a wrap-around for the EST_Relation class.
-
-*/
-
-//@}
-
-/**@name OPTIONS
-  */
-//@{
-
-//@options
-
-//@}
-
 int main(int argc, char *argv[])
 {
     EST_String out_file, ext;

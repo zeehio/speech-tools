@@ -44,39 +44,6 @@
 #include "EST_FringeServer.h"
 #include "EST_cmd_line.h"
 
-/** @name <command>fringe_client</command> <emphasis>Send commands to a running fringe server</emphasis>
-    @id fringe-client-manual
-  * @toc
- */
-
-//@{
-
-
-/**@name Synopsis
-  */
-//@{
-
-//@synopsis
-
-/**
-
-   <command>fringe_client</command> is a simple program for sending
-   commands to a <command>fringe</command> process which is running in
-   server mode.
-
- */
-
-//@}
-
-/**@name OPTIONS
-  */
-//@{
-
-//@options
-
-//@}
-
-
 int main(int argc, char *argv[])
 {
     EST_String out_file, ext;
@@ -179,12 +146,4 @@ int main(int argc, char *argv[])
     return(0);
 }
 
-/**@name Finding Fringe.
 
-Each <command>fringe</command> which runs in server mode registers
-it's location in a file called <filename>.estServices</filename> in
-the users home directory. Multiple servers can be present if they are
-given different names, and the <option>-n</option> can be used to
-select which fringe a command is sent to.
-
-*/

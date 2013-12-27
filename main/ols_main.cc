@@ -47,35 +47,6 @@
 static void load_ols_data(EST_FMatrix &X, EST_FMatrix &Y, WDataSet &d);
 static int ols_main(int argc, char **argv);
 
-
-/** @name <command>ols</command> <emphasis>Train linear regression model</emphasis>
-    @id ols-manual
-  * @toc
- */
-
-//@{
-
-
-/**@name Synopsis
-  */
-//@{
-
-//@synopsis
-
-/**
- */
-
-//@}
-
-/**@name OPTIONS
-  */
-//@{
-
-//@options
-
-//@}
-
-
 int main(int argc, char **argv)
 {
     return ols_main(argc,argv);

@@ -47,38 +47,6 @@
 
 #define BUFFER_SIZE (1024)
 
-
-/** @name <command>bcat</command> <emphasis>Binary safe version of cat</emphasis>
-    @id bcat-manual
-  * @toc
- */
-
-//@{
-
-
-/**@name Synopsis
-  */
-//@{
-
-//@synopsis
-
-/**
-bcat is a trivial file concatenation program. It exists to allow testing
-of various file splitting operations under the cygwin environment on Windows
-where the distinction between binary and text data is important.
- */
-
-//@}
-
-/**@name OPTIONS
-  */
-//@{
-
-//@options
-
-//@}
-
-
 int main(int argc, char *argv[]) 
 { 
     EST_StrList files;
