@@ -1,0 +1,6 @@
+*.o
+make.depend
+.buildlib_estbase
+.buildlib_estools
+.buildlib_eststring
+autom4te.cache/
