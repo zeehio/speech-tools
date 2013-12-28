@@ -60,7 +60,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <alsa/version.h>]], [[int j=
                 #endif]])],[LINUXAUDIO="alsa"],[])
 AC_SUBST(LINUXAUDIO)
 
-AC_ARG_ENABLE([shared],[  --enable-shared  Enable building shared libraries],
+AC_ARG_ENABLE([shared],[ AS_HELP_STRING([--enable-shared  Enable building shared libraries])],
  [ if   test "x$enableval" = "x0"; then
        SHARED=0
    elif test "x$enableval" = "x1"; then
@@ -73,9 +73,24 @@ AC_ARG_ENABLE([shared],[  --enable-shared  Enable building shared libraries],
  ], [ SHARED=0 ])
 AC_SUBST(SHARED)
 
-AC_ARG_ENABLE([debug],[  --enable-debug  Produce debugging information],
+AC_ARG_ENABLE([debug],[ AS_HELP_STRING([--enable-debug  Produce debugging information])],
  [ DEBUG=1 ], [ DEBUG=0 ])
 AC_SUBST(DEBUG)
+
+AC_ARG_WITH([nas_audio],
+            [AS_HELP_STRING([--with-nas_audio],
+              [enable NCD's network audio system])],
+            [NAS_AUDIO=NAS_AUDIO],
+            [NAS_AUDIO=])
+AC_SUBST(NAS_AUDIO)
+
+AC_ARG_WITH([pulseaudio],
+            [AS_HELP_STRING([--with-pulseaudio],
+              [enable PulseAudio sound server])],
+            [PULSE_AUDIO=PULSE_AUDIO],
+            [PULSE_AUDIO=])
+AC_SUBST(PULSE_AUDIO)
+
 
 AC_CONFIG_FILES([config/config])
 AC_OUTPUT

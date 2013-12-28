@@ -89,11 +89,11 @@ OPTIMISE_sigpr = 3
 ## various audio devices are supported directly but you can always
 ## specify a program to play files in a desired format.
 
-## NCD's network audio system.
-# INCLUDE_MODULES += NAS_AUDIO
+## NCD's network audio system. Write NAS_AUDIO to include it.
+INCLUDE_MODULES += @NAS_AUDIO@
 
-## PulseAudio sound server
-# INCLUDE_MODULES += PULSE_AUDIO
+## PulseAudio sound server. Write PULSE_AUDIO to include it.
+INCLUDE_MODULES += @PULSE_AUDIO@
 
 ## Native audio for your platform (sun, linux, freebsd, irix, macosx, windows)
 INCLUDE_MODULES += NATIVE_AUDIO

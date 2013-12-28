@@ -621,6 +621,8 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+PULSE_AUDIO
+NAS_AUDIO
 DEBUG
 SHARED
 LINUXAUDIO
@@ -693,6 +695,8 @@ ac_user_opts='
 enable_option_checking
 enable_shared
 enable_debug
+with_nas_audio
+with_pulseaudio
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1315,8 +1319,16 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --enable-shared  Enable building shared libraries
-  --enable-debug  Produce debugging information
+   --enable-shared  Enable building shared libraries
+
+   --enable-debug  Produce debugging information
+
+
+Optional Packages:
+  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-nas_audio        enable NCD's network audio system
+  --with-pulseaudio       enable PulseAudio sound server
 
 Some influential environment variables:
   CC          C compiler command
@@ -3786,6 +3798,27 @@ if test "${enable_debug+set}" = set; then :
 else
    DEBUG=0
 fi
+
+
+
+
+# Check whether --with-nas_audio was given.
+if test "${with_nas_audio+set}" = set; then :
+  withval=$with_nas_audio; NAS_AUDIO=NAS_AUDIO
+else
+  NAS_AUDIO=
+fi
+
+
+
+
+# Check whether --with-pulseaudio was given.
+if test "${with_pulseaudio+set}" = set; then :
+  withval=$with_pulseaudio; PULSE_AUDIO=PULSE_AUDIO
+else
+  PULSE_AUDIO=
+fi
+
 
 
 
