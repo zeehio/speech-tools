@@ -66,15 +66,15 @@ CONFIGURATION =
 # OPTIMISE=4 will turn off DEBUG
 OPTIMISE=3
 # enable with WARN=1       
-WARN=0   
+WARN=0
 # enable with VERBOSE=1 
-VERBOSE=0 
+VERBOSE=0
 # enable with DEBUG=1
-DEBUG=0 
+DEBUG=@DEBUG@
 # enable with PROFILE=gprof
 PROFILE=0
 # enable with SHARED=2
-SHARED=0  
+SHARED=@SHARED@
 
 ## Directory specific selections which override the above
 

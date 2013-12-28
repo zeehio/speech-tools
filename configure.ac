@@ -60,5 +60,22 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <alsa/version.h>]], [[int j=
                 #endif]])],[LINUXAUDIO="alsa"],[])
 AC_SUBST(LINUXAUDIO)
 
+AC_ARG_ENABLE([shared],[  --enable-shared  Enable building shared libraries],
+ [ if   test "x$enableval" = "x0"; then
+       SHARED=0
+   elif test "x$enableval" = "x1"; then
+       SHARED=1
+   elif test "x$enableval" = "x2"; then
+       SHARED=2
+   else
+       SHARED=2
+   fi
+ ], [ SHARED=0 ])
+AC_SUBST(SHARED)
+
+AC_ARG_ENABLE([debug],[  --enable-debug  Produce debugging information],
+ [ DEBUG=1 ], [ DEBUG=0 ])
+AC_SUBST(DEBUG)
+
 AC_CONFIG_FILES([config/config])
 AC_OUTPUT
