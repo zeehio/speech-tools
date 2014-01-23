@@ -38,7 +38,7 @@
 /*=======================================================================*/
 
 #if !defined(__EST_WALLOC_H__)
-
+#define __EST_WALLOC_H__
 #if defined(__cplusplus)
 extern "C" {
 #endif
