@@ -139,7 +139,7 @@ private:
 
     /// Simple utility which removes const-ness from memory
     static inline EST_ChunkPtr &NON_CONST_CHUNKPTR(const EST_ChunkPtr &ecp) 
-	{ return *((EST_ChunkPtr *)&ecp);}
+	{ return const_cast<EST_ChunkPtr&> (ecp);}
 
     /// private constructor which uses the buffer given.
     EST_String(int len, EST_ChunkPtr cp) {
