@@ -47,7 +47,7 @@ class EST_Regex;
 #include "EST_strcasecmp.h"
 #include "EST_bool.h"
 
-extern "C" void abort(void);
+#include <cstdlib>
 
 /** @class EST_String
   * @ingroup stringclasses
