@@ -461,7 +461,7 @@ char **siod_variable_generator(char *text,int length)
     matches = walloc(char *,siod_llength(lmatches)+1);
     for (l=lmatches,i=0; l; l=cdr(l),i++)
 	matches[i] = wstrdup(PNAME(car(l)));
-    matches[i] = '\0';
+    matches[i] = NULL;
 
     return matches;
 }
@@ -500,7 +500,7 @@ char **siod_command_generator (char *text,int length)
     matches = walloc(char *,siod_llength(lmatches)+1);
     for (l=lmatches,i=0; l; l=cdr(l),i++)
 	matches[i] = wstrdup(PNAME(car(l)));
-    matches[i] = '\0';
+    matches[i] = NULL;
 
     return matches;
 }

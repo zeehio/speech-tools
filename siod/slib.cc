@@ -1218,7 +1218,7 @@ static void gc_sweep(void)
  nfreelist = NIL;
  start_rememberring_dead();
  for(ptr=heap_org; ptr < end; ++ptr)
-   if (((*ptr).gc_mark == 0))
+   if ((*ptr).gc_mark == 0)
      {switch((*ptr).type)
 	{case tc_flonum:
 	    if (FLONMPNAME(ptr) != NULL)

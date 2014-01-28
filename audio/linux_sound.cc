@@ -396,7 +396,7 @@ int record_linux_wave(EST_Wave &inwave, EST_Option &al)
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-static const char *aud_sys_name = "ALSALINUX";
+/*static const char *aud_sys_name = "ALSALINUX";*/
 
 // Code to block signals while sound is playing.
 // Needed inside Java on (at least some) linux systems
