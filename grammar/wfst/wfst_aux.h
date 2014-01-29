@@ -40,6 +40,9 @@
 #ifndef __WFST_AUX_H__
 #define __WFST_AUX_H__
 
+#include "EST_TKVL.h"
+#include "EST_types.h"
+
 // Used in minimization
 
 class wfst_marks {

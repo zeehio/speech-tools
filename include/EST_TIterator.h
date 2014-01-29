@@ -34,6 +34,8 @@
 #ifndef __EST_TITERATOR_H__
 #define __EST_TITERATOR_H__
 
+#include <cstddef>
+
 /** Template class defining interface to an iterator, i.e an object
   * which returns elements from a structure one at a time.
   *

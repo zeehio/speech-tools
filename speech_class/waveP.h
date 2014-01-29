@@ -39,7 +39,9 @@
 #ifndef __WAVEP_H__
 #define __WAVEP_H__
 
-#include <stdio.h>
+#include <cstdio>
+#include "EST_rw_status.h"
+#include "EST_wave_utils.h"
 
 /* The following three (raw, alaw and ulaw) cannot be in the table as they cannot */
 /* identify themselves from files (both are unheadered)                */

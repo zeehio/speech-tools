@@ -12,6 +12,7 @@ Declarations which are private to SLIB.C internals.
 #define __SIODP_H__
 
 #include "io.h"
+#include "siod.h"
 
 typedef int (*repl_getc_fn)(FILE *);
 typedef void (*repl_ungetc_fn)(int,FILE *);

@@ -37,6 +37,7 @@
 #ifndef __EST_RELATION_LIST_H__
 #define __EST_RELATION_LIST_H__
 
+#include "EST_Item.h"
 
 #if 0
 /**@name Functions for building and traversing list relations

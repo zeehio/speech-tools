@@ -37,14 +37,16 @@
 #ifndef __EST_RELATION_MLS_H__
 #define __EST_RELATION_MLS_H__
 
+#include "EST_Item.h"
+
 inline EST_Item *link1(EST_Item *n) { return n->down()->down()->down(); }
-inline EST_Item *link2(EST_Item *n) 
+inline EST_Item *link2(EST_Item *n)
     { return n->down()->down()->next()->down(); }
-inline EST_Item *linkn(EST_Item *n) 
+inline EST_Item *linkn(EST_Item *n)
     { return n->down()->down()->last()->down(); }
 EST_Item *link(int l,EST_Item *n);
 
-inline EST_Item *linkedfrom(EST_Item *n) 
+inline EST_Item *linkedfrom(EST_Item *n)
     { return n->up()->first()->up()->up(); }
 int linked(EST_Item *from, EST_Item *to);
 

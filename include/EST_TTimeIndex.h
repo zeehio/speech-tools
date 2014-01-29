@@ -36,28 +36,28 @@
 #define __EST_TTIMEINDEX_H__
 
 #include <iostream>
+#include "EST_TVector.h"
 
 /** @class EST_TTI_Entry
   * A time index for a container. The container defines how to get an
   * object and so on, this lets you find a point in the container not
   * far before the entry you want.
-  * 
+  *
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
   * @version $Id: EST_TTimeIndex.h,v 1.3 2004/09/29 08:24:17 robert Exp $
   */
-
 template<class  CONTAINER>
 struct EST_TTI_Entry
 {
   float t;
-  CONTAINER::Index i;
+  typename CONTAINER::Index i;
 };
 
 template<class CONTAINER>
-class EST_TTimeIndex 
+class EST_TTimeIndex
 {
 public:
-  typedef CONTAINER::Index Index;
+  typedef typename CONTAINER::Index Index;
   typedef EST_TTI_Entry<CONTAINER> Entry;
 
 protected:
@@ -80,12 +80,12 @@ public:
 };
 
 template<class CONTAINER>
-extern int operator !=(const EST_TTI_Entry<CONTAINER> &e1, 
+extern int operator !=(const EST_TTI_Entry<CONTAINER> &e1,
 		       const EST_TTI_Entry<CONTAINER> &e2);
 
 template<class CONTAINER>
 extern std::ostream& operator <<(
-			    std::ostream &s, 
+			    std::ostream &s,
 			    const EST_TTI_Entry<CONTAINER> &e);
 #endif
 

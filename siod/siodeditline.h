@@ -46,6 +46,7 @@ extern "C"
 {
 #endif
 
+#include <stdio.h>
 int siod_el_getc(FILE *f);
 void siod_el_ungetc(int c, FILE *f);
 void siod_el_init(void);

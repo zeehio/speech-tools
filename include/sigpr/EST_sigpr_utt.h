@@ -38,6 +38,7 @@
 #include "sigpr/EST_Window.h"
 #include "EST_Track.h"
 #include "EST_Wave.h"
+#include "EST_Option.h"
 
 #define DEFAULT_WINDOW_NAME "hamming"
 #define DEFAULT_FRAME_FACTOR 2.0
@@ -47,12 +48,12 @@
    superseded soon.
 */
 
-/** @defgroup FunctionsForGeneratingTracks Functions for generating Tracks 
+/** @defgroup FunctionsForGeneratingTracks Functions for generating Tracks
  */
 
 /**@defgroup Functionsforusewithframebasedprocessing Functions for use with frame based processing
    @ingroup FunctionsForGeneratingTracks
-   
+
 In the following functions, the input is a EST_Wave waveform,
 and the output is a (usually multi-channel) EST_Track.  The
 track must be set up appropriately before hand. This means the track
@@ -62,16 +63,16 @@ channels.
 The positions of the frames are found by examination of the **time**
 array in the EST_Track, which must be filled prior to the function
 call. The usual requirement is for fixed frame analysis, where each
-analysis frame is, say, 10ms after the previous one. 
+analysis frame is, say, 10ms after the previous one.
 
 A common alternative is to perform pitch-synchronous
 analysis where the time shift is related to the local pitch period.
 
-*/ 
+*/
 
 ///@{
 
-/** Produce a single set of coefficients from a waveform. The type of 
+/** Produce a single set of coefficients from a waveform. The type of
   coefficient required is given in the argument `type`.
 
   \param type { Possible types are:
@@ -103,8 +104,8 @@ The windowing function is given by `wf`.
 
   @param wf function for windowing. See Windowing mechanisms
 */
-void sig2coef(EST_Wave &sig, EST_Track &a, EST_String type, 
-	      float factor = 2.0, 
+void sig2coef(EST_Wave &sig, EST_Track &a, EST_String type,
+	      float factor = 2.0,
 	      EST_WindowFunc *wf = EST_Window::creator(DEFAULT_WINDOW_NAME));
 
 /** Produce multiple coefficients from a waveform by repeated calls to
@@ -118,7 +119,7 @@ void sig2coef(EST_Wave &sig, EST_Track &a, EST_String type,
 @param slist: list of types of coefficients required, from the set of
 possible types that sig2coef can take.
 */
-void sigpr_base(EST_Wave &sig, EST_Track &fv, EST_Features &op, 
+void sigpr_base(EST_Wave &sig, EST_Track &fv, EST_Features &op,
 		const EST_StrList &slist);
 
 /** Calculate the power for each frame of the waveform.
@@ -188,8 +189,8 @@ might use 12 cepstral coefficients computed from a 20 channel filterbank.
        will be this times the local pitch period
 @param fbank_order: the number of Mel scale filters used for the analysis
 @param liftering_parameter:  for filtering in the cepstral domain
-       See \ref fbank2melcep 
-@param wf: function for windowing. See \ref Windowing mechanisms 
+       See \ref fbank2melcep
+@param wf: function for windowing. See \ref Windowing mechanisms
 @param include_c0: whether the zero'th cepstral coefficient is to be included
 @param up: whether the filterbank analysis should use
        power rather than energy.
@@ -197,8 +198,8 @@ might use 12 cepstral coefficients computed from a 20 channel filterbank.
 @see fbank
 @see fbank2melcep
 */
-void melcep(EST_Wave &sig, 
-	    EST_Track &mfcc_track, 
+void melcep(EST_Wave &sig,
+	    EST_Track &mfcc_track,
 	    float factor,
 	    int fbank_order,
 	    float liftering_parameter,
@@ -216,7 +217,7 @@ These functions are used to produce a track of fundamental frequency
 (F0) against time of a waveform.
 */
 
-///@{   
+///@{
 
 
 /** Top level pitch (F0) detection algorithm. Returns a track
@@ -237,7 +238,7 @@ void pda(EST_Wave &sig, EST_Track &fz, EST_Features &op, EST_String method="");
 
 /** Top level intonation contour detection algorithm. Returns a track
 containing evenly spaced frames of speech, each containing a F0 for that
-point. `icda` differs from \ref pda in that the contour is smoothed, 
+point. `icda` differs from \ref pda in that the contour is smoothed,
 and unvoiced portions have interpolated F0 values.
 
 @param sig: input waveform
@@ -248,7 +249,7 @@ for interpolation.  }
 @param op: parameters for pitch tracker
 @param method: pda method to be used.
 */
-void icda(EST_Wave &sig, EST_Track &fz, EST_Track &speech, 
+void icda(EST_Wave &sig, EST_Track &fz, EST_Track &speech,
 	  EST_Option &op, EST_String method = "");
 
 /** Create a set sensible defaults for use in pda and icda.
