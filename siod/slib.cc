@@ -600,16 +600,16 @@ static LISP err(const char *message, LISP x, const char *s)
     }
 
     if (show_backtrace == 1)
-	display_backtrace(NIL);
+	  display_backtrace(NIL);
     
     if (errjmp_ok == 1) {setvar(sym_errobj,x,NIL); longjmp(*est_errjmp,1);}
     close_open_files();  /* can give clue to where error is */
     fprintf(stderr,"%s: fatal error exiting.\n",siod_prog_name);
-    if (fatal_exit_hook)
-	(*fatal_exit_hook)();
-    else
-	exit(1);
-    return(NIL);
+    if (fatal_exit_hook) {
+	  (*fatal_exit_hook)();
+      
+    }
+    exit(1);
 }
 
 LISP err(const char *message, LISP x)
