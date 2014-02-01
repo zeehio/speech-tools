@@ -151,9 +151,9 @@ EST_write_status save_StrList(EST_String filename, EST_StrList &l,
     ostream *outf;
     EST_Litem *p;
     if (filename == "-")
-	outf = &cout;
+	  outf = &cout;
     else
-	outf = new ofstream(filename);
+	  outf = new ofstream(filename);
     
     if (!(*outf))
 	return write_fail;
@@ -177,8 +177,8 @@ EST_write_status save_StrList(EST_String filename, EST_StrList &l,
 	cerr << "Unknown style for writing StrLists: " << style << endl;
 	return misc_write_error;
     }
-
-    delete outf;
+    if (outf != &cout)
+        delete outf;
 
     return write_ok;
 }
