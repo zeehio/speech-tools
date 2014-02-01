@@ -250,31 +250,31 @@ float hanning (int *counter, float valin, float valhan[], float win_coeff[],
     float valout = 0.0, weight[MAX_LEN];
 
     for (i = par->window_length - 1; i > 0; i--)
-	valhan[i] = valhan[i - 1];
+	  valhan[i] = valhan[i - 1];
     valhan[0] = valin;
     if (*counter > 0) {
-	(*counter)--;
-	return (0.0);
+	  (*counter)--;
+	  return (0.0);
     }
     else {
-	*counter = -1;
-	for (i = 0; i < par->window_length; i++)
-	    if (valhan[i] == par->breaker)
-		k++;
-	if (!k)
+	  *counter = -1;
+	  for (i = 0; i < par->window_length; i++)
+        if (valhan[i] == par->breaker)
+	      k++;
+	  if (!k) {
 	    for (i = 0; i < par->window_length; i++)
-		valout += valhan[i] * win_coeff[i];
-	else if (k <= par->window_length / 2 && par->extrapolate) {
+		  valout += valhan[i] * win_coeff[i];
+      }
+      else if (k <= par->window_length / 2 && par->extrapolate) {
 	    mk_window_coeffs (par->window_length - k, weight);
 	    for (i = 0, j = 0; i < par->window_length; i++)
-		if (valhan[i] != par->breaker)
-		    valout += valhan[i] * weight[j++];
-	}
-	else
+		  if (valhan[i] != par->breaker)
+		      valout += valhan[i] * weight[j++];
+	  }
+	  else
 	    valout = par->breaker;
-	return (valout);
+	  return (valout);
     }
-
 }
 
 void initialise_parameters (struct Ms_Op *p_par)
