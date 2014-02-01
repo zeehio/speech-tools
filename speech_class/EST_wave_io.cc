@@ -746,7 +746,7 @@ enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
 {
     char info[4];
     struct AIFFchunk chunk;
-    short comm_channels;
+    short comm_channels = -2;
     int comm_samples;
     short comm_bits;
     unsigned char ieee_ext_sample_rate[10];
@@ -800,6 +800,11 @@ enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
 		comm_bits = SWAPSHORT(comm_bits);
 	    }
 	    *sample_rate = (int)ConvertFromIeeeExtended(ieee_ext_sample_rate);
+        if (comm_channels < 0) 
+        {
+            fprintf(stderr, "AIFF chunk: Wrong comm channels\n");
+            return wrong_format;
+        }
 	}
 	else if (strncmp(chunk.id,"SSND",4) == 0)
 	{
@@ -813,7 +818,10 @@ enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
 		ssndchunk.offset = SWAPINT(ssndchunk.offset);
 		ssndchunk.blocksize = SWAPINT(ssndchunk.blocksize);
 	    }
-	    
+	    if (comm_channels < 0) {
+            fprintf(stderr, "AIFF: COMM chunk missing\n");
+            return wrong_format;
+        }
 	    *num_channels = comm_channels;
 	    switch (comm_bits)
 	    {
