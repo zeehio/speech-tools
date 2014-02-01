@@ -375,7 +375,7 @@ int EST_String::gsub_internal (EST_Regex &ex, const char *s, int length)
 
   // printf("match '%s'\n", (const char *)(*this));
 
-  if (size > 0)
+  if (size > 0 && ((const char*)memory) != NULL)
     {
       {
 	int start, starts[EST_Regex_max_subexpressions], ends[EST_Regex_max_subexpressions], mlen;
