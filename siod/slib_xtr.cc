@@ -112,7 +112,7 @@ static LISP aref1(LISP a,LISP i)
       if (k >= a->storage_as.lisp_array.dim) err("index too large",i);
       return(a->storage_as.lisp_array.data[k]);
     default:
-      return(err("invalid argument to aref",a));}}
+      err("invalid argument to aref",a);}}
 
 static void err1_aset1(LISP i)
 {err("index to aset too large",i);}
@@ -146,13 +146,13 @@ static LISP aset1(LISP a,LISP i,LISP v)
       a->storage_as.lisp_array.data[k] = v;
       return(v);
     default:
-      return(err("invalid argument to aset",a));}}
+      err("invalid argument to aset",a);}}
 
 static LISP cons_array(LISP dim,LISP kind)
 {LISP a;
  long flag,n,j;
  if (NFLONUMP(dim) || (FLONM(dim) < 0))
-   return(err("bad dimension to cons-array",dim));
+   err("bad dimension to cons-array",dim);
  else
    n = (long) FLONM(dim);
  flag = no_interrupt(1);
@@ -265,7 +265,7 @@ static LISP array_equal(LISP a,LISP b)
 	  return(NIL);
       return(truth);
     default:
-      return(errswitch());}}
+      errswitch();}}
 
 static long array_sxhash(LISP a,long n)
 {long j,len,hash;
@@ -422,7 +422,7 @@ static LISP fast_print(LISP obj,LISP table)
       if (p->fast_print)
 	return((*p->fast_print)(obj,table));
       else
-	return(err("cannot fast-print",obj));}}
+	err("cannot fast-print",obj);}}
 
 static LISP fast_read(LISP table)
 {FILE *f;
@@ -483,7 +483,7 @@ static LISP fast_read(LISP table)
       if (p->fast_read)
 	return(*p->fast_read)(c,table);
       else
-	return(err("unknown fast-read opcode",flocons(c)));}}
+	err("unknown fast-read opcode",flocons(c));}}
 
 static LISP array_fast_print(LISP ptr,LISP table)
 {int j,len;
@@ -516,7 +516,7 @@ static LISP array_fast_print(LISP ptr,LISP table)
 	fast_print(ptr->storage_as.lisp_array.data[j],table);
       return(NIL);
     default:
-      return(errswitch());}}
+      errswitch();}}
 
 static LISP array_fast_read(int code,LISP table)
 {long j,len,iflag;
@@ -561,7 +561,7 @@ static LISP array_fast_read(int code,LISP table)
 	ptr->storage_as.lisp_array.data[j] = fast_read(table);
       return(ptr);
     default:
-      return(errswitch());}}
+      errswitch();}}
 
 static void init_storage_xtr1(long type)
 {long j;

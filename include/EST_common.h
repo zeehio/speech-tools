@@ -51,6 +51,15 @@
   #define EST_WARN_UNUSED_RESULT
 #endif
 
+#if defined __GNUC__
+  #define EST_NORETURN  __attribute__ ((__noreturn__))
+#elif defined __clang__
+  #define EST_NORETURN __attribute__ ((__noreturn__))
+#else
+  #define EST_NORETURN
+#endif
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif

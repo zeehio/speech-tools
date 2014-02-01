@@ -165,6 +165,7 @@ int ipoll_counter = 0;
 #endif
 FILE *fwarn=NULL;
 int siod_interactive = 1;
+static void err(const char *message, LISP x, const char *s) EST_NORETURN;
 
 extern "C" {
 int el_pos = -1;  // actually used by readline 
@@ -577,7 +578,7 @@ static long repl(struct repl_hooks *h)
 void set_fatal_exit_hook(void (*fcn)(void))
 {fatal_exit_hook = fcn;}
 
-static LISP err(const char *message, LISP x, const char *s)
+static void err(const char *message, LISP x, const char *s)
 {
     nointerrupt = 1;
     if NNULLP(x) 
@@ -612,18 +613,18 @@ static LISP err(const char *message, LISP x, const char *s)
     exit(1);
 }
 
-LISP err(const char *message, LISP x)
+void err(const char *message, LISP x)
 {
-  return err(message, x, NULL);
+  err(message, x, NULL);
 }
 
-LISP err(const char *message, const char *x)
+void err(const char *message, const char *x)
 {
-  return err(message, NULL, x);
+  err(message, NULL, x);
 }
 
-LISP errswitch(void)
-{return(err("BUG. Reached impossible case",NIL));}
+void errswitch(void)
+{err("BUG. Reached impossible case",NIL);}
 
 void err_stack(char *ptr)
      /* The user could be given an option to continue here */
@@ -1688,7 +1689,7 @@ static LISP lreadr(struct gen_readio *f)
     if (strchr("()'`,;\"",c) || strchr(user_te_readm,c))
       {UNGETC_FCN(c,f);return(lreadtk(j));}
     *p++ = c;}
- return(err("symbol larger than maxsize (can you use a string instead?)",NIL));}
+ err("symbol larger than maxsize (can you use a string instead?)",NIL);}
 
 #if 0
 LISP lreadparen(struct gen_readio *f)
