@@ -623,7 +623,7 @@ void sig2fft(const EST_FVector &sig,
     int i,half_fft_order;
     float real,imag;
     float window_size = sig.length();
-    int fft_order = fft_vec.length();
+    int fft_order; /* = fft_vec.length();*/
 
     // work out FFT order required
     fft_order = 2;   
