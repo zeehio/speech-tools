@@ -265,9 +265,9 @@ static int ols_stepwise_find_best(const EST_FMatrix &X,
 	    EST_FMatrix pred;
 	    included.a_no_check(i) = TRUE;
 	    if (!robust_ols(X,Y,included,coeffsl))
-		return FALSE;  // failed for some reason
+		    return FALSE;  // failed for some reason
 	    ols_apply(Xtest,coeffsl,pred);
-            ols_test(Ytest,pred,cor,rmse);
+        ols_test(Ytest,pred,cor,rmse);
             printf("tested %d %s %f best %f\n",
                    i,(const char *)feat_names.nth(i),cor,bscore);
 	    if (fabs(cor) > bscore)
@@ -297,7 +297,10 @@ int ols_test(const EST_FMatrix &real,
     double v1,v2,v3;
 
     if (real.num_rows() != predicted.num_rows())
-	return FALSE;  // can't do this
+    {
+        correlation = 0;
+        return FALSE;  // can't do this
+    }
 
     for (i=0; i < real.num_rows(); i++)
     {
