@@ -173,7 +173,7 @@ class EST_Features {
     /** Look up feature name, which may be simple feature or path, and
 	return as a EST_Features, returning `def` if not
 	found */
-    EST_Features &A(const EST_String &path, EST_Features &def) const;
+    EST_Features *A(const EST_String &path, EST_Features &def) const;
 
     ///@}
 

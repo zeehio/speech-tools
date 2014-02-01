@@ -137,11 +137,11 @@ const EST_Val &EST_Features::val_path(const EST_String &name) const
     }
 }
 
-EST_Features &EST_Features::A(const EST_String &path,EST_Features &def) const
+EST_Features *EST_Features::A(const EST_String &path,EST_Features &def) const
 {
     EST_Features *ff = new EST_Features(def);
 
-    return *feats(val(path,est_val(ff)));
+    return feats(val(path,est_val(ff)));
 }
 
 int EST_Features::present(const EST_String &name) const
