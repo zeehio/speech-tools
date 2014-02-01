@@ -444,7 +444,8 @@ int EST_String::gsub_internal (EST_Regex &ex, const char *s, int length)
 	    }
 	  at=end;
 	}
-      memcpy(p, from+at, size-at);
+    if ( (from + at) != p) /* Do not copy if source == destination */
+       memcpy(p, from+at, size-at);
 
       p += size-at;
       *p = '\0';
