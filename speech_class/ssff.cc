@@ -173,7 +173,11 @@ EST_read_status EST_TrackFile::load_ssff_ts(EST_TokenStream &ts, EST_Track &tr, 
     fseek(fp,0,SEEK_END);
     end = ftell(fp);
     fseek(fp,pos,SEEK_SET);
-    num_frames = (end - pos)/(num_channels*sizeof(double));
+    if (num_channels == 0) { /* Dummy unlikely case (wrong format?) */
+        num_frames = 0;
+    } else {
+        num_frames = (end - pos)/(num_channels*sizeof(double));
+    }
     
     // Finished reading header
     tr.resize(num_frames,num_channels);
