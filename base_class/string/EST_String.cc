@@ -756,6 +756,9 @@ EST_String operator * (const EST_String &s, int n)
 
   EST_String it(NULL, 0, sz);
   
+  /* If s is an empty string, then return an empty string */
+  if (l == 0) return it;
+  
   for(int j=0; j<n; j++)
     strncpy(((char *)it)+j*l, (const char *)s, l);
 
