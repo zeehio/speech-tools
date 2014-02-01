@@ -192,7 +192,7 @@ void array_smoother (float *p_array, int arraylen, struct Ms_Op *ms)
 	for (i = 0; i < delay / 2; i++)
 	    p_array[out++] = ms->breaker;
 
-    delete inarray;
+    delete[] inarray;
 }
 
 float median (int *counter, float valin, float valbuf[], int lmed, int mmed)

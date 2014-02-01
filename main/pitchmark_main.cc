@@ -231,7 +231,7 @@ static EST_write_status save_ogi_bin(EST_Track &pm, EST_String filename, int sr)
 	fclose(fp);
 	return misc_write_error;
     }
-    delete d;
+    delete[] d;
     
     return write_ok;
 }
