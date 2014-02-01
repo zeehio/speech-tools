@@ -93,13 +93,14 @@ void WNode::prune(void)
 
 	// Have to check purity as well as values to ensure left and right
 	// don't further split
-	if ((left->pure() == TRUE) && ((right->pure() == TRUE)) &&
+	if ((left  != 0) && (left->pure()  == TRUE) && 
+        (right != 0)  && (right->pure() == TRUE) &&
 	    (left->get_impurity().value() == right->get_impurity().value()))
 	{
 	     delete left; left = 0;
 	     delete right; right = 0;
 	}
-    }    
+    }
 
 }
 
