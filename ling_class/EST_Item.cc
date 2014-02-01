@@ -560,16 +560,35 @@ int EST_Item::verify() const
 {
     // Return FALSE if this node and its neighbours aren't
     // properly linked
-
+    bool verif_d = false;
+    bool verif_n = false;
     if (this == 0)
-	return TRUE;
-    if (((d == 0) || (d->u == this)) &&
-	((n == 0) || (n->p == this)) &&
-	(d->verify()) &&
-	(n->verify()))
-	return TRUE;
+	  return TRUE;
+    /* if there is no "d" it's all right */
+    if (d == 0) {
+      verif_d = true;
+    } else { /* if there is "d", then check it */
+        if ( (d->u == this) && d->verify() ) {
+          verif_d = true;
+        } else {
+          verif_d = false;
+        }
+    }
+    /* idem for "n" */
+    if (n == 0) {
+        verif_n = true;
+    } else {
+        if ( (n->p == this) && n->verify() ) {
+            verif_n = true;
+        } else {
+            verif_n = false;
+        }
+    }
+    /* if both d and n are ok, then return ok */
+    if (verif_d && verif_n) 
+	  return TRUE;
     else
-	return FALSE;
+	  return FALSE;
 }
 
 EST_Item *append_daughter(EST_Item *n, EST_Item *p)
