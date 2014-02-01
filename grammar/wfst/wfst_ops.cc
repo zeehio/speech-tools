@@ -231,7 +231,6 @@ void EST_WFST::determinize(const EST_WFST &ndwfst)
 		else
 		{
 		    nms->set_name(new_name);
-		    delete nms;
 		}
 
 		// Add new transition to current state
@@ -239,7 +238,7 @@ void EST_WFST::determinize(const EST_WFST &ndwfst)
 		    ->add_transition(nms->weight(),
 				     nms->name(),
 				     i,o);
-		
+		delete nms;
 	    }
 	}
 	delete current;
@@ -429,12 +428,12 @@ void EST_WFST::intersection(wfst_list &wl)
 		else  // already seen this state, and is already named
 		{
 		    nms->set_name(new_name);
-		    delete nms;
 		}
 
 		// Add new transition to current state
 		p_states[current->name()]
 		    ->add_transition(nms->weight(),nms->name(),i,o);
+		delete nms;
 	    }
 	}
 	delete current;
