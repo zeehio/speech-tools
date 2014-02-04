@@ -475,7 +475,7 @@ EST_read_status EST_Utterance::load(EST_TokenStream &ts)
 {
     EST_read_status stat=read_error;
     int pos = ts.tell();
-    int max_id, n;
+    int max_id=-2, n;
     int num_formats = EST_UtteranceFile::map.n();
     init();  // we're committed to reading something so clear utterance
 
