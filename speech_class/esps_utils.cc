@@ -199,7 +199,8 @@ void add_fea_d(esps_hdr hdr,const char *name, int pos, double d)
 	t->count = pos+1;
     }
     t->dtype = ESPS_DOUBLE;
-    t->v.dval[pos] = d;
+    if (pos >= 0)
+      t->v.dval[pos] = d;
 
     t->next = hdr->fea;
     hdr->fea = t;
