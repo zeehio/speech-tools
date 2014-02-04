@@ -97,7 +97,7 @@ struct obj
 
 #define TYPE(x) (((x) == NIL) ? 0 : ((*(x)).type))
 
-#define TYPEP(x,y) (TYPE(x) == (y))
+#define TYPEP(x,y) ( (x != NULL) && (TYPE(x) == (y)) )
 #define NTYPEP(x,y) (TYPE(x) != (y))
 
 #define tc_nil    0
