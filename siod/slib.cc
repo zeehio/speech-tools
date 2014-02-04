@@ -1176,7 +1176,7 @@ void gc_mark(LISP ptr)
     default:
       p = get_user_type_hooks(TYPE(ptr));
       if (p->gc_mark)
-	ptr = (*p->gc_mark)(ptr);}}
+	(*p->gc_mark)(ptr);}}
 
 static void mark_protected_registers(void)
 {struct gc_protected *reg;
