@@ -424,8 +424,10 @@ int relation_divide(EST_RelationList &slist, EST_Relation &lab,
     for (k = keylab.head(); k ; k = k->next())
 	if (k->F("end") > lab.head()->F("end"))
 	    break;
-
-    filename = (EST_String)k->f("file");
+    if (k != NULL)
+       filename = (EST_String)k->f("file");
+    else
+       filename = "no_name";
     a.f.set("name", (filename + ext));
     kstart = 0.0;
     
