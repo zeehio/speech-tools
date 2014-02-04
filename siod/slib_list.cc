@@ -137,6 +137,7 @@ LISP equal(LISP a,LISP b)
  loop:
  INTERRUPT_CHECK();
  if EQ(a,b) return(truth);
+ if (a==NULL || b == NULL) return(NIL);
  atype = TYPE(a);
  if (atype != TYPE(b)) return(NIL);
  switch(atype)
