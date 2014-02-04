@@ -40,6 +40,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <sys/types.h>
 #include "EST_unix.h"
 #include <string.h>
@@ -70,8 +71,15 @@ void wfree(void *p)
 }
 char *wstrdup(const char *s)
 {
-    char *t = cst_alloc(char,strlen(s)+1);
-    strcpy(t,s);
+    size_t strsize=strlen(s);
+    if (strsize < SIZE_MAX) {
+      strsize++;
+    } else {
+      fprintf(stderr,"String is not null terminated! (too long)\n");
+      exit(-1);
+    }
+    char *t = cst_alloc(char, strsize);
+    memcpy(t, s, strsize);
     return t;
 }
 
@@ -138,8 +146,15 @@ void *safe_wcalloc(int size)
 
 char *wstrdup(const char *s)
 {
-    char *t = walloc(char,strlen(s)+1);
-    strcpy(t,s);
+    size_t strsize=strlen(s);
+    if (strsize < SIZE_MAX) {
+      strsize++; /* We can finish copy with a zero */
+    } else {
+      fprintf(stderr,"String is not null terminated! (too long)\n");
+      exit(-1);
+    }
+    char *t = walloc(char, strsize);
+    memcpy(t, s, strsize);
     return t;
 }
 
