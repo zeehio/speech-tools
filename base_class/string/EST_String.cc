@@ -281,7 +281,8 @@ int EST_String::gsub_internal (const char *os, int olength, const char *s, int l
   int num_substitutions=0;
 #endif
 
-  if (s && os && size > 0 && *os != '\0')
+  from = (const char *)memory;
+  if (s && os && size > 0 && *os != '\0' && from)
     {
       {
 	int start, end;
@@ -301,8 +302,6 @@ int EST_String::gsub_internal (const char *os, int olength, const char *s, int l
       }
 
       // dubious dealings with the inside of the string
-
-      from = (const char *)memory;
 
       if (change > 0)
 	{
@@ -364,7 +363,7 @@ int EST_String::gsub_internal (EST_Regex &ex, const char *s, int length)
   int pos=0, n=0, change=0;
   EST_ChunkPtr new_memory;
 
-  const char *from;
+  const char *from = (const char*)memory;
   char *to;
   
 #if __GSUB_REENTRANT__
@@ -375,7 +374,7 @@ int EST_String::gsub_internal (EST_Regex &ex, const char *s, int length)
 
   // printf("match '%s'\n", (const char *)(*this));
 
-  if (size > 0 && ((const char*)memory) != NULL)
+  if (size > 0 && from != NULL)
     {
       {
 	int start, starts[EST_Regex_max_subexpressions], ends[EST_Regex_max_subexpressions], mlen;
@@ -406,8 +405,6 @@ int EST_String::gsub_internal (EST_Regex &ex, const char *s, int length)
       }
 
       // dubious dealings with the inside of the string
-
-      from = (const char *)memory;
 
       if (change > 0)
 	{
@@ -754,14 +751,19 @@ EST_String operator * (const EST_String &s, int n)
   int j;
   int l = s.length();
   int sz = n * l;
-
+  char *dest;
+  const char *src;
   EST_String it(NULL, 0, sz);
-  
+  src = (const char *)s;
+  dest = (char*)it;
+  if (src== NULL || dest == NULL) return "";
+
   /* If s is an empty string, then return an empty string */
   if (l <= 0) return it;
   
   for(j=0; j<n; j++)
-    strncpy(((char *)it)+j*l, (const char *)s, l);
+    memcpy(dest+j*l, src, l);
+  dest[n*l]='\0';
 
   return it;
 }
