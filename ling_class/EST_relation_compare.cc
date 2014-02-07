@@ -209,7 +209,7 @@ float label_distance2(EST_Item &ref, EST_Item &test)
     return (s + e) / duration(&ref);
 }
 
-int lowest_pos(EST_FMatrix &m, int j)
+int lowest_pos(const EST_FMatrix &m, int j)
 {
     float val = 1000.0;
     int i, pos=0;
@@ -335,7 +335,7 @@ int major_matrix_deletions(EST_FMatrix &m, EST_Relation &ref_lab)
     return (m.num_columns() - n);
 }
 
-int lowest_pos(float *m, int n)
+int lowest_pos(float const * const m, int n)
 {
     float val = 1000.0;
     int i, pos=0;
@@ -448,7 +448,7 @@ and deletions are then calculated.  */
 EST_FMatrix matrix_compare(EST_Relation &reflab, EST_Relation &testlab, int method,
 		       float t, int v)
 {
-    int i, j, pos;
+    int i, j;
     int num_ref, num_test;
     EST_Item *r_ptr, *t_ptr;
     EST_String fns;
@@ -495,7 +495,7 @@ EST_FMatrix matrix_compare(EST_Relation &reflab, EST_Relation &testlab, int meth
     minimise_matrix_by_column(m);
     minimise_matrix_by_row(m);
     matrix_ceiling(m, t);
-
+    /* This loop had the r_ptr->set_field_name already commented, so it is useless:
     // for each ref label, find closest matching test label.
     for (j = 0, r_ptr = reflab.head(); r_ptr != 0; r_ptr = r_ptr->next())
     {
@@ -506,7 +506,7 @@ EST_FMatrix matrix_compare(EST_Relation &reflab, EST_Relation &testlab, int meth
 //	    r_ptr->set_field_names(r_ptr->fields() +ftoString(m(pos, j)));
 	    ++j;
 	}
-    }
+    }*/
     return m;
 }
 
