@@ -1426,7 +1426,7 @@ Lattice::expand()
     }
 
     // need to make sure ENTER node has no arcs in - if so add a dummy ENTER node
-
+    /*
     //Node *enter_node = nodes(nodes.head());
     bool flag=false;
     for(n_ptr=nodes.head();n_ptr!=NULL;n_ptr=n_ptr->next()){
@@ -1436,7 +1436,7 @@ Lattice::expand()
 	}
     }
 
-/*
+
     if(flag){
 	cerr << " fixing ENTER node" << endl;
 	new_node = new Node;
