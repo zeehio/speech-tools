@@ -66,7 +66,7 @@ void add_link(EST_Item *from, EST_Item *to)
     d = from->down();
     if (!d)
 	d = from->append_daughter();
-    q = d->append_daughter()->append_daughter(to);
+    d->append_daughter()->append_daughter(to);
     // Also add it to the simple list of the relation so traversal works
     // append q 
     
