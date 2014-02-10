@@ -54,7 +54,7 @@ CONFIG=configure configure.ac config.sub config.guess \
        missing install-sh mkinstalldirs
 FILES=Makefile README INSTALL $(CONFIG)
 
-LOCAL_CLEAN= Build.trace Test.trace Templates.DB
+LOCAL_CLEAN= Build.trace Test.trace Templates.DB FileList
 
 LOCAL_DISTCLEAN = config.log config.status
 
@@ -110,7 +110,8 @@ configure: configure.ac
 	autoconf
 
 documentation:
-	(cd doc; make doc)
+	$(MAKE) -C doc doc
 
 include $(TOP)/config/rules/top_level.mak
 include $(TOP)/config/rules/install.mak
+

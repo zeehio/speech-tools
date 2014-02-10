@@ -50,19 +50,19 @@ IMAGES = cstr.gif edcrest.gif est.jpg
 DOXYGEN_DOCUMENTATION = bibliography.bib estbaseclass.dox estexec.md \
         estgram.md estintro.md estlicence.md estling.md estmanuals.md \
         estserver.md estsigpr.md estspeechclass.md esttilt.md \
-        estutil.md estwagon.md estwagon.sgml estxml.md index.md
+        estutil.md estwagon.md estxml.md index.md
 
-FILES = DoxyFile $(DOXYGEN_DOCUMENTATION) $(IMAGES)
+FILES = DoxyFile $(DOXYGEN_DOCUMENTATION) $(IMAGES) Makefile
 
 LOCAL_CLEAN = doxygen
 
 -include $(TOP)/config/common_make_rules
 
 doc:
-	(cd $(TOP_BUILDDIR)/doc/man; make all_dox)
+	$(MAKE) -C $(TOP_BUILDDIR)/doc/man man all_dox
 	$(DOXYGEN) $(TOP)/doc/DoxyFile
 
 
 doc-pdf: doc
-	(cd $(TOP)/doc/doxygen/latex; make all)
+	$(MAKE) -C $(TOP_BUILDDIR)/doc/doxygen/latex all
 

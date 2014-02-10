@@ -48,5 +48,7 @@ EPSIMAGES = relations_2.eps relations.eps tilt-f0-representation.eps \
 
 IMAGES = $(SVGIMAGES) $(EPSIMAGES)
 
+FILES = $(IMAGES) Makefile
+
 -include $(TOP)/config/common_make_rules
 

@@ -141,6 +141,7 @@ ifndef MADE_FROM_ABOVE
 endif
 ifdef FILES
 	@for i in $(FILES) ; \
+	do \
 	   echo $(DIRNAME)/$$i ; \
 	done >>$(TOP)/FileList 
 endif

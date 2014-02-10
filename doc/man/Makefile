@@ -54,7 +54,7 @@ DOXFILES = $(addsuffix _man.dox, $(PROGRAMS))
 XSLT_FILES = convert-options.xslt convert-synopsis.xslt
 SCRIPTS = create_dox.sh
 
-FILES = $(BODYFILES) $(XSLT_FILES) $(SCRIPTS)
+FILES = $(BODYFILES) $(XSLT_FILES) $(SCRIPTS) Makefile
 
 LOCAL_CLEAN = $(DOXFILES)
 
