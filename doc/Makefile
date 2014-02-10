@@ -65,3 +65,4 @@ doc:
 
 doc-pdf: doc
 	(cd $(TOP)/doc/doxygen/latex; make all)
+

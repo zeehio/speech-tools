@@ -82,6 +82,16 @@ ifdef EXTRA_LIB_BUILD_DIRS
 	done
 endif
 
+distclean: clean $(LOCAL_DISTCLEAN_RULES)
+ifdef ALL_DIRS
+	@ for i in $(ALL_DIRS) ; \
+	do \
+	   echo "distclean in $(DIRNAME)/$$i" ;\
+	   $(MAKE) --no-print-directory -C $$i NO_DEPEND=1 distclean ; \
+	done
+endif
+	$(RM) -fr $(LOCAL_DISTCLEAN)
+
 ###########################################################################
 ## strip executables
 
@@ -131,7 +141,6 @@ ifndef MADE_FROM_ABOVE
 endif
 ifdef FILES
 	@for i in $(FILES) ; \
-	do  \
 	   echo $(DIRNAME)/$$i ; \
 	done >>$(TOP)/FileList 
 endif
