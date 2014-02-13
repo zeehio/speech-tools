@@ -107,12 +107,10 @@ class EST_Relation
     /** Clear the relation of items */
     void clear();
 
-    /** Return the <link linkend="est-utterance">EST_Utterance</link>
-	to which this relation belongs */
+    /** Return the EST_Utterance to which this relation belongs */
     EST_Utterance *utt(void) { return p_utt; }
 
-    /** Set the <link linkend="est-utterance">EST_Utterance</link>
-	to which this relation belongs */
+    /** Set the EST_Utterance to which this relation belongs */
     void set_utt(EST_Utterance *u) { p_utt = u; }
 
     /** Return the name of the relation */
