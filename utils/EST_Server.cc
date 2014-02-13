@@ -248,8 +248,11 @@ void EST_Server::initClient(const EST_ServiceTable::Entry &entry, ostream *trace
 
       serverhost = gethostbyname(entry.hostname);
 
-      if (serverhost == (struct hostent *)0)
-	EST_error("lookup of host '%s' failed", (const char *)entry.hostname);
+      if (serverhost == NULL) {
+	      EST_error("lookup of host '%s' failed", (const char *)entry.hostname);
+        return; /* An evil mind may assign a function to EST_error_func
+                   that returns. */
+      }
 		  
       memmove(&(serv_addr->sin_addr),serverhost->h_addr, serverhost->h_length);
     }
