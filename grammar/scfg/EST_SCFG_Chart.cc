@@ -292,7 +292,7 @@ LISP EST_SCFG_Chart::find_parse()
 
     top = edges[0][n_vertices-1][grammar->distinguished_symbol()];
 
-    if (top == 0)
+    if (top == NULL)
 	return NIL;   // no parse
     else
 	return print_edge(0,n_vertices-1,grammar->distinguished_symbol(),top);
@@ -332,7 +332,7 @@ void EST_SCFG_Chart::extract_parse(EST_Relation *syn,
 
     top = edges[0][n_vertices-1][grammar->distinguished_symbol()];
 
-    if (top == 0)
+    if (top == NULL)
 	return;   // failed to parse so no parse tree
     else
     {
@@ -387,6 +387,10 @@ void EST_SCFG_Chart::extract_edge(int start, int end, int p,
 	s->append_daughter((*word));
 	s->set_name(grammar->nonterminal(p));	
 	s->set("prob",(float)e->prob());
+    if (*word ==NULL || **word == NULL) {
+	    cerr << "SCFG_Chart: extract_edge, null word. Should not happen." << endl;
+        return; /* error */
+    }
 	*word = (*word)->next();  // increment along "word" stream
 	return;
     }
