@@ -246,16 +246,24 @@ void add_fea_i(esps_hdr hdr,const char *name, int pos, int d)
     t->type = 13;
     t->clength = strlen(name);
     t->name = wstrdup(name);
+    if (pos < 0) {
+        fprintf(stderr, "%s", "ESPS: add_fea_i: pos should not be < 0\n");
+        return;
+    }
+    if (pos == INT_MAX) {
+        fprintf(stderr, "%s", "ESPS: add_fea_i: pos too large\n");
+        pos -=1;
+    }
     if (t->count < pos+1)
     {
-	int *ival = t->v.ival;
-	t->v.ival = walloc(int,pos+1);
-	for (i=0; i<t->count; i++)
+	  int *ival = t->v.ival;
+	  t->v.ival = walloc(int,pos+1);
+	  for (i=0; i<t->count; i++)
 	    t->v.ival[i] = ival[i];
-	for (; i < pos+1; i++)
+	  for (; i < pos+1; i++)
 	    t->v.ival[i] = 0;
-	wfree(ival);
-	t->count = pos+1;
+	  wfree(ival);
+	  t->count = pos+1;
     }
     t->dtype = ESPS_INT;
     t->v.ival[pos] = d;
