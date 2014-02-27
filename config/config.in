@@ -108,6 +108,10 @@ TERMCAPLIB = @TERMCAPLIB@
 ## Scheme In One Defun interpreter and data structures
 INCLUDE_MODULES += SIOD
 
+## Enable Python Support in SIOD Interpreter.
+## Enables the (call_python module func arg) command.
+#INCLUDE_MODULES += SIOD_PYTHON
+
 ## The following subsystems depend on the Scheme subsystem and so
 ## must be removed if Scheme is not included
 

@@ -49,16 +49,20 @@
 TOP=..
 DIRNAME=siod
 EDITLINEH = siodeditline.h editline.h el_unix.h
-H = siodp.h io.h EST_SiodServer.h $(EDITLINEH)
+OLD_H = EST_SiodServer.h 
+H = siodp.h io.h slib_python.h $(EDITLINEH)
 TSRCS = siod.cc siod_est.cc
 ELSRCS = siodeditline.c el_complete.c editline.c el_sys_unix.c
 CSRCS =  siodeditline.c 
+OLD_CXXSRCS =  siod_server.cc EST_SiodServer.cc siod_fringe.cc
 CXXSRCS = slib.cc \
           slib_core.cc slib_doc.cc slib_file.cc slib_format.cc \
           slib_list.cc slib_math.cc slib_sys.cc slib_server.cc \
-          slib_str.cc slib_xtr.cc slib_repl.cc siod_fringe.cc siod_server.cc \
-          io.cc trace.cc EST_SiodServer.cc $(TSRCS)
+          slib_str.cc slib_xtr.cc slib_repl.cc \
+          slib_python.cc \
+          io.cc trace.cc $(TSRCS)
 SRCS = $(CSRCS) $(CXXSRCS)
+
 OBJS = $(CXXSRCS:.cc=.o) $(CSRCS:.c=.o) 
 
 FILES=Makefile siod.mak el_sys_win32.c $(CXXSRCS) $(ELSRCS) $(H)
@@ -70,4 +74,8 @@ include $(TOP)/config/common_make_rules
 DEFINES  += $(IO_DEFINES)
 INCLUDES += $(IO_INCLUDES)
 
+ifeq (SIOD_PYTHON, $(findstring SIOD_PYTHON, $(INCLUDE_MODULES)))
+	MODULE_INCLUDES += $(shell python3-config --includes)
+	MODULE_DEFINES += -DEST_SIOD_ENABLE_PYTHON
+endif
 

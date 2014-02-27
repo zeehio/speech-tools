@@ -39,10 +39,12 @@ DIRNAME=utils
 LOCAL_DEFAULT_LIBRARY = estbase
 
 H = 
-TSRCS = est_file.cc  EST_ServiceTable.cc
+OLD_TSRCS =  EST_ServiceTable.cc
+TSRCS = est_file.cc 
 CSRCS = EST_cutils.c EST_error.c walloc.c system_specific_unix.c 
+OLD_CPPSRCS = EST_Server.cc EST_FringeServer.cc 
 CPPSRCS = cmd_line.cc util_io.cc filetrans.cc cmd_line_aux.cc  \
-          EST_swapping.cc EST_Server.cc EST_FringeServer.cc $(TSRCS)
+          EST_swapping.cc $(TSRCS)
 
 SRCS = $(CPPSRCS) $(CSRCS)
 OBJS = $(CPPSRCS:.cc=.o) $(CSRCS:.c=.o)

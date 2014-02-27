@@ -42,6 +42,7 @@ ALL_DIRS = # main_development
 BUILD_DIRS = 
 H = 
 TSRCS =	 
+OLD_BASESRCS = fringe_client_main.cc 
 BASESRCS = ch_lab_main.cc ch_track_main.cc ch_wave_main.cc \
            na_play_main.cc na_record_main.cc \
            sigfilter_main.cc sig2fv_main.cc spectgen_main.cc \
@@ -49,7 +50,7 @@ BASESRCS = ch_lab_main.cc ch_track_main.cc ch_wave_main.cc \
            ngram_test_main.cc ngram_build_main.cc \
 	   tilt_synthesis_main.cc tilt_analysis_main.cc \
 	   viterbi_main.cc dp_main.cc bcat_main.cc ch_utt_main.cc \
-	   fringe_client_main.cc design_filter_main.cc align_main.cc
+	   design_filter_main.cc align_main.cc
 
 
 MAINSRCS = $(BASESRCS)
@@ -84,6 +85,10 @@ FILES= $(BASESRCS) $(EXTRASRCS) $(TSRCS) Makefile
 
 include $(TOP)/config/common_make_rules
 include $(TOP)/config/rules/bin_process.mak
+
+ifeq (SIOD_PYTHON, $(findstring SIOD_PYTHON, $(INCLUDE_MODULES)))
+	MODULE_LIBS +=$(shell python3-config --ldflags) -ldl -lutil -lm
+endif
 
 MAIN_O = $(MAIN_EXECS:%=%_main.o)
 $(MAIN_O) : %_main.o : %_main.cc

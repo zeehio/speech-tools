@@ -1,8 +1,8 @@
 /*************************************************************************/
 /*                                                                       */
-/*                Centre for Speech Technology Research                  */
-/*                     University of Edinburgh, UK                       */
-/*                      Copyright (c) 1996-1998                          */
+/*                  Language Technologies Institute                      */
+/*                     Carnegie Mellon University                        */
+/*                         Copyright (c) 2013                            */
 /*                        All Rights Reserved.                           */
 /*                                                                       */
 /*  Permission is hereby granted, free of charge, to use and distribute  */
@@ -19,10 +19,10 @@
 /*      derived from this software without specific prior written        */
 /*      permission.                                                      */
 /*                                                                       */
-/*  THE UNIVERSITY OF EDINBURGH AND THE CONTRIBUTORS TO THIS WORK        */
+/*  CARNEGIE MELLON UNIVERSITY AND THE CONTRIBUTORS TO THIS WORK         */
 /*  DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING      */
 /*  ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT   */
-/*  SHALL THE UNIVERSITY OF EDINBURGH NOR THE CONTRIBUTORS BE LIABLE     */
+/*  SHALL CARNEGIE MELLON UNIVERSITY NOR THE CONTRIBUTORS BE LIABLE      */
 /*  FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    */
 /*  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN   */
 /*  AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,          */
@@ -30,42 +30,22 @@
 /*  THIS SOFTWARE.                                                       */
 /*                                                                       */
 /*************************************************************************/
-/*                     Author :  Alan W Black                            */
-/*                     Date   :  February 1999                           */
-/*-----------------------------------------------------------------------*/
-/*                                                                       */
-/* Siod additions specific to Speech Tools                               */
-/*                                                                       */
-/*=======================================================================*/
-#ifndef __SIOD_EST_H__
-#define __SIOD_EST_H__
+/*             Author:  Alok Parlikar (aup@cs.cmu.edu)                   */
+/*               Date:  April 2013                                       */
+/*************************************************************************/
+/*
+  Headers for Python support in SIOD
+*/
+#ifndef SIOD_SLIB_PYTHON_H_
+#define SIOD_SLIB_PYTHON_H_
 
-void siod_est_init();
-void siod_fringe_init();
+#include "siod.h"
 
-class EST_Val &val(LISP x);
-int val_p(LISP x);
-LISP siod(const class EST_Val v);
+#ifdef EST_SIOD_ENABLE_PYTHON
+void init_subrs_python();
+void python_tidy_up();
 
-SIOD_REGISTER_CLASS_DCLS(wave,EST_Wave)
-SIOD_REGISTER_CLASS_DCLS(track,EST_Track)
-SIOD_REGISTER_CLASS_DCLS(feats,EST_Features)
-SIOD_REGISTER_CLASS_DCLS(utterance,EST_Utterance)
-SIOD_REGISTER_CLASS_DCLS(item,EST_Item)
-/* SIOD_REGISTER_CLASS_DCLS(scheme,obj) */ /* removed for clang -- 14/10/13 */
+int pyobject_p(LISP x);
+#endif  // EST_SIOD_ENABLE_PYTHON
 
-#define get_c_utt(x) (utterance(x))
-#define get_c_item(x) (item(x))
-
-LISP lisp_val(const EST_Val &pv);
-EST_Val val_lisp(LISP v);
-
-LISP features_to_lisp(EST_Features &f);
-void lisp_to_features(LISP lf,EST_Features &f);
-
-LISP kvlss_to_lisp(const EST_TKVL<EST_String, EST_String> &kvl);
-void lisp_to_kvlss(LISP l, EST_TKVL<EST_String, EST_String> &kvl);
-
-EST_Features &Param();
-
-#endif
+#endif  // SIOD_SLIB_PYTHON_H_
