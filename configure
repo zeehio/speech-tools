@@ -628,6 +628,8 @@ LIBOBJS
 DEBUG
 PROFILE
 SHARED
+WARN
+OPTIMISE
 PULSE_AUDIO
 NAS_AUDIO
 LINUXAUDIO
@@ -710,6 +712,8 @@ enable_option_checking
 with_compiler
 with_nas_audio
 with_pulseaudio
+enable_optimise
+enable_warn
 enable_shared
 enable_profile
 enable_debug
@@ -1340,7 +1344,11 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-   --enable-shared  Enable building shared libraries
+   --enable-optimization=NUM Choose optimization level from 0 to 4. Default 3. Level 4 disables debug.
+
+   --disable-warn  Disable warning flags
+
+   --enable-shared=2  Enable building shared libraries
 
    --enable-profile  Enable a profiled build
 
@@ -4511,6 +4519,44 @@ if test "${with_pulseaudio+set}" = set; then :
   withval=$with_pulseaudio; PULSE_AUDIO=PULSE_AUDIO
 else
   PULSE_AUDIO=
+fi
+
+
+
+# Check whether --enable-optimise was given.
+if test "${enable_optimise+set}" = set; then :
+  enableval=$enable_optimise;  if   test "x$enableval" = "x0"; then
+       OPTIMISE=0
+   elif test "x$enableval" = "x1"; then
+       OPTIMISE=1
+   elif test "x$enableval" = "x2"; then
+       OPTIMISE=2
+   elif test "x$enableval" = "x3"; then
+       OPTIMISE=3
+   elif test "x$enableval" = "x4"; then
+       OPTIMISE=4
+   else
+       OPTIMISE=3
+   fi
+
+else
+   OPTIMISE=3
+fi
+
+
+
+
+# Check whether --enable-warn was given.
+if test "${enable_warn+set}" = set; then :
+  enableval=$enable_warn;
+   if test "x$enableval" = "xno"; then
+       WARN=0
+   else
+       WARN=1
+   fi
+
+else
+   WARN=1
 fi
 
 

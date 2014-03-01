@@ -65,7 +65,7 @@ AC_SUBST(COMPILER)
 AC_CHECK_LIB(ncurses, tputs, [TERMCAPLIB=-lncurses], [TERMCAPLIB=-lcurses])
 dnl if test "$TERMCAPLIB" != "-ltermcap"; then
 dnl    AC_CHECK_LIB(termcap, tputs, [TERMCAPLIB=-ltermcap], [TERMCAPLIB=-lncurses])
-dnl 
+dnl
 AC_SUBST(TERMCAPLIB)
 
 LINUXAUDIO=none
@@ -89,8 +89,36 @@ AC_ARG_WITH([pulseaudio],
             [PULSE_AUDIO=])
 AC_SUBST(PULSE_AUDIO)
 
+AC_ARG_ENABLE([optimise],[ AS_HELP_STRING([--enable-optimization=NUM Choose optimization level from 0 to 4. Default 3. Level 4 disables debug. ])],
+ [ if   test "x$enableval" = "x0"; then
+       OPTIMISE=0
+   elif test "x$enableval" = "x1"; then
+       OPTIMISE=1
+   elif test "x$enableval" = "x2"; then
+       OPTIMISE=2
+   elif test "x$enableval" = "x3"; then
+       OPTIMISE=3
+   elif test "x$enableval" = "x4"; then
+       OPTIMISE=4
+   else
+       OPTIMISE=3
+   fi
+  ], [ OPTIMISE=3 ])
+AC_SUBST(OPTIMISE)
 
-AC_ARG_ENABLE([shared],[ AS_HELP_STRING([--enable-shared  Enable building shared libraries])],
+
+AC_ARG_ENABLE([warn],[ AS_HELP_STRING([--disable-warn  Disable warning flags ])],
+ [
+   if test "x$enableval" = "xno"; then
+       WARN=0
+   else
+       WARN=1
+   fi
+ ], [ WARN=1 ])
+AC_SUBST(WARN)
+
+
+AC_ARG_ENABLE([shared],[ AS_HELP_STRING([--enable-shared=2  Enable building shared libraries])],
  [ if   test "x$enableval" = "x0"; then
        SHARED=0
    elif test "x$enableval" = "x1"; then

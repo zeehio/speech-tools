@@ -64,9 +64,9 @@ CONFIGURATION =
 
 # enable with OPTIMISE=3 (or any other optimization level)
 # OPTIMISE=4 will turn off DEBUG
-OPTIMISE=3
+OPTIMISE=@OPTIMISE@
 # enable with WARN=1       
-WARN=0
+WARN=@WARN@
 # enable with VERBOSE=1 
 VERBOSE=0
 # enable with DEBUG=1
