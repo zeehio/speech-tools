@@ -1,3 +1,16 @@
+# Edinburgh speech tools library
+
+This is a patched version of the speech tools library.
+It is published hoping that upstream will merge most of the fixes.
+See the commits to get a grasp of the changes.
+
+[![Build Status](https://travis-ci.org/zeehio/speech-tools.png?branch=master)](https://travis-ci.org/zeehio/speech-tools)
+
+[![Coverage Status](https://coveralls.io/repos/zeehio/speech-tools/badge.png?branch=master)](https://coveralls.io/r/zeehio/speech-tools?branch=master)
+
+
+# Original README
+
 		EDINBURGH SPEECH TOOLS LIBRARY
                      VERSION 2.3 July 2013
 
