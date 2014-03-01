@@ -41,7 +41,7 @@ SYSTEM_TYPE=$(MACHINETYPE)_$(OSTYPE)$(OSREV)
 ## The definitions are in compilers/$(COMPILER).mak
 ## Examples: gcc suncc egcs gcc28 from_autoconf
 
-COMPILER=@COMPILERTYPE@
+COMPILER=@COMPILER@
 
 ###########################################################################
 ## Java system to use if you include the Java interface.
@@ -72,7 +72,7 @@ VERBOSE=0
 # enable with DEBUG=1
 DEBUG=@DEBUG@
 # enable with PROFILE=gprof
-PROFILE=0
+PROFILE=@PROFILE@
 # enable with SHARED=2
 SHARED=@SHARED@
 

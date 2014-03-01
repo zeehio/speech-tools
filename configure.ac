@@ -49,8 +49,17 @@ AC_CHECK_TOOL(AR, ar)
 AC_C_BIGENDIAN
 
 dnl Set compiler type in order to force honoring of CFLAGS etc
-COMPILERTYPE=from_autoconf
-AC_SUBST(COMPILERTYPE)
+AC_ARG_WITH([compiler],
+            [AS_HELP_STRING([--with-compiler],
+              [select a compiler])],
+            [ if   test "x$withval" = "x"; then
+                COMPILER=from_autoconf
+              else
+                COMPILER=$withval
+              fi
+            ],
+            [COMPILER=from_autoconf])
+AC_SUBST(COMPILER)
 
 # Checks for libraries.
 AC_CHECK_LIB(ncurses, tputs, [TERMCAPLIB=-lncurses], [TERMCAPLIB=-lcurses])
@@ -93,6 +102,17 @@ AC_ARG_ENABLE([shared],[ AS_HELP_STRING([--enable-shared  Enable building shared
    fi
  ], [ SHARED=0 ])
 AC_SUBST(SHARED)
+
+AC_ARG_ENABLE([profile],[ AS_HELP_STRING([--enable-profile  Enable a profiled build])],
+ [ if   test "x$enableval" = "xgprof"; then
+       PROFILE=gprof
+   elif test "x$enableval" = "xgcov"; then
+       PROFILE=gcov
+   else
+       PROFILE=gprof
+   fi
+ ], [ PROFILE= ])
+AC_SUBST(PROFILE)
 
 AC_ARG_ENABLE([debug],[ AS_HELP_STRING([--enable-debug  Produce debugging information])],
  [ DEBUG=1 ], [ DEBUG=0 ])

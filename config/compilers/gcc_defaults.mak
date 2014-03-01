@@ -74,6 +74,10 @@ PROFILE_gprof_CCFLAGS   = -pg
 PROFILE_gprof_CXXFLAGS  = -pg
 PROFILE_gprof_LINKFLAGS = -pg
 
+PROFILE_gcov_CCFLAGS   = --coverage
+PROFILE_gcov_CXXFLAGS  = --coverage
+PROFILE_gcov_LINKFLAGS = -lgcov --coverage
+
 SHARED_CCFLAGS  = -fPIC 
 SHARED_CXXFLAGS  = -fPIC 
 SHARED_LINKFLAGS = 

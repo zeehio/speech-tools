@@ -626,12 +626,13 @@ ac_subst_vars='LTLIBOBJS
 POW_LIB
 LIBOBJS
 DEBUG
+PROFILE
 SHARED
 PULSE_AUDIO
 NAS_AUDIO
 LINUXAUDIO
 TERMCAPLIB
-COMPILERTYPE
+COMPILER
 EGREP
 GREP
 CPP
@@ -706,9 +707,11 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+with_compiler
 with_nas_audio
 with_pulseaudio
 enable_shared
+enable_profile
 enable_debug
 '
       ac_precious_vars='build_alias
@@ -1339,12 +1342,15 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
    --enable-shared  Enable building shared libraries
 
+   --enable-profile  Enable a profiled build
+
    --enable-debug  Produce debugging information
 
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-compiler         select a compiler
   --with-nas_audio        enable NCD's network audio system
   --with-pulseaudio       enable PulseAudio sound server
 
@@ -4408,7 +4414,19 @@ $as_echo "#define AC_APPLE_UNIVERSAL_BUILD 1" >>confdefs.h
  esac
 
 
-COMPILERTYPE=from_autoconf
+
+# Check whether --with-compiler was given.
+if test "${with_compiler+set}" = set; then :
+  withval=$with_compiler;  if   test "x$withval" = "x"; then
+                COMPILER=from_autoconf
+              else
+                COMPILER=$withval
+              fi
+
+else
+  COMPILER=from_autoconf
+fi
+
 
 
 # Checks for libraries.
@@ -4512,6 +4530,22 @@ if test "${enable_shared+set}" = set; then :
 
 else
    SHARED=0
+fi
+
+
+
+# Check whether --enable-profile was given.
+if test "${enable_profile+set}" = set; then :
+  enableval=$enable_profile;  if   test "x$enableval" = "xgprof"; then
+       PROFILE=gprof
+   elif test "x$enableval" = "xgcov"; then
+       PROFILE=gcov
+   else
+       PROFILE=gprof
+   fi
+
+else
+   PROFILE=
 fi
 
 

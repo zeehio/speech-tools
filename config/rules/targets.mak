@@ -66,7 +66,10 @@ ${SUBDIRECTORIES} dummy_dir_name: FORCE
 ## Clean up junk
 
 clean:
-	$(RM) -fr $(OBJS) $(JAVA_CLASSES_CLASS) $(ALL_EXECS) $(ALL_EXECS:%=%.mak) $(ALL_LIBS) $(LOCAL_CLEAN) make.depend make.include .buildlib* *~
+	$(RM) -fr $(OBJS) $(JAVA_CLASSES_CLASS) $(ALL_EXECS) \
+	          $(ALL_EXECS:%=%.mak) $(ALL_LIBS) $(LOCAL_CLEAN) \
+	          make.depend make.include .buildlib* *~ *.gcda \
+	          *.gcov *.gcno
 ifdef ALL_DIRS
 	@ for i in $(ALL_DIRS) ; \
 	do \
