@@ -1,4 +1,6 @@
 *.o
+*.gcno
+*.gcda
 make.depend
 .buildlib_estbase
 .buildlib_estools
