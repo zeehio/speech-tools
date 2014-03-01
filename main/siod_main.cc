@@ -48,8 +48,6 @@ using namespace std;
 static void siod_lisp_vars(void);
 static void siod_load_default_files(void);
 
-void siod_server_init(void);
-
 int main(int argc, char **argv)
 {
     EST_Option al;
@@ -106,8 +104,8 @@ int main(int argc, char **argv)
 
     siod_init(heap_size);
     siod_est_init();
-    siod_server_init();
-    siod_fringe_init();
+    /*    siod_server_init();
+          siod_fringe_init(); */
 
     siod_prog_name = "siod";
 

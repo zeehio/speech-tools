@@ -51,8 +51,8 @@ template <> EST_FMatrix *EST_TVector<EST_FMatrix>::error_return = &error_return_
 
 template class EST_TVector<EST_FMatrix>;
 
-
 #endif
+
 
 int operator !=(const EST_FMatrix &fm1, 
 		const EST_FMatrix &fm2)

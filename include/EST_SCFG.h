@@ -88,6 +88,8 @@ class EST_bracketed_string {
     ///
     int operator !=(const EST_bracketed_string &a) const 
        { return (!(this == &a)); }
+    int operator ==(const EST_bracketed_string &a) const 
+       { return ((this == &a)); }
     ///
     friend ostream& operator << (ostream &s, const EST_bracketed_string &a)
        { (void)a; s << "[a bracketed string]" << std::endl; return s; }
@@ -242,7 +244,7 @@ class EST_SCFG {
 
 /** \class EST_SCFG_traintest
     \brief A class used to train (and test) SCFGs is an extension of 
-    \ref EST_SCFG .
+    \ref EST_SCFG.
 
     This offers an implementation of Pereira and Schabes ``Inside-Outside
     reestimation from partially bracket corpora.''  ACL 1992.

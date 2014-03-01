@@ -71,7 +71,7 @@
   *  @endcode
   * 
   * @author Richard Caley <rjc@cstr.ed.ac.uk>
-  * @version $Id: EST_TIterator.h,v 1.6 2004/05/04 00:00:16 awb Exp $ 
+  * @version $Id: EST_TIterator.h,v 1.7 2013/04/13 14:17:11 awb Exp $ 
   */
 
 template <class Container, class IPointer, class Entry> 

@@ -48,6 +48,7 @@ EST_THash<EST_String, EST_FeatureFunctionPackage::Entry>::Dummy_Key = "DUMMY";
 template <> EST_FeatureFunctionPackage::Entry
 EST_THash<EST_String, EST_FeatureFunctionPackage::Entry>::Dummy_Value = Dummy_Entry;
 
+
 ostream &operator << (ostream &s,
 		 EST_FeatureFunctionPackage::Entry &e)
 {
@@ -68,6 +69,7 @@ int operator == (const EST_FeatureFunctionPackage::Entry &e1,
 {
 return e1.func == e2.func;
 }
+
 
 EST_FeatureFunctionPackage::EST_FeatureFunctionPackage(const EST_String name, int n)
  : p_name(name), p_entries(n)

@@ -49,6 +49,8 @@
 #include <iostream>
 #endif
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 static inline int getpid(void)
 	{ return (int)GetCurrentProcessId(); }

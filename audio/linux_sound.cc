@@ -80,7 +80,7 @@ static char *aud_sys_name = "FreeBSD";
 #include <fcntl.h>
 int linux16_supported = TRUE;
 int freebsd16_supported = FALSE;
-static char *aud_sys_name = "Linux";
+static const char *aud_sys_name = "Linux";
 static int stereo_only = 0;
 
 // Code to block signals while sound is playing.
@@ -154,7 +154,7 @@ int play_linux_wave(EST_Wave &inwave, EST_Option &al)
     int num_samples;
     int audio,actual_fmt;
     int i,r,n;
-    char *audiodevice;
+    const char *audiodevice;
 
     if (al.present("-audiodevice"))
 	audiodevice = al.val("-audiodevice");
@@ -281,7 +281,7 @@ int record_linux_wave(EST_Wave &inwave, EST_Option &al)
     int num_samples;
     int audio=-1,actual_fmt;
     int i,r,n;
-    char *audiodevice;
+    const char *audiodevice;
 
     if (al.present("-audiodevice"))
 	audiodevice = al.val("-audiodevice");

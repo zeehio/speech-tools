@@ -36,6 +36,10 @@ Cambridge, MA 02138
 #include "siodp.h"
 #include "siodeditline.h"
 
+#ifdef EST_SIOD_ENABLE_PYTHON
+#include "slib_python.h"
+#endif
+
 extern "C" const char * repl_prompt;
 
 template <> EST_String EST_THash<EST_String, EST_Regex *>::Dummy_Key = "DUMMY";
@@ -71,11 +75,19 @@ int siod_init(int heap_size)
     init_storage(actual_heap_size);
     init_subrs();
 
+    #ifdef EST_SIOD_ENABLE_PYTHON
+    init_subrs_python();
+    #endif
+
     return 0;
 }
 
 void siod_tidy_up()
 {
+    #ifdef EST_SIOD_ENABLE_PYTHON
+    python_tidy_up();
+    #endif
+
     close_open_files();
 }
 

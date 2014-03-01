@@ -1,5 +1,5 @@
 		EDINBURGH SPEECH TOOLS LIBRARY
-                 VERSION 2.1 November 2010
+                     VERSION 2.3 July 2013
 
 Principal authors: Alan W Black, Paul Taylor, Richard Caley, 
                    Simon King, Rob Clark and Korin Richmond
@@ -25,10 +25,10 @@ basic signal processing software.
 ========================================================================
 
 
-            Edinburgh Speech Tools Library version 2.1
+            Edinburgh Speech Tools Library version 2.3
               Centre for Speech Technology Research                
                    University of Edinburgh, UK                     
-                    Copyright (c) 1994-2010
+                    Copyright (c) 1994-2013
                       All Rights Reserved.                         
                                                                    
 Permission is hereby granted, free of charge, to use and distribute  
@@ -149,6 +149,7 @@ Henry Spencer: for regex code
 The Regents of the University of California: some string comparison code
 Richard Tobin: RXP, XML parser.
 Arthur Toth: Windows server code
+Pierre Lorenzon <devel@pollock-nageoire.net> gcc-4.7 patches
 
 INSTALLATION
 ************
