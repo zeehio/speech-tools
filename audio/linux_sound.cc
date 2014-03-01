@@ -50,6 +50,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <cctype>
+#include <iostream>
 #include <sys/stat.h>
 #include "EST_cutils.h"
 #include "EST_walloc.h"
@@ -59,6 +60,8 @@
 #include "audioP.h"
 #include "EST_io_aux.h"
 #include "EST_error.h"
+
+using namespace std;
 
 #ifdef SUPPORT_FREEBSD16
 #include <sys/soundcard.h>
