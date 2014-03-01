@@ -61,7 +61,7 @@ TEST_SCRIPTS = ch_wave ch_track viterbi wagon tilt lpc
 #TEST_MODULES = string list hash pathname named_enum track_map token
 TEST_MODULES = string hash pathname \
 	track token complex list kvl \
-	handle named_enum deq ling feature
+	handle named_enum deq ling feature matrixb
 TMP_OMITTED = track_map error
 
 # These don't compile on some systems (due to compiler problems)

@@ -98,6 +98,9 @@ public:
     /// Multiply all elements of matrix by `x`.
     friend EST_DMatrix operator*(const EST_DMatrix &a, const double x);
 
+    /// Multiply all elements of matrix by `x`.
+    friend EST_DMatrix operator*(const double x, const EST_DMatrix &a);
+
     /// Multiply matrix by vector.
     friend EST_DVector operator*(const EST_DMatrix &a, const EST_DVector &v);
 

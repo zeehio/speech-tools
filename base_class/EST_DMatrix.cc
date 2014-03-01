@@ -174,6 +174,11 @@ EST_DMatrix operator-(const EST_DMatrix &a,const EST_DMatrix &b)
     return ab;
 }
 
+EST_DMatrix operator*(const double x, const EST_DMatrix &a)
+{
+    return a*x;
+}
+
 EST_DMatrix operator*(const EST_DMatrix &a, const double x)
 {
     EST_DMatrix b(a, 0);
