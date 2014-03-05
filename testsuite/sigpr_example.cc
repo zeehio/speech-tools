@@ -147,7 +147,7 @@ int main(void)
     ///@{
 
     ///@ code
-    int num_frames = 300;
+    num_frames = 300;
     fv.resize(num_frames, lpc_order + 1);
     shift = 0.01; // time interval in seconds
 

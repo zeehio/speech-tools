@@ -47,7 +47,7 @@ int main(void)
 {
     EST_DMatrix a(3,4);
     EST_DMatrix b(4,2);
-    EST_DMatrix c, c_check;
+    EST_DMatrix c;
 
     a(0,0) = 1;
     a(0,1) = 1.5;
@@ -75,12 +75,19 @@ int main(void)
 
     b(2,0) = 1.3;
     b(2,1) = 0;
+    b+=b;
+    b-=(b-2*b);
+    b*=3.0;
     cout << "Matrix A" << endl
          << a
          << "10*A" << endl
          << 10*a
          << "A*10" << endl
          << a*10
+         << "A+A" << endl
+         << a+a
+         << "A-A" << endl
+         << a-a
          << "Matrix B" << endl
          << b
          << "A*B" << endl

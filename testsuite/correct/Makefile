@@ -36,8 +36,8 @@
 TOP=../..
 DIRNAME=testsuite/correct
 
-MODULES = error ling xml handle kvl sigpr matrix complex list \
-	track_map track token deq named_enum string hash pathname \
+MODULES = ling xml handle kvl matrixb complex list \
+	track token deq named_enum string hash pathname \
 	feature
 
 SCRIPTS = ch_track ch_wave lpc wagon viterbi tilt
