@@ -151,7 +151,7 @@ STATIC void TTYput(ECHAR c);
 STATIC void TTYputs(ECHAR *p);
 STATIC void TTYshow(ECHAR c);
 STATIC void TTYstring(ECHAR *p);
-extern unsigned int TTYget();
+extern int TTYget();
 STATIC void TTYinfo();
 STATIC void print_columns(int ac, char **av);
 STATIC void reposition(int reset);
@@ -680,7 +680,7 @@ STATIC void ceol()
 
 STATIC void clear_line()
 {
-    int i;
+    size_t i;
     TTYputs(bol);
     for (i=screen_pos()/TTYwidth; i > 0; i--)
 	if (upline) TTYputs(upline);
@@ -1137,7 +1137,7 @@ STATIC STATUS insert_char(int c)
 
 STATIC STATUS meta()
 {
-    unsigned int	c;
+    int	c;
     KEYMAP		*kp;
 
     if ((c = TTYget()) == EOF)

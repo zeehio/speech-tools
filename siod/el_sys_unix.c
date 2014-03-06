@@ -130,7 +130,7 @@ void rl_ttyset(int Reset)
 }
 #endif	/* defined(HAVE_TCGETATTR) */
 
-unsigned int TTYget()
+int TTYget()
 {
     ECHAR	c;
     int s;
