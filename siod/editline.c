@@ -743,7 +743,7 @@ STATIC STATUS insert_string(ECHAR *p)
 
     return Point == End ? CSstay : CSmove;
 }
-
+
 
 STATIC ECHAR *next_hist()
 {

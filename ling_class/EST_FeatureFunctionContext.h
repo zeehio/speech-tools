@@ -81,7 +81,7 @@ protected:
 
   friend void EST_register_feature_function_package(const char *name, void (*init_fn)(EST_FeatureFunctionPackage &p));
   friend void register_featfunc(const EST_String &name, const EST_Item_featfunc func);
-  friend const EST_Item_featfunc get_featfunc(const EST_String &name,int must);
+  friend EST_Item_featfunc get_featfunc(const EST_String &name,int must);
   friend EST_String get_featname(const EST_Item_featfunc func);
 };
 

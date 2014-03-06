@@ -63,7 +63,7 @@ extern val_type val_string;
 /** @defgroup estlingclasses Linguistic classes
  * List of all linguistic classes
  */
- 
+
 /** @class EST_Val
     @ingroup estlingclasses
     The EST_Val class is a container class, used to store a single
@@ -75,14 +75,14 @@ extern val_type val_string;
 class EST_Val {
   private:
     val_type t;
-    union 
+    union
     { int ival;
-      float fval; 
+      float fval;
       EST_Contents *pval;} v;
     // * may have a string name as well as a value
     EST_String sval;
-    const int to_int() const;
-    const float to_flt() const;
+    int to_int() const;
+    float to_flt() const;
     const EST_String &to_str() const;
   public:
     /** @name Constructor and Destructor functions
@@ -90,18 +90,18 @@ class EST_Val {
 
     ///@{
     /** Default constructor */
-    EST_Val() 
+    EST_Val()
 	{t=val_unset;}
 
     /** Copy constructor for another EST_Val*/
     EST_Val(const EST_Val &val);
 
     /** Copy constructor for an int*/
-    EST_Val(const int i) 
+    EST_Val(const int i)
 	{t=val_int; v.ival=i;}
 
     /** Copy constructor for a float*/
-    EST_Val(const float f) 
+    EST_Val(const float f)
 	{t=val_float; v.fval=f;}
 
     /** Copy constructor for a double*/
@@ -128,23 +128,23 @@ class EST_Val {
     ///@{
 
     /** returns the type that the val is currently holding */
-    const val_type type(void) const 
+    val_type type(void) const
 	{return t;}
-    
+
     /** returns the value, cast as an int */
-    const int Int(void) const 
+    int Int(void) const
 	{if (t==val_int) return v.ival; return to_int();}
 
     /** returns the value, cast as an int */
-    const int I(void) const 
+    int I(void) const
 	{ return Int(); }
 
     /** returns the value, cast as a float */
-    const float Float(void) const 
+    float Float(void) const
 	{if (t==val_float) return v.fval; return to_flt();}
 
     /** returns the value, cast as a float */
-    const float F(void) const 
+    float F(void) const
 	{ return Float(); }
 
     /** returns the value, cast as a string */
@@ -234,7 +234,7 @@ class EST_Val {
 
     ///@{
 
-    /**@name Automatic casting 
+    /**@name Automatic casting
      */
     ///@{
 
