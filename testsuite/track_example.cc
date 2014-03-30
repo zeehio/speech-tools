@@ -51,7 +51,7 @@ using namespace std;
 int main(void)
 
 {
-    int i, j;
+    ssize_t i, j;
 
     /* This program is designed as an example not as something to run
        so for testing purpose it simply exists */

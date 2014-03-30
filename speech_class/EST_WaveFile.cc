@@ -749,7 +749,7 @@ EST_TValuedEnumDefinition<EST_WaveFileType, const char *, EST_WaveFile::Info> wa
 {
   { wff_none,	{ NULL }, 
     { FALSE, NULL, NULL, NULL, NULL, "unknown track file type"} },
-  { wff_nist,	{ "nist", "timit" }, 
+  { wff_nist,	{ "nist", "timit"}, 
     { TRUE, EST_WaveFile::load_nist,  EST_WaveFile::save_nist,
       EST_WaveFile::save_nist_header, EST_WaveFile::save_nist_data,
       "nist/timit" } },
@@ -769,11 +769,11 @@ EST_TValuedEnumDefinition<EST_WaveFileType, const char *, EST_WaveFile::Info> wa
     { TRUE,  EST_WaveFile::load_snd,  EST_WaveFile::save_snd,
       EST_WaveFile::save_snd_header, EST_WaveFile::save_snd_data,
       "Sun snd file" } },
-  { wff_aiff,	{ "aiff" }, 
+  { wff_aiff,	{ "aiff"}, 
     { TRUE,  EST_WaveFile::load_aiff,  EST_WaveFile::save_aiff,
       EST_WaveFile::save_aiff_header, EST_WaveFile::save_aiff_data,
       "Apple aiff file" } },
-  { wff_riff,	{ "riff", "wav" }, 
+  { wff_riff,	{ "riff", "wav"}, 
     { TRUE,  EST_WaveFile::load_riff,  EST_WaveFile::save_riff,
       EST_WaveFile::save_riff_header, EST_WaveFile::save_riff_data,
       "Microsoft wav/riff file" } },
@@ -781,15 +781,16 @@ EST_TValuedEnumDefinition<EST_WaveFileType, const char *, EST_WaveFile::Info> wa
     { FALSE,  EST_WaveFile::load_raw,  EST_WaveFile::save_raw,
       EST_WaveFile::save_raw_header, EST_WaveFile::save_raw_data,
       "Headerless File" } },
-  { wff_ulaw,	{ "ulaw", "basic" }, 
+  { wff_ulaw,	{ "ulaw", "basic"}, 
     { FALSE,  EST_WaveFile::load_ulaw,  EST_WaveFile::save_ulaw,
       EST_WaveFile::save_ulaw_header, EST_WaveFile::save_ulaw_data,
       "Headerless 8K ulaw  File" } },
-  { wff_alaw,	{ "alaw", "basic" }, 
+  { wff_alaw,	{ "alaw", "basic"}, 
     { FALSE,  EST_WaveFile::load_alaw,  EST_WaveFile::save_alaw,
       EST_WaveFile::save_alaw_header, EST_WaveFile::save_alaw_data,
       "Headerless 8K alaw  File" } },
-  { wff_none,	{NULL} }
+  { wff_none,	{ NULL }, {FALSE,  NULL,  NULL,
+      NULL, NULL, NULL} }
 };
 
 EST_TNamedEnumI<EST_WaveFileType, EST_WaveFile::Info> EST_WaveFile::map(wavefile_names);

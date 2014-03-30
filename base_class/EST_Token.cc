@@ -281,8 +281,8 @@ int EST_TokenStream::seek_end()
 	return -1;
 	break;
       case tst_file:
-	fseek(fp,0,SEEK_END);
-	p_filepos = ftell(fp);
+	EST_fseek(fp,0,SEEK_END);
+	p_filepos = EST_ftell(fp);
 	return p_filepos;
       case tst_pipe:
 	cerr << "EST_TokenStream seek on pipe not supported" << endl;
@@ -317,7 +317,7 @@ int EST_TokenStream::seek(int position)
 	break;
       case tst_file:
 	p_filepos = position;
-	return fseek(fp,position,SEEK_SET);
+	return EST_fseek(fp,position,SEEK_SET);
       case tst_pipe:
 	cerr << "EST_TokenStream seek on pipe not supported" << endl;
 	return -1;
@@ -377,7 +377,7 @@ int EST_TokenStream::fread(void *buff, int size, int nitems)
 	return 0;
 	break;
       case tst_file:
-	items_read = stdio_fread(buff,(size_t)size,(size_t)nitems,fp);
+	items_read = stdio_fread(buff,(ssize_t)size,(ssize_t)nitems,fp);
 	p_filepos += items_read*size;
 	return items_read;
       case tst_pipe:
@@ -385,7 +385,7 @@ int EST_TokenStream::fread(void *buff, int size, int nitems)
 	return 0;
 	break;
       case tst_istream:
-    is->read((char*)buff, (size_t) size*nitems);
+    is->read((char*)buff, (ssize_t) size*nitems);
 	return is->gcount()/size;
     break;
       case tst_string:

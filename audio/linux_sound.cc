@@ -731,14 +731,15 @@ int play_linux_wave(EST_Wave &inwave, EST_Option &al)
     int sample_rate;
     short *waveform;
     int num_samples;
-    const char *audiodevice;
+    /*const char *audiodevice;*/
     cst_audiodev *ad;
-
+    (void) al;
+    /*
     if (al.present("-audiodevice"))
 	audiodevice = al.val("-audiodevice");
     else
 	audiodevice = "/dev/dsp";
-
+    */
     waveform = inwave.values().memory();
     num_samples = inwave.num_samples();
     sample_rate = inwave.sample_rate();
@@ -863,6 +864,9 @@ int record_linux_wave(EST_Wave &inwave, EST_Option &al)
     }
 
     close(audio);
+#else /* if 0 */
+    (void) inwave;
+    (void) al;
 #endif /* 0 */ 
     return 0;
 }

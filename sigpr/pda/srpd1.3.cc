@@ -72,6 +72,8 @@
 #include "srpd.h"
 #include "EST_cutils.h"
 #include "EST_Wave.h"
+#include "EST_File.h"
+
 
 using namespace std;
 
@@ -565,21 +567,21 @@ int read_next_segment (FILE *voxfile, struct Srpd_Op *paras, SEGMENT_ *p_seg)
 
   if (status == BEGINNING) {
     if (padding == -1) {
-      if (fseek (voxfile, 0L, 2)) error (FILE_SEEK);
-      tracklen = ((ftell (voxfile) / sizeof (short)) - p_seg->length) /
+      if (EST_fseek (voxfile, 0L, 2)) error (FILE_SEEK);
+      tracklen = ((EST_ftell (voxfile) / sizeof (short)) - p_seg->length) /
 				 p_seg->shift + 1;
 	cout << "track len " << tracklen;
       rewind (voxfile);
       if (paras->Nmax < p_seg->length / 2) {
 	offset = (long) (p_seg->length / 2 - paras->Nmax) * sizeof (short);
-	if (fseek (voxfile, offset, 1)) error (FILE_SEEK);
+	if (EST_fseek (voxfile, offset, 1)) error (FILE_SEEK);
 	padding = 0;
       }
       else {
 	if ((paras->Nmax - p_seg->length / 2) % p_seg->shift != 0) {
 	  offset = (long) (p_seg->shift - ((paras->Nmax - p_seg->length / 2) %
 					   p_seg->shift)) * sizeof (short);
-	  if (fseek (voxfile, offset, 1)) error (FILE_SEEK);
+	  if (EST_fseek (voxfile, offset, 1)) error (FILE_SEEK);
 	}
 	padding = (paras->Nmax - p_seg->length / 2) / p_seg->shift +
 	  ((paras->Nmax - p_seg->length / 2) % p_seg->shift == 0 ? 0 : 1);
@@ -596,12 +598,12 @@ int read_next_segment (FILE *voxfile, struct Srpd_Op *paras, SEGMENT_ *p_seg)
   cout << "tl  " << tracklen << endl;
   if (status == MIDDLE_) {
     if (tracklen > 0) {
-      init_file_position = ftell (voxfile);
+      init_file_position = EST_ftell (voxfile);
       offset = (long) (p_seg->shift * sizeof (short));
       samples_read = fread ((short *) p_seg->data, sizeof (short),
 			    p_seg->size, voxfile);
       if (samples_read == p_seg->size) {
-	if (fseek (voxfile, init_file_position + offset, 0)) error (FILE_SEEK);
+	if (EST_fseek (voxfile, init_file_position + offset, 0)) error (FILE_SEEK);
 	tracklen--;
 	return (1);
       }

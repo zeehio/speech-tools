@@ -47,7 +47,7 @@
 #include "EST_TKVL.h"
 #include "EST_types.h"
 
-typedef size_t int_iter; 
+typedef ssize_t int_iter; 
 
 /** A class for managing mapping string names to integers and back again,
     mainly used for representing alphabets in n-grams and grammars etc.
@@ -81,11 +81,11 @@ public:
     bool init(const EST_StrList &vocab);
 
     /// The number of members in the discrete
-    const int length(void) const { return namevector.length(); }
+    int length(void) const { return namevector.length(); }
     /** The int assigned to the given name, if it doesn't exists p\_def\_val
         is returned (which is -1 by default)
     */
-    const int index(const EST_String &n) const { 
+    int index(const EST_String &n) const { 
 	int *i;
 	return (((i=(int*)nametrie.lookup(n)) != NULL) ? *i : p_def_val);
     };
@@ -119,7 +119,7 @@ class Discretes {
   public:
     Discretes() {max=50;next_free=0;discretes=new EST_Discrete*[max];}
     ~Discretes();
-    const int def(const EST_StrList &members);
+    int def(const EST_StrList &members);
     EST_Discrete &discrete(const int t) const {return *discretes[t-10];}
     EST_Discrete &operator [] (const int t) const {return *discretes[t-10];}
 };
@@ -282,7 +282,7 @@ public:
     void item_prob(EST_Litem *idx,EST_String &s,double &prob) const;
 
     /// Returns discrete vocabulary of distribution
-    inline const EST_Discrete *const get_discrete() const { return discrete; };
+    inline const EST_Discrete * get_discrete() const { return discrete; };
     
     /** Sets the frequency of named item, modifies `num\_samples`
          accordingly.  This is used when smoothing frequencies.

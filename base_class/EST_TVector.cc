@@ -64,7 +64,7 @@ EST_TVector<T>::EST_TVector()
 }
 
 template<class T>
-EST_TVector<T>::EST_TVector(int n)
+EST_TVector<T>::EST_TVector(ssize_t n)
 {
     default_vals();
     resize(n);
@@ -109,7 +109,7 @@ void  EST_TVector<T>::fill(const T &v)
 }
 
 template<class T>
-void EST_TVector<T>::set_memory(T *buffer, int offset, int columns, 
+void EST_TVector<T>::set_memory(T *buffer, int offset, ssize_t columns, 
 				int free_when_destroyed)
 {
   if (p_memory != NULL && !p_sub_matrix)
@@ -193,9 +193,9 @@ void EST_TVector<T>::just_resize(int new_cols, T** old_vals)
 
 
 template<class T>
-void EST_TVector<T>::resize(int new_cols, int set)
+void EST_TVector<T>::resize(ssize_t new_cols, int set)
 {
-  int i;
+  ssize_t i;
   T * old_vals = p_memory;
   int old_cols = num_columns();
   int old_offset = p_offset;
@@ -237,7 +237,7 @@ EST_TVector<T> &EST_TVector<T>::operator=(const EST_TVector<T> &in)
 }
 
 template<class T>
-T &EST_TVector<T>::a_check(int n)
+T &EST_TVector<T>::a_check(ssize_t n)
 {
   if (!EST_vector_bounds_check(n, num_columns(), FALSE))
     return *error_return;
@@ -246,7 +246,7 @@ T &EST_TVector<T>::a_check(int n)
 }
 
 template<class T>
-const T &EST_TVector<T>::a_check(int n) const
+const T &EST_TVector<T>::a_check(ssize_t n) const
 {
   return ((EST_TVector<T> *)this)->a(n);
 }

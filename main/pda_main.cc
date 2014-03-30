@@ -201,7 +201,7 @@ static int save_pm(EST_String filename, EST_Track fz)
 
     position = 0.0;
     int gap = 0;
-    for (int i = 0; i < fz.num_frames(); ++i)
+    for (ssize_t i = 0; i < fz.num_frames(); ++i)
     {
 	if (fz.val(i))
 	{

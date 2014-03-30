@@ -41,6 +41,7 @@
 #ifndef __DMatrix_H__
 #define __DMatrix_H__
 
+#include <cstddef>
 #include "EST_TSimpleMatrix.h"
 #include "EST_TSimpleVector.h"
 #include "EST_FMatrix.h"
@@ -81,7 +82,7 @@ public:
     EST_read_status est_load(const EST_String &filename);
 
     /// Copy 2-d array `x` of size `rows x cols` into matrix.
-    void copyin(double **x, int rows, int cols);
+    void copyin(double **x, ssize_t rows, ssize_t cols);
 
     /// Add elements of 2 same sized matrices.
     EST_DMatrix &operator+=(const EST_DMatrix &a);

@@ -56,7 +56,7 @@ template class EST_TVector<EST_DMatrix>;
 int operator !=(const EST_DMatrix &fm1, 
 		const EST_DMatrix &fm2)
 {
-    int i,j;
+    ssize_t i,j;
     if(fm1.num_rows() != fm2.num_rows() ||
        fm1.num_columns() != fm2.num_columns() )
 	return FALSE;

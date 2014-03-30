@@ -94,7 +94,7 @@ EST_read_status EST_TrackFile::load_esps(const EST_String filename, EST_Track &t
     float fsize;
     char **fields;
     int num_points, num_fields, num_values;
-    int i,j;
+    ssize_t i,j;
     EST_read_status  r_val;
     short fixed;
     int first_channel=0;
@@ -160,7 +160,7 @@ EST_read_status EST_TrackFile::load_ascii(const EST_String filename, EST_Track &
     EST_TokenStream ts, tt;
     EST_StrList sl;
 
-    int i, j, n_rows, n_cols=0;
+    ssize_t i, j, n_rows, n_cols=0;
     EST_String t;
     EST_Litem *p;
     
@@ -225,7 +225,7 @@ EST_read_status EST_TrackFile::load_xgraph(const EST_String filename, EST_Track 
     EST_TokenStream ts, tt;
     EST_StrList sl;
     // const float NEARLY_ZERO = 0.001;
-    int i, j, n_rows, n_cols;
+    ssize_t i, j, n_rows, n_cols;
     EST_String t;
     EST_Litem *p;
     
@@ -281,7 +281,9 @@ EST_read_status EST_TrackFile::load_xmg(const EST_String filename, EST_Track &tr
 
     EST_TokenStream ts;
     EST_StrList sl;
-    int i, n, sr;
+    ssize_t i, n;
+    /* int sr; (unused)*/
+
     EST_String t, k, v;
     EST_Litem *p;
     
@@ -300,14 +302,15 @@ EST_read_status EST_TrackFile::load_xmg(const EST_String filename, EST_Track &tr
 
     while ((!ts.eof()) && (ts.peek().string() != "\014"))
     {
-	k = ts.get().string();
-	v = ts.get().string();
-	if (k == "Freq")
-	    sr = v.Int() * 1000;
-	else if (k == "YMin")
-	  /* tr.amin = atof(v) */;
-	else if (k == "YMax")
-	  /*tr.amax = atof(v) */;
+        k = ts.get().string();
+        v = ts.get().string();
+        /*if (k == "Freq") {
+            sr = v.Int() * 1000;
+        } else */ if (k == "YMin") {
+          /* tr.amin = atof(v) */;
+        } else if (k == "YMax") {
+          /*tr.amax = atof(v) */;
+        }
     }
 
     if (ts.eof())
@@ -391,8 +394,8 @@ EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
 {
     (void)ishift;
     (void)startt;
-    int i, j;
-    int num_frames, num_channels, num_aux_channels;
+    ssize_t i, j;
+    ssize_t num_frames, num_channels/*, num_aux_channels*/;
     EST_Features hinfo;
     EST_EstFileType t;
     EST_String v;
@@ -416,7 +419,7 @@ EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
 
     num_frames = hinfo.I("NumFrames");
     num_channels = hinfo.I("NumChannels");
-    num_aux_channels = hinfo.I("NumAuxChannels", 0);
+    /*num_aux_channels = hinfo.I("NumAuxChannels", 0);*/
     tr.resize(num_frames, num_channels);
 
     hinfo.remove("NumFrames");
@@ -595,7 +598,7 @@ EST_read_status load_snns_res(const EST_String filename, EST_Track &tr,
   
     EST_TokenStream ts, str;
     EST_StrList sl;
-    int i, j;
+    ssize_t i, j;
     EST_String t, k, v;
 
     if (ishift < NEARLY_ZERO)
@@ -619,7 +622,7 @@ EST_read_status load_snns_res(const EST_String filename, EST_Track &tr,
     ts.get_upto_eoln();		// SNNS bit
     ts.get_upto_eoln();		// Time info
     
-    int num_frames=0, num_channels=0;
+    ssize_t num_frames=0, num_channels=0;
     int teaching = 0;
     
     while (1)
@@ -682,7 +685,7 @@ EST_read_status load_snns_res(const EST_String filename, EST_Track &tr,
 EST_write_status EST_TrackFile::save_esps(const EST_String filename, EST_Track tr)
 {
     EST_write_status rc;
-    int i, j;
+    ssize_t i, j;
     float shift;
     bool include_time;
     int extra_channels=0;
@@ -747,21 +750,21 @@ EST_write_status EST_TrackFile::save_esps(const EST_String filename, EST_Track t
 
 EST_write_status EST_TrackFile::save_est_ts(FILE *fp, EST_Track tr)
 {
-    int i, j;
+    ssize_t i, j;
 
     fprintf(fp, "EST_File Track\n"); // EST header identifier.
     fprintf(fp, "DataType ascii\n");
-    fprintf(fp, "NumFrames %d\n", tr.num_frames());
-    fprintf(fp, "NumChannels %d\n", tr.num_channels());
-    fprintf(fp, "NumAuxChannels %d\n", tr.num_aux_channels());
+    fprintf(fp, "NumFrames %ld\n", tr.num_frames());
+    fprintf(fp, "NumChannels %ld\n", tr.num_channels());
+    fprintf(fp, "NumAuxChannels %ld\n", tr.num_aux_channels());
     fprintf(fp, "EqualSpace %d\n",tr.equal_space());
 
     fprintf(fp, "BreaksPresent true\n");
     for (i = 0; i < tr.num_channels(); ++i)
-	fprintf(fp, "Channel_%d %s\n", i, (const char *)(tr.channel_name(i)));
+	fprintf(fp, "Channel_%ld %s\n", i, (const char *)(tr.channel_name(i)));
 
     for (i = 0; i < tr.num_aux_channels(); ++i)
-	fprintf(fp, "Aux_Channel_%d %s\n", i, 
+	fprintf(fp, "Aux_Channel_%ld %s\n", i, 
 		(const char *)(tr.aux_channel_name(i)));
 
     EST_Featured::FeatEntries p;
@@ -823,7 +826,7 @@ EST_write_status EST_TrackFile::save_est_binary(const EST_String filename, EST_T
 
 EST_write_status EST_TrackFile::save_est_binary_ts(FILE *fp, EST_Track tr)
 {
-    int i,j;
+    ssize_t i,j;
 
     // This should be made optional
     bool breaks = TRUE;
@@ -831,14 +834,14 @@ EST_write_status EST_TrackFile::save_est_binary_ts(FILE *fp, EST_Track tr)
     fprintf(fp, "EST_File Track\n");
     fprintf(fp, "DataType binary\n");
     fprintf(fp, "ByteOrder %s\n", ((EST_NATIVE_BO == bo_big) ? "10" : "01"));
-    fprintf(fp, "NumFrames %d\n", tr.num_frames());
-    fprintf(fp, "NumChannels %d\n",tr.num_channels());
+    fprintf(fp, "NumFrames %ld\n", tr.num_frames());
+    fprintf(fp, "NumChannels %ld\n",tr.num_channels());
     fprintf(fp, "EqualSpace %d\n",tr.equal_space());
     if(breaks)
 	fprintf(fp, "BreaksPresent true\n");
     fprintf(fp, "CommentChar ;\n\n");
     for (i = 0; i < tr.num_channels(); ++i)
-	fprintf(fp, "Channel_%d %s\n",i,tr.channel_name(i).str());
+	fprintf(fp, "Channel_%ld %s\n",i,tr.channel_name(i).str());
     fprintf(fp, "EST_Header_End\n");
 
     for (i = 0; i < tr.num_frames(); ++i)
@@ -856,7 +859,7 @@ EST_write_status EST_TrackFile::save_est_binary_ts(FILE *fp, EST_Track tr)
 	}
 	// data - restricted to floats at this time
 	for (j = 0; j < tr.num_channels(); ++j)
-	    if((int)fwrite(&tr.a_no_check(i, j),4,1,fp) != 1)
+	    if(fwrite(&tr.a_no_check(i, j),4,1,fp) != 1)
 		return misc_write_error;
 	
     }
@@ -882,9 +885,9 @@ EST_write_status EST_TrackFile::save_ascii(const EST_String filename, EST_Track 
     outf->setf(ios::fixed, ios::floatfield);
     outf->width(8);
     
-    for (int i = 0; i < tr.num_frames(); ++i)
+    for (ssize_t i = 0; i < tr.num_frames(); ++i)
     {
-	for (int j = 0; j < tr.num_channels(); ++j)
+	for (ssize_t j = 0; j < tr.num_channels(); ++j)
 	    *outf << tr.a(i, j) << " ";
 	*outf << endl;
     }
@@ -910,10 +913,10 @@ EST_write_status EST_TrackFile::save_xgraph(const EST_String filename, EST_Track
     
     tr.change_type(0.0, TRUE);
     
-    for  (int j = 0; j < tr.num_channels(); ++j)
+    for  (ssize_t j = 0; j < tr.num_channels(); ++j)
     {
 	*outf << "\""<< tr.channel_name(j) << "\"\n";    
-	for (int i = 0; i < tr.num_frames(); ++i)
+	for (ssize_t i = 0; i < tr.num_frames(); ++i)
 	    if (tr.val(i))
 		*outf << tr.t(i) << "\t" << tr.a(i, j) << endl;
 	    else
@@ -929,7 +932,8 @@ EST_write_status save_snns_pat(const EST_String filename,
 			       EST_TrackList &inpat, EST_TrackList &outpat)
 {    
     ostream *outf;
-    int num_inputs, num_outputs, num_pats, i;
+    int num_inputs, num_outputs, num_pats;
+    ssize_t i;
     EST_Litem *pi, *po;
     
     if (filename == "-")
@@ -973,7 +977,7 @@ EST_write_status save_snns_pat(const EST_String filename,
 	}
 	for (i = 0; i < inpat(pi).num_frames(); ++i)
 	{
-	    int j;
+	    ssize_t j;
 	    *outf << "#Input pattern " << (i + 1) << ":\n";
 	    for  (j = 0; j < inpat(pi).num_channels(); ++j)
 		*outf << inpat(pi).a(i, j) << " ";
@@ -1027,7 +1031,7 @@ EST_write_status save_snns_pat(const EST_String filename,
    *outf << "#Input pattern " << i << ":\n";
    for  (int j = 0; j < num_inputs; ++j)
    *outf << << trlist(p)._name(j) << "\"\n";    
-   for (int i = 0; i < tr.num_frames(); ++i)
+   for (ssize_t i = 0; i < tr.num_frames(); ++i)
    if (tr.val(i))
    *outf << tr.t(i) << "\t" << tr.a(i, j) << endl;
    else
@@ -1043,7 +1047,7 @@ EST_write_status save_snns_pat(const EST_String filename,
 EST_write_status EST_TrackFile::save_xmg(const EST_String filename, EST_Track tr)
 {
     ostream *outf;
-    int i, j;
+    ssize_t i, j;
     // float min, max;
     int sr = 16000;		// REORG - fixed sample rate until xmg is fixed
     
@@ -1158,7 +1162,7 @@ static EST_write_status save_htk_as(const EST_String filename,
 			  
     header.samp_type = EST_BIG_ENDIAN ? type : SWAPSHORT(type);	
 
-    int i, j;
+    ssize_t i, j;
     FILE *outf;
     if (filename == "-")
 	outf = stdout;
@@ -1191,8 +1195,8 @@ static EST_write_status save_htk_as(const EST_String filename,
 	    }
 	    for (i = 0; i < track.num_frames(); ++i)
 	    {
-		short tempshort = (EST_BIG_ENDIAN ? (short)(track.a(i, 0)) :
-				   SWAPSHORT((short)(track.a(i, 0)))) ;
+		short tempshort = (EST_BIG_ENDIAN ? (short)(track.a(i, 0L)) :
+				   SWAPSHORT((short)(track.a(i, 0L)))) ;
 		fwrite((unsigned char*) &tempshort, 1, sizeof(short), outf);
 	    }
 	}
@@ -1286,9 +1290,10 @@ static EST_read_status load_ema_internal(const EST_String filename, EST_Track &t
     (void)ishift;
     (void)startt;
     
-    int i, j, k, nframes, new_order;
+    ssize_t i, j, k, nframes, new_order;
     EST_TVector<short> file_data;
-    int sample_width, data_length;
+    int sample_width;
+    ssize_t data_length;
     float shift;
     FILE *fp;
     
@@ -1298,9 +1303,9 @@ static EST_read_status load_ema_internal(const EST_String filename, EST_Track &t
 	return misc_read_error;
     }
     
-    fseek(fp, 0, SEEK_END);
+    EST_fseek(fp, 0, SEEK_END);
     sample_width = 2;
-    data_length = ftell(fp)/sample_width;
+    data_length = EST_ftell(fp)/sample_width;
     new_order = 10;
     nframes = data_length /new_order;
     shift = 0.002;
@@ -1313,7 +1318,7 @@ static EST_read_status load_ema_internal(const EST_String filename, EST_Track &t
 
     file_data.resize(data_length);
     
-    fseek(fp, 0, SEEK_SET);
+    EST_fseek(fp, 0, SEEK_SET);
     
     if ((int)fread(file_data.memory(), sample_width, data_length, fp) != data_length)
     {
@@ -1468,7 +1473,7 @@ EST_read_status EST_TrackFile::load_NIST(const EST_String filename, EST_Track &t
 EST_write_status EST_TrackFile::save_NIST(const EST_String filename, EST_Track tr)
 {
   FILE *fd;
-  int i,j,k=0;
+  ssize_t i,j,k=0;
   if (filename == "-")
     fd = stdout;
   else if ((fd = fopen(filename,"wb")) == NULL)
@@ -1530,7 +1535,7 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
     // order is order of LPC etc. analysis
     // e.g. if order is 12 and we have energy and delta then num_values = (12 + 1) * 2 = 26
 
-    int i,j, order, new_frames, num_values, num_channels;
+    ssize_t i,j, order, new_frames, num_values, num_channels;
 
     EST_String pname;
     int swap;
@@ -1685,13 +1690,13 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
     tmp.set_equal_space(!time_included);
     
     // check length of file is as expected from header info
-    long dataBeginPosition = ftell(fp);
+    ssize_t dataBeginPosition = EST_ftell(fp);
     if( dataBeginPosition == -1 ){
       fclose(fp);
       return wrong_format;
     }
     
-    if (fseek(fp,0,SEEK_END)){
+    if (EST_fseek(fp,0,SEEK_END)){
       fclose(fp);
       return wrong_format;
     }
@@ -1738,7 +1743,7 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
       order--;
     
     // go to start of data
-    if( fseek(fp, dataBeginPosition, SEEK_SET) == -1 ){
+    if( EST_fseek(fp, dataBeginPosition, SEEK_SET) == -1 ){
       cerr << "Couldn't position htk file at start of data" << endl;
       fclose(fp);
       return misc_read_error;
@@ -1775,7 +1780,7 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
 	  tmp.t(i) = ((float)frame[0]+compressB[0])/compressA[0];
 	
 	for( j=0; j<num_channels; ++j ){
-	  int index = j+first_channel;
+	  ssize_t index = j+first_channel;
 	  tmp.a(i,j) = ((float)frame[index]+compressB[index])/compressA[index];
 	}
 
@@ -1910,10 +1915,10 @@ int track_to_espsf0(EST_Track &track, EST_Track &f0_track)
     
     // copy data. Remaining channels zeroed by resize. This is of course stupid
     // as if k1 iz zero mathematics is in deep problems.
-    for (int i = 0; i < track.num_frames(); ++i)
+    for (ssize_t i = 0; i < track.num_frames(); ++i)
     {
 	f0_track.a(i, channel_voiced) = track.track_break(i) ? 0.1 : 1.2;
-	f0_track.a(i, channel_f0) = track.track_break(i) ? 0.0: track.a(i,0);
+	f0_track.a(i, channel_f0) = track.track_break(i) ? 0.0: track.a(i,0L);
     }
     
     f0_track.set_file_type(tff_esps);
@@ -1929,7 +1934,7 @@ int track_to_espsf0(EST_Track &track, EST_Track &f0_track)
 	  
 	  // copy data. Remaining channels zeroed by resize. This is of course stupid
 	  // as if k1 iz zero mathematics is in deep problems.
-	  for (int i = 0; i < track.num_frames(); ++i)
+	  for (ssize_t i = 0; i < track.num_frames(); ++i)
 	  {
 	  f0_track.a(i, channel_voiced) = track.track_break(i) ? 0.1 : 1.2;
 	  f0_track.a(i, channel_f0) = track.a(i,0);
@@ -1945,7 +1950,7 @@ int track_to_espsf0(EST_Track &track, EST_Track &f0_track)
 
 int espsf0_to_track(EST_Track &fz)
 {
-    int f, p, i;
+    ssize_t f, p, i;
     f = p = -1;
     
     // check to see if prob of voicing channel exists
@@ -2007,8 +2012,8 @@ int track_to_htk_lpc(EST_Track &track, EST_Track &lpc)
     lpc.set_single_break(track.single_break());
     lpc.set_single_break(track.single_break());
     
-    for(int i = 0; i< track.num_frames(); i++)
-	for (int c = 0; c < ncoefs; c++)
+    for(ssize_t i = 0; i< track.num_frames(); i++)
+	for (ssize_t c = 0; c < ncoefs; c++)
 	{
 	    lpc.a(i, c) = track.a(i, channel_lpc_0, c);
 	    lpc.t(i) = track.t(i);
@@ -2017,7 +2022,7 @@ int track_to_htk_lpc(EST_Track &track, EST_Track &lpc)
     
     if (track.has_channel(channel_power))
     {
-	for(int ii = 0; ii< track.num_frames(); ii++)
+	for(ssize_t ii = 0; ii< track.num_frames(); ii++)
 	    lpc.a(ii, ncoefs) = track.a(ii, channel_power);
     }
     

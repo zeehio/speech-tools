@@ -368,7 +368,8 @@ FILE16 *url_open(const char *url, const char *base, const char *type,
 		 char **merged_url)
 {
     char *scheme, *host, *path, *m_url;
-    int port, i;
+    int port;
+    unsigned int i;
     FILE16 *f;
 #ifdef HAVE_LIBZ
     int len, gzipped = 0;
@@ -682,7 +683,7 @@ static FILE16 *file_open(const char *url,
     FILE *f;
     FILE16 *f16;
     char *file;
-
+    (void) port;
     if(host && host[0])
 	WARN1(LEFILE, "Warning: ignoring host part in file URL \"%s\"\n", url);
 

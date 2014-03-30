@@ -80,8 +80,6 @@ static EST_Item *null_sym;
 //static EST_String inserted_marker = "<ins>";
 static bool show_cost=FALSE;
 static int prune_width = 100;
-//static float path_cost;
-int StrVector_index(const EST_StrVector &v, const EST_String &s);
 
 EST_StrList pattern1_l, pattern2_l, vocab_l;
 EST_StrVector pattern1, pattern2, vocab;

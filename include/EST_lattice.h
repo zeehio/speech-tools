@@ -179,7 +179,7 @@ public:
     float viterbi_transduce(EST_Track &observations,
 			    EST_TList<Arc*> &path,
 			    float &score,
-			    int current_frame = 0,
+			    ssize_t current_frame = 0,
 			    Node *start_node = NULL);
 
     // map lookup functions

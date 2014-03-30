@@ -52,7 +52,7 @@
 #endif
 
 #if defined __GNUC__
-  #define EST_NORETURN  __attribute__ ((__noreturn__))
+  #define EST_NORETURN __attribute__ ((__noreturn__))
 #elif defined __clang__
   #define EST_NORETURN __attribute__ ((__noreturn__))
 #else
@@ -71,7 +71,7 @@ extern "C" {
 #  ifdef __cplusplus
 #    include <cstdlib>
 #  else
-#    include <stdlib.h>  
+#    include <stdlib.h>
 #  endif
 #    include <dmalloc.h>
 #endif

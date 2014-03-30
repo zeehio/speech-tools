@@ -46,6 +46,7 @@
 #include "EST_Token.h"
 #include "ling_class/EST_Utterance.h"
 #include "EST_UtteranceFile.h"
+#include "EST_File.h"
 
 using namespace std;
 
@@ -71,7 +72,7 @@ static EST_write_status utt_save_ling_content(ostream &outf,
 					      EST_TKVL<void *,int> &sinames,
 					      int &si_count);
 
-static void node_tidy_up(int &k, EST_Item_Content *node)
+static void node_tidy_up(ssize_t &k, EST_Item_Content *node)
 {
     // Called to delete the nodes in the hash table when a load
     (void)k;
@@ -159,7 +160,7 @@ EST_read_status EST_UtteranceFile::load_est_ascii(EST_TokenStream &ts,
     //    {
 	// This works because even if some of these si's have been
 	// linked to nodes they will be unlink when the si is destroyed
-    for(int ni=0; ni < sitems.length(); ni++)
+    for(ssize_t ni=0; ni < sitems.length(); ni++)
       {
 	EST_Item_Content *c = sitems[ni];
 	if (c != NULL)
@@ -180,7 +181,8 @@ static EST_read_status load_all_contents(EST_TokenStream &ts,
     // by relations
     EST_String Sid;
     bool ok;
-    int id,idval;
+    ssize_t id;
+    int idval;
 
     while (ts.peek() != "End_of_Stream_Items")
     {
@@ -418,7 +420,7 @@ EST_read_status EST_UtteranceFile::load_apml(EST_TokenStream &ts,
   if ((stream=ts.filedescriptor())==NULL)
     return read_error;
 
-  long pos=ftell(stream);
+  long long int pos=EST_ftell(stream);
 
   {
 
@@ -447,12 +449,12 @@ EST_read_status EST_UtteranceFile::load_apml(EST_TokenStream &ts,
     return read_format_error;
   }
 
-  fseek(stream, pos, 0);
+  EST_fseek(stream, pos, 0);
 
   EST_read_status stat = apml_read(stream, ts.filename(),u, max_id);
 
   if (stat != read_ok)
-    fseek(stream, pos, 0);
+    EST_fseek(stream, pos, 0);
 
   return stat;
 }
@@ -469,7 +471,7 @@ EST_read_status EST_UtteranceFile::load_genxml(EST_TokenStream &ts,
   if ((stream=ts.filedescriptor())==NULL)
     return read_error;
 
-  long pos=ftell(stream);
+  long long int pos=EST_ftell(stream);
 
   {
   char buf[81];
@@ -486,12 +488,12 @@ EST_read_status EST_UtteranceFile::load_genxml(EST_TokenStream &ts,
     return read_format_error;
   }
 
-  fseek(stream, pos, 0);
+  EST_fseek(stream, pos, 0);
 
   EST_read_status stat = EST_GenXML::read_xml(stream, ts.filename(),u, max_id);
 
   if (stat != read_ok)
-    fseek(stream, pos, 0);
+    EST_fseek(stream, pos, 0);
 
   return stat;
 }

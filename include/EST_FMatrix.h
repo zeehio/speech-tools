@@ -41,6 +41,7 @@
 #ifndef __FMatrix_H__
 #define __FMatrix_H__
 
+#include <cstdlib>
 #include "EST_TSimpleMatrix.h"
 #include "EST_TSimpleVector.h"
 
@@ -82,7 +83,7 @@ public:
     EST_read_status est_load(const EST_String &filename);
 
     /// Copy 2-d array `x` of size `rows x cols` into matrix.
-    void copyin(float **x, int rows, int cols);
+    void copyin(float **x, ssize_t rows, ssize_t cols);
 
     /// Add elements of 2 same sized matrices.
     EST_FMatrix &operator+=(const EST_FMatrix &a);
@@ -118,7 +119,7 @@ public:
 class EST_FVector: public EST_TSimpleVector<float> {
 public:
     /// Size constructor.
-    EST_FVector(int n): EST_TSimpleVector<float>(n) {}
+    EST_FVector(ssize_t n): EST_TSimpleVector<float>(n) {}
     /// Copy constructor.
     EST_FVector(const EST_FVector &a): EST_TSimpleVector<float>(a) {}
     /// Default constructor.
@@ -165,7 +166,7 @@ int pseudo_inverse(const EST_FMatrix &a, EST_FMatrix &inv,int &singularity);
 
 /// some useful matrix creators
 /// make an identity matrix of dimension n
-void eye(EST_FMatrix &a, const int n);
+void eye(EST_FMatrix &a, const ssize_t n);
 /// make already square matrix into I without resizing
 void eye(EST_FMatrix &a);
 
@@ -210,7 +211,7 @@ EST_FVector diagonal(const EST_FMatrix &a);
 /// sum of elements
 float sum(const EST_FMatrix &a);
 void multiply(const EST_FMatrix &a, const EST_FMatrix &b, EST_FMatrix &c);
-int  floor_matrix(EST_FMatrix &M, const float floor);
+ssize_t  floor_matrix(EST_FMatrix &M, const float floor);
 
 /// matrix product of two vectors (#rows = length of first vector, #cols = length of second vector)
 EST_FMatrix cov_prod(const EST_FVector &v1,const EST_FVector &v2);
@@ -222,11 +223,11 @@ EST_FMatrix operator+(const EST_FMatrix &a, const EST_FMatrix &b);
 EST_FVector operator-(const EST_FVector &a, const EST_FVector &b);
 EST_FVector operator+(const EST_FVector &a, const EST_FVector &b);
 
-EST_FMatrix sub(const EST_FMatrix &a, int row, int col);
+EST_FMatrix sub(const EST_FMatrix &a, ssize_t row, ssize_t col);
 EST_FMatrix fmatrix_abs(const EST_FMatrix &a);
 
-EST_FMatrix row(const EST_FMatrix &a, int row);
-EST_FMatrix column(const EST_FMatrix &a, int col);
+EST_FMatrix row(const EST_FMatrix &a, ssize_t row);
+EST_FMatrix column(const EST_FMatrix &a, ssize_t col);
 
 
 /// least squares fit

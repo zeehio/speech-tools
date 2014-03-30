@@ -209,10 +209,10 @@ float label_distance2(EST_Item &ref, EST_Item &test)
     return (s + e) / duration(&ref);
 }
 
-int lowest_pos(const EST_FMatrix &m, int j)
+ssize_t lowest_pos(const EST_FMatrix &m, ssize_t j)
 {
     float val = 1000.0;
-    int i, pos=0;
+    ssize_t i, pos=0;
 
     for (i = 0; i < m.num_rows(); ++i)
 	if ((m(i, j) > -0.01) && (m(i, j) < val))
@@ -227,8 +227,8 @@ int lowest_pos(const EST_FMatrix &m, int j)
 void minimise_matrix_by_column(EST_FMatrix &m)
 {
     float val = 1000.0;
-    int i;
-    for (int j = 0; j < m.num_columns(); ++j)
+    ssize_t i;
+    for (ssize_t j = 0; j < m.num_columns(); ++j)
     {
 	val = 1000.0;
 	for (i = 0; i < m.num_rows(); ++i)
@@ -243,7 +243,7 @@ void minimise_matrix_by_column(EST_FMatrix &m)
 void minimise_matrix_by_row(EST_FMatrix &m)
 {
     float val;
-    int i, j;
+    ssize_t i, j;
 
     for (i = 0; i < m.num_rows(); ++i)
     {
@@ -259,7 +259,7 @@ void minimise_matrix_by_row(EST_FMatrix &m)
 
 void matrix_ceiling(EST_FMatrix &m, float max)
 {
-    int i, j;
+    ssize_t i, j;
 
     for (i = 0; i < m.num_rows(); ++i)
 	for (j = 0; j < m.num_columns(); ++j)
@@ -268,9 +268,9 @@ void matrix_ceiling(EST_FMatrix &m, float max)
 
 }
 
-int matrix_insertions(EST_FMatrix &m)
+ssize_t matrix_insertions(EST_FMatrix &m)
 {
-    int i, j;
+    ssize_t i, j;
     int n = 0;
 
     for (i = 0; i < m.num_rows(); ++i)
@@ -281,10 +281,10 @@ int matrix_insertions(EST_FMatrix &m)
     return (m.num_rows() - n);
 }
 
-int major_matrix_insertions(EST_FMatrix &m, EST_Relation &ref_lab)
+ssize_t major_matrix_insertions(EST_FMatrix &m, EST_Relation &ref_lab)
 {
-    int i, j;
-    int n = 0;
+    ssize_t i, j;
+    ssize_t n = 0;
     EST_Item *s;
 
     for (i = 0; i < m.num_rows(); ++i)
@@ -301,10 +301,10 @@ int major_matrix_insertions(EST_FMatrix &m, EST_Relation &ref_lab)
     return (m.num_rows() - n);
 }
 
-int matrix_deletions(EST_FMatrix &m)
+ssize_t matrix_deletions(EST_FMatrix &m)
 {
-    int i, j;
-    int n = 0;
+    ssize_t i, j;
+    ssize_t n = 0;
 
     for (j = 0; j < m.num_columns(); ++j)
 	for (i = 0; i < m.num_rows(); ++i)
@@ -314,10 +314,10 @@ int matrix_deletions(EST_FMatrix &m)
     return (m.num_columns() - n);
 }
 
-int major_matrix_deletions(EST_FMatrix &m, EST_Relation &ref_lab)
+ssize_t major_matrix_deletions(EST_FMatrix &m, EST_Relation &ref_lab)
 {
-    int i, j;
-    int n = 0;
+    ssize_t i, j;
+    ssize_t n = 0;
     EST_Item *s;
 
     for (j = 0; j < m.num_columns(); ++j)
@@ -335,10 +335,10 @@ int major_matrix_deletions(EST_FMatrix &m, EST_Relation &ref_lab)
     return (m.num_columns() - n);
 }
 
-int lowest_pos(float const * const m, int n)
+ssize_t lowest_pos(float const * const m, ssize_t n)
 {
     float val = 1000.0;
-    int i, pos=0;
+    ssize_t i, pos=0;
 
     for (i = 0; i < n; ++i)
 	if (m[i] < val)
@@ -448,7 +448,7 @@ and deletions are then calculated.  */
 EST_FMatrix matrix_compare(EST_Relation &reflab, EST_Relation &testlab, int method,
 		       float t, int v)
 {
-    int i, j;
+    ssize_t i, j;
     int num_ref, num_test;
     EST_Item *r_ptr, *t_ptr;
     EST_String fns;
@@ -835,7 +835,7 @@ void print_i_d_scores(EST_FMatrix &m)
 
 void print_matrix_scores(EST_Relation &ref, EST_Relation &test, EST_FMatrix &a)
 {
-    int i, j;
+    ssize_t i, j;
     EST_Item *r_ptr, *t_ptr;
     
     cout << "      ";
@@ -872,9 +872,9 @@ void print_matrix_scores(EST_Relation &ref, EST_Relation &test, EST_FMatrix &a)
     }
 }
 
-int row_hit(EST_FMatrix &m, int r)
+long int row_hit(EST_FMatrix &m, ssize_t r)
 {
-    int i;
+    ssize_t i;
     for (i = 0; i < m.num_columns(); ++i)
 	if (m(r, i) > 0.0)
 	    return i;
@@ -883,9 +883,9 @@ int row_hit(EST_FMatrix &m, int r)
 }
 
 // return the row index of the first positive entry in column c
-int column_hit(EST_FMatrix &m, int c)
+long int column_hit(EST_FMatrix &m, ssize_t c)
 {
-    int i;
+    ssize_t i;
     for (i = 0; i < m.num_rows(); ++i)
 	if (m(i, c) > 0.0)
 	    return i;
@@ -893,9 +893,9 @@ int column_hit(EST_FMatrix &m, int c)
     return -1;
 }
 
-int num_b_insertions(EST_FMatrix &m, int last, int current)
+ssize_t num_b_insertions(EST_FMatrix &m, ssize_t last, ssize_t current)
 {
-    int c1, c2;
+    ssize_t c1, c2;
     c1 = column_hit(m, last);
     c2 = column_hit(m, current);
     

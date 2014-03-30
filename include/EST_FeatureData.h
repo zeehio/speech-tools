@@ -40,6 +40,7 @@
 #ifndef __EST_FeatureData_H__
 #define __EST_FeatureData_H__
 
+#include <cstddef>
 #include "EST_Val.h"
 #include "EST_TVector.h"
 #include "EST_TList.h"
@@ -139,13 +140,13 @@ public:
     ~EST_FeatureData();
     EST_Features &ginfo() {return info;}
 
-    int num_samples() const;
-    int num_features() const;
+    ssize_t num_samples() const;
+    ssize_t num_features() const;
 
-    void resize(int num_samples, int num_columns, bool preserve = 1);
-    void resize(int num_samples, EST_Features &f, bool preserve = 1);
+    void resize(ssize_t num_samples, ssize_t num_columns, bool preserve = 1);
+    void resize(ssize_t num_samples, EST_Features &f, bool preserve = 1);
 
-    void set_num_samples(int num_samples, bool preserve=1);
+    void set_num_samples(ssize_t num_samples, bool preserve=1);
 
 /*    void extract_features(EST_FeatureData &f, const EST_StrList &fields) const;
     void extract_features(EST_FeatureData &f, EST_IList &fields) const;
@@ -167,10 +168,10 @@ public:
     EST_write_status save(const EST_String &name, 
 			const EST_String &EST_filetype = "") const;
 
-    EST_Val &a(int sample, int field);
-    EST_Val &a(int sample, const EST_String &name);
-    const EST_Val &a(int sample, int field) const;
-    const EST_Val &a(int sample, const EST_String &name) const;
+    EST_Val &a(ssize_t sample, ssize_t field);
+    EST_Val &a(ssize_t sample, const EST_String &name);
+    const EST_Val &a(ssize_t sample, ssize_t field) const;
+    const EST_Val &a(ssize_t sample, const EST_String &name) const;
 
     friend ostream& operator << (ostream &st,const EST_FeatureData &a);
 

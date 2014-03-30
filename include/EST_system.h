@@ -50,6 +50,10 @@
 #   if defined(_MSC_VER)
 #       define VISUAL_CPP 1
 #   endif
+#   if defined(_MSC_VER)
+#       include <BaseTsd.h>
+        typedef SSIZE_T ssize_t;
+#   endif
 #else
 #   define SYSTEM_IS_UNIX 1
 #   include <sys/types.h>

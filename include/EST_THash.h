@@ -60,7 +60,7 @@
 class EST_HashFunctions {
 public:
   /// A generally useful hash function.
-  static unsigned int DefaultHash(const void *data, size_t size, unsigned int n);
+  static unsigned int DefaultHash(const void *data, ssize_t size, unsigned int n);
 
   /// A hash function for strings.
   static  unsigned int StringHash(const EST_String &key, unsigned int size);
@@ -321,7 +321,7 @@ public:
   
 /** \brief The default hash function used by EST_THash
   */
-inline static unsigned int DefaultHashFunction(const void *data, size_t size, unsigned int n)
+inline static unsigned int DefaultHashFunction(const void *data, ssize_t size, unsigned int n)
 {
   unsigned int x=0;
   const char *p = (const char *)data;

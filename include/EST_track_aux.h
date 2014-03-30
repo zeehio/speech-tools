@@ -52,8 +52,8 @@
 void track_smooth(EST_Track &c, float x, EST_String stype = "");
 void time_med_smooth(EST_Track &c, float x);
 void time_mean_smooth(EST_Track &c, float x);
-void simple_med_smooth(EST_Track &c, int n, int channel=0);
-void simple_mean_smooth(EST_Track &c, int n, int channel=0);
+void simple_med_smooth(EST_Track &c, ssize_t n, ssize_t channel=0);
+void simple_mean_smooth(EST_Track &c, ssize_t n, ssize_t channel=0);
 
 /** Calculate the mean absolute error between the same channel in
   * two tracks. This is given by \f[\frac{1}{n}\sum_{i=1}^{n}|a_{i} - b_{i}|\f]
@@ -63,11 +63,11 @@ void simple_mean_smooth(EST_Track &c, int n, int channel=0);
     \return absolute error
   * @see abs_error, rms_error(EST_Track &a, EST_Track &b)
   */
-float abs_error(EST_Track &a, EST_Track &b, int channel);
+float abs_error(EST_Track &a, EST_Track &b, ssize_t channel);
 
 void absolute(EST_Track &tr);
 void normalise(EST_Track &tr);
-void normalise(EST_Track &tr, float mean, float sd, int channel, 
+void normalise(EST_Track &tr, float mean, float sd, ssize_t channel, 
 	       float upper, float lower);
 void normalise(EST_Track &tr, EST_FVector &mean, EST_FVector &sd,
 	       float upper, float lower);
@@ -85,18 +85,18 @@ void normalise(EST_TrackList &trlist, EST_FVector &mean,
 EST_Track differentiate(EST_Track &c, float samp_int=0.0);
 EST_Track difference(EST_Track &a, EST_Track &b);
 
-float mean( const EST_Track &a, int channel );
+float mean( const EST_Track &a, ssize_t channel );
 void mean( const EST_Track &a, EST_FVector &m );
 
-void meansd(EST_Track &a, float &m, float &sd, int channel);
+void meansd(EST_Track &a, float &m, float &sd, ssize_t channel);
 
 /** Calculate the root mean square error between the same channel in
   * two tracks. The channel is identified by its index.
   * @see abs_error, float rms_error(EST_Track &a, EST_Track &b)
   */
-float rms_error(EST_Track &a, EST_Track &b, int channel);
+float rms_error(EST_Track &a, EST_Track &b, ssize_t channel);
 
-float correlation(EST_Track &a, EST_Track &b, int channel);
+float correlation(EST_Track &a, EST_Track &b, ssize_t channel);
 
 void meansd(EST_Track &a, EST_FVector &m, EST_FVector &sd);
 
@@ -199,8 +199,8 @@ void get_start_positions(const EST_Track &t,
 
 /// Get the start and end of a given frame (in samples)
 static inline void get_frame(const EST_Track &tr, int sample_rate,
-			     int f,
-			     int &start, int &center, int &end)
+			     ssize_t f,
+			     ssize_t &start, ssize_t &center, ssize_t &end)
 {
   center = (int)(tr.t(f)*sample_rate + 0.5);
   start  = center - (int)(tr.a(f, channel_length)/2.0);
@@ -209,7 +209,7 @@ static inline void get_frame(const EST_Track &tr, int sample_rate,
 
 /// Get the start and end of a given frame (in seconds)
 static inline void get_frame(const EST_Track &tr, int sample_rate,
-			     int f,
+			     ssize_t f,
 			     float &start, float &center, float &end)
 {
   center = tr.t(f);
@@ -219,7 +219,7 @@ static inline void get_frame(const EST_Track &tr, int sample_rate,
 
 /// Get the start and end of a given frame (in samples)
 static inline void get_frame_o(const EST_Track &tr, int sample_rate,
-			       int f,
+			       ssize_t f,
 			       int &start, int &center, int &end)
 {
   center = (int)(tr.t(f)*sample_rate + tr.a(f,channel_offset) + 0.5);
@@ -229,7 +229,7 @@ static inline void get_frame_o(const EST_Track &tr, int sample_rate,
 
 /// Get the start and end of a given frame (in seconds)
 static inline void get_frame_o(const EST_Track &tr, int sample_rate,
-			       int f,
+			       ssize_t f,
 			       float &start, float &center, float &end)
 {
   center = tr.t(f) + tr.a(f,channel_offset)/(float)sample_rate;
@@ -243,11 +243,11 @@ static inline void get_frame_o(const EST_Track &tr, int sample_rate,
  *  @{ */
 
 // take one of the channels as the timeline
-void channel_to_time(EST_Track &tr, int channel, float scale=1.0);
+void channel_to_time(EST_Track &tr, ssize_t channel, float scale=1.0);
 void channel_to_time(EST_Track &tr, EST_ChannelType c,float  scale=1.0);
 void channel_to_time(EST_Track &tr, const EST_String c_name, float scale=1.0);
 
-void channel_to_time_lengths(EST_Track &tr, int channel, float scale=1.0);
+void channel_to_time_lengths(EST_Track &tr, ssize_t channel, float scale=1.0);
 void channel_to_time_lengths(EST_Track &tr, EST_ChannelType c,float  scale=1.0);
 void channel_to_time_lengths(EST_Track &tr, const EST_String c_name, float scale=1.0);
 

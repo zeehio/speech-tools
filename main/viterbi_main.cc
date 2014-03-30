@@ -447,9 +447,9 @@ static EST_VTCandidate *vit_candlist(EST_Item *s,EST_Features &f)
 {
     // Return a list of new candidates from this point 
     double prob=1.0,prob2=1.0;
-    int i;
+    ssize_t i;
     EST_Litem *p;
-    int observe;
+    ssize_t observe;
     EST_VTCandidate *all_c = 0;
     EST_VTCandidate *c;
     (void)f;

@@ -65,22 +65,22 @@ EST_TMatrix<T>::EST_TMatrix()
 }
 
 template<class T>
-EST_TMatrix<T>::EST_TMatrix(const EST_TMatrix<T> &in)
+EST_TMatrix<T>::EST_TMatrix(const EST_TMatrix<T> &in) : EST_TVector<T>(in)
 {
   default_vals();
   copy(in);
 }
 
 template<class T>
-EST_TMatrix<T>::EST_TMatrix(int rows, int cols)
+EST_TMatrix<T>::EST_TMatrix(ssize_t rows, ssize_t cols)
 {
   default_vals();
   resize(rows, cols);
 }
 
 template<class T>
-EST_TMatrix<T>::EST_TMatrix(int rows, int cols, 
-			    T *memory, int offset, int free_when_destroyed)
+EST_TMatrix<T>::EST_TMatrix(ssize_t rows, ssize_t cols, 
+			    T *memory, ptrdiff_t offset, int free_when_destroyed)
 {
   default_vals();
   set_memory(memory, offset, rows, cols, free_when_destroyed);
@@ -97,7 +97,7 @@ EST_TMatrix<T>::~EST_TMatrix()
  */
 
 template<class T>
-T &EST_TMatrix<T>::a_check(int row, int col) 
+T &EST_TMatrix<T>::a_check(ssize_t row, ssize_t col) 
 {
 
   if (!EST_matrix_bounds_check(row, col, num_rows(), num_columns(), FALSE))
@@ -110,7 +110,7 @@ T &EST_TMatrix<T>::a_check(int row, int col)
  * the const here. Isn't the C++ syntax beautiful!
  */
 template<class T>
-const T &EST_TMatrix<T>::a_check(int row, int col) const
+const T &EST_TMatrix<T>::a_check(ssize_t row, ssize_t col) const
 {
   return ((EST_TMatrix<T> *)this)->a(row,col);
 }
@@ -127,25 +127,25 @@ void EST_TMatrix<T>::copy_data(const EST_TMatrix<T> &a)
 
 template<class T>
 void EST_TMatrix<T>::set_values(const T *data, 
-				int r_step, int c_step,
-				int start_r, int num_r,
-				int start_c, int num_c
+				ssize_t r_step, ssize_t c_step,
+				ssize_t start_r, ssize_t num_r,
+				ssize_t start_c, ssize_t num_c
 				)
 {
-  for(int r=start_r, i=0, rp=0; i< num_r; i++, r++, rp+=r_step)
-    for(int c=start_c, j=0, cp=0; j< num_c; j++, c++, cp+=c_step)
+  for(ssize_t r=start_r, i=0, rp=0; i< num_r; i++, r++, rp+=r_step)
+    for(ssize_t c=start_c, j=0, cp=0; j< num_c; j++, c++, cp+=c_step)
       a_no_check(r,c) = data[rp+cp];
 }
 
 template<class T>
 void EST_TMatrix<T>::get_values(T *data, 
-				int r_step, int c_step,
-				int start_r, int num_r,
-				int start_c, int num_c
+				ssize_t r_step, ssize_t c_step,
+				ssize_t start_r, ssize_t num_r,
+				ssize_t start_c, ssize_t num_c
 				) const
 {
-  for(int r=start_r, i=0, rp=0; i< num_r; i++, r++, rp+=r_step)
-    for(int c=start_c, j=0, cp=0; j< num_c; j++, c++, cp+=c_step)
+  for(ssize_t r=start_r, i=0, rp=0; i< num_r; i++, r++, rp+=r_step)
+    for(ssize_t c=start_c, j=0, cp=0; j< num_c; j++, c++, cp+=c_step)
       data[rp+cp] = a_no_check(r,c);
 }
 
@@ -206,8 +206,8 @@ EST_TMatrix<T> &EST_TMatrix<T>::add_columns(const EST_TMatrix<T> &in)
 }
 
 template<class T>
-void EST_TMatrix<T>::just_resize(int new_rows, 
-				 int new_cols, 
+void EST_TMatrix<T>::just_resize(ssize_t new_rows, 
+				 ssize_t new_cols, 
 				 T** old_vals)
 {
     T *new_m;
@@ -247,15 +247,15 @@ void EST_TMatrix<T>::just_resize(int new_rows,
 }
 
 template<class T>
-void EST_TMatrix<T>::resize(int new_rows, int new_cols, int set)
+void EST_TMatrix<T>::resize(ssize_t new_rows, ssize_t new_cols, ssize_t set)
 {
-  int i,j;
+  ssize_t i,j;
   T * old_vals = this->p_memory;
-  int old_rows = num_rows();
-  int old_cols = num_columns();
-  int old_row_step = p_row_step;
-  int old_offset = this->p_offset;
-  int old_column_step = this->p_column_step;
+  ssize_t old_rows = num_rows();
+  ssize_t old_cols = num_columns();
+  ssize_t old_row_step = p_row_step;
+  ptrdiff_t old_offset = this->p_offset;
+  ssize_t old_column_step = this->p_column_step;
 
   if (new_rows<0)
     new_rows = old_rows;
@@ -266,8 +266,8 @@ void EST_TMatrix<T>::resize(int new_rows, int new_cols, int set)
 
   if (set)
     {
-      int copy_r = 0;
-      int copy_c = 0;
+      ssize_t copy_r = 0;
+      ssize_t copy_c = 0;
 
       if (old_vals != NULL)
 	{
@@ -299,13 +299,13 @@ void EST_TMatrix<T>::resize(int new_rows, int new_cols, int set)
 }
 
 template<class T>
-bool EST_TMatrix<T>::have_rows_before(int n) const
+bool EST_TMatrix<T>::have_rows_before(ssize_t n) const
 {
   return this->p_offset >= n*p_row_step;
 }
 
 template<class T>
-bool EST_TMatrix<T>::have_columns_before(int n) const
+bool EST_TMatrix<T>::have_columns_before(ssize_t n) const
 {
   return this->p_offset >= n*this->p_column_step;
 }
@@ -313,7 +313,7 @@ bool EST_TMatrix<T>::have_columns_before(int n) const
 template<class T>
 void EST_TMatrix<T>::fill(const T &v)
 {
-    int i, j;
+    ssize_t i, j;
     for (i = 0; i < num_rows(); ++i)
 	for (j = 0; j < num_columns(); ++j)
 	    fast_a_m(i,j) = v;
@@ -323,7 +323,7 @@ void EST_TMatrix<T>::fill(const T &v)
 template<class T>
 EST_write_status EST_TMatrix<T>::save(const EST_String &filename) const
 {
-    int i, j;
+    ssize_t i, j;
     ostream *outf;
     if (filename == "-" || filename == "")
 	outf = &std::cout;
@@ -368,8 +368,8 @@ EST_TMatrix<T>::load(const EST_String &filename)
 }
 
 template<class T>
-void EST_TMatrix<T>::set_memory(T *buffer, int offset, 
-				int rows, int columns, 
+void EST_TMatrix<T>::set_memory(T *buffer, ptrdiff_t offset, 
+				ssize_t rows, ssize_t columns, 
 				int free_when_destroyed)
 {
   EST_TVector<T>::set_memory(buffer, offset, columns, free_when_destroyed);
@@ -378,10 +378,10 @@ void EST_TMatrix<T>::set_memory(T *buffer, int offset,
 }
 
 template<class T>
-void EST_TMatrix<T>::copy_row(int r, T *buf, 
-			      int offset, int num) const
+void EST_TMatrix<T>::copy_row(ssize_t r, T *buf, 
+			      ptrdiff_t offset, int num) const
 {
-    int to = num >= 0 ? offset + num : num_columns();
+    ssize_t to = num >= 0 ? offset + num : num_columns();
 
     if (!EST_matrix_bounds_check(r, 0, num_rows(), num_columns(), FALSE))
     {
@@ -391,15 +391,15 @@ void EST_TMatrix<T>::copy_row(int r, T *buf,
 	return;
     }
 
-    for (int j = offset; j < to; j++)
+    for (ssize_t j = offset; j < to; j++)
       buf[j-offset] = fast_a_m(r, j);
 }
 
 template<class T>
-void EST_TMatrix<T>::copy_row(int r, EST_TVector<T> &buf,
-                              int offset, int num) const
+void EST_TMatrix<T>::copy_row(ssize_t r, EST_TVector<T> &buf,
+                              ptrdiff_t offset, int num) const
 {
-  int to = num >= 0 ? offset + num : num_columns();
+  ssize_t to = num >= 0 ? offset + num : num_columns();
 
   if (!EST_matrix_bounds_check(r, 0, num_rows(), num_columns(), FALSE))
   {
@@ -411,19 +411,19 @@ void EST_TMatrix<T>::copy_row(int r, EST_TVector<T> &buf,
   
   buf.resize(to - offset);
   
-  for (int j = offset; j < to; j++)
+  for (ssize_t j = offset; j < to; j++)
     buf[j - offset] = fast_a_m(r, j);
 }
 
 
 template<class T>
-void EST_TMatrix<T>::copy_column(int c, T *buf, 
-				 int offset, int num) const
+void EST_TMatrix<T>::copy_column(ssize_t c, T *buf, 
+				 ptrdiff_t offset, int num) const
 {
   if (num_rows() == 0) 
     return;
 
-  int to = num >= 0 ? offset + num : num_rows();
+  ssize_t to = num >= 0 ? offset + num : num_rows();
 
   if (!EST_matrix_bounds_check(0, c, num_rows(), num_columns(), FALSE))
   {
@@ -433,19 +433,19 @@ void EST_TMatrix<T>::copy_column(int c, T *buf,
       return;
   }
   
-  for (int i = offset; i < to; i++)
+  for (ssize_t i = offset; i < to; i++)
     buf[i-offset] = fast_a_m(i, c);
 }
 
 
 template<class T>
-void EST_TMatrix<T>::copy_column(int c, EST_TVector<T> &buf,
-				 int offset, int num) const
+void EST_TMatrix<T>::copy_column(ssize_t c, EST_TVector<T> &buf,
+				 ptrdiff_t offset, int num) const
 {
   if (num_rows() == 0) 
     return;
 
-  int to = num >= 0 ? offset + num : num_rows();
+  ssize_t to = num >= 0 ? offset + num : num_rows();
 
   if (!EST_matrix_bounds_check(0, c, num_rows(), num_columns(), FALSE))
   {
@@ -457,39 +457,39 @@ void EST_TMatrix<T>::copy_column(int c, EST_TVector<T> &buf,
   
   buf.resize(to - offset);
   
-  for (int i = offset; i < to; i++)
+  for (ssize_t i = offset; i < to; i++)
     buf[i-offset] = fast_a_m(i, c);
 }
 
 
 template<class T>
-void EST_TMatrix<T>::set_row(int r, const T *buf, int offset, int num)
+void EST_TMatrix<T>::set_row(ssize_t r, const T *buf, ptrdiff_t offset, int num)
 {
-    int to = num>=0?offset+num:num_columns();
+    ssize_t to = num>=0?offset+num:num_columns();
 
     if (!EST_matrix_bounds_check(r, 0, num_rows(), num_columns(), TRUE))
       return;
 
-    for(int j=offset; j<to; j++)
+    for(ssize_t j=offset; j<to; j++)
       fast_a_m(r, j) = buf[j-offset];
 }
 
 template<class T>
-void EST_TMatrix<T>::set_column(int c, const T *buf, int offset, int num)
+void EST_TMatrix<T>::set_column(ssize_t c, const T *buf, ptrdiff_t offset, int num)
 {
-    int to = num>=0?offset+num:num_rows();
+    ssize_t to = num>=0?offset+num:num_rows();
 
     if (!EST_matrix_bounds_check(0, c, num_rows(), num_columns(), TRUE))
       return;
 
-    for(int i=offset; i<to; i++)
+    for(ssize_t i=offset; i<to; i++)
       fast_a_m(i, c) = buf[i-offset];
 }
 
 template<class T>
-void  EST_TMatrix<T>::set_row(int r, 
-	     const EST_TMatrix<T> &from, int from_r, int from_offset, 
-	     int offset, int num)
+void  EST_TMatrix<T>::set_row(ssize_t r, 
+	     const EST_TMatrix<T> &from, ssize_t from_r, ssize_t from_offset, 
+	     ptrdiff_t offset, int num)
 {
   int to = num>=0?offset+num:num_columns();
 
@@ -509,9 +509,9 @@ void  EST_TMatrix<T>::set_row(int r,
 }
 
 template<class T>
-void  EST_TMatrix<T>::set_column(int c, 
-	     const EST_TMatrix<T> &from, int from_c, int from_offset, 
-	     int offset, int num)
+void  EST_TMatrix<T>::set_column(ssize_t c, 
+	     const EST_TMatrix<T> &from, ssize_t from_c, ssize_t from_offset, 
+	     ptrdiff_t offset, int num)
 {
   int to = num>=0?offset+num:num_rows();
 
@@ -531,7 +531,7 @@ void  EST_TMatrix<T>::set_column(int c,
 }
 
 template<class T>
-void EST_TMatrix<T>::row(EST_TVector<T> &rv, int r, int start_c, int len)
+void EST_TMatrix<T>::row(EST_TVector<T> &rv, ssize_t r, ssize_t start_c, int len)
 {
   if (len < 0)
     len = num_columns()-start_c;
@@ -553,7 +553,7 @@ void EST_TMatrix<T>::row(EST_TVector<T> &rv, int r, int start_c, int len)
 }
 
 template<class T>
-void EST_TMatrix<T>::column(EST_TVector<T> &cv, int c, int start_r, int len)
+void EST_TMatrix<T>::column(EST_TVector<T> &cv, ssize_t c, ssize_t start_r, int len)
 {
   if (len < 0)
     len = num_rows()-start_r;
@@ -576,7 +576,7 @@ void EST_TMatrix<T>::column(EST_TVector<T> &cv, int c, int start_r, int len)
 
 template<class T>
 void EST_TMatrix<T>::sub_matrix(EST_TMatrix<T> &sm, 
-				int r, int len_r, int c, int len_c)
+				ssize_t r, ptrdiff_t len_r, ssize_t c, ptrdiff_t len_c)
 {
   if (len_r < 0)
     len_r = num_rows()-r;

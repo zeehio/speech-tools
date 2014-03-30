@@ -1705,7 +1705,7 @@ Lattice::viterbi_transduce(EST_TList<EST_String> &input,
 float Lattice::viterbi_transduce(EST_Track &observations,
 			   EST_TList<Arc*> &path,
 			   float &score,
-			   int current_frame,
+			   ssize_t current_frame,
 			   Node *start_node)
 {
     // finds maximum sum-of-probs path
@@ -1736,7 +1736,7 @@ float Lattice::viterbi_transduce(EST_Track &observations,
     float max=-10000000; // hack for now
     for (a_ptr = start_node->arcs_out.head(); a_ptr != 0; a_ptr = a_ptr->next()){
 
-	int observation_element =
+	ssize_t observation_element =
 	    alphabet_index_to_symbol(start_node->arcs_out(a_ptr)->label)->nmap_index
 	    - 2; // HACK !!@!!!! to skip ENTER/EXIT
 	

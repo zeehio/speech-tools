@@ -191,7 +191,7 @@ STATIC STATUS h_risearch();
 STATIC STATUS insert_char(int c);
 STATIC STATUS meta();
 STATIC STATUS emacs(unsigned int c);
-STATIC STATUS TTYspecial(unsigned int c);
+STATIC STATUS TTYspecial(int c);
 STATIC ECHAR *editinput();
 STATIC void hist_add(ECHAR *p);
 STATIC STATUS beg_line();
@@ -1198,7 +1198,7 @@ STATIC STATUS emacs(unsigned int c)
     return s;
 }
 
-STATIC STATUS TTYspecial(unsigned int c)
+STATIC STATUS TTYspecial(int c)
 {
     int i;
     
@@ -1236,7 +1236,7 @@ STATIC STATUS TTYspecial(unsigned int c)
 
 STATIC ECHAR *editinput()
 {
-    unsigned int	c;
+    int	c;
 
     Repeat = NO_ARG;
     OldPoint = Point = Mark = End = 0;
@@ -1341,6 +1341,7 @@ void read_history(const char *history_file)
 void
 rl_reset_terminal(char *p)
 {
+ (void)p;
 }
 
 void
@@ -1707,9 +1708,9 @@ STATIC STATUS transpose()
 
 STATIC STATUS quote()
 {
-    unsigned int	c;
+    int	c;
 
-    return (c = TTYget()) == EOF ? CSeof : insert_char((int)c);
+    return (c = TTYget()) == EOF ? CSeof : insert_char(c);
 }
 
 STATIC STATUS wipe()
@@ -1737,7 +1738,7 @@ STATIC STATUS mk_set()
 
 STATIC STATUS exchange()
 {
-    unsigned int	c;
+    int c;
 
     if ((c = TTYget()) != CTL('X'))
 	return c == EOF ? CSeof : ring_bell();
@@ -1772,7 +1773,7 @@ STATIC STATUS copy_region()
 
 STATIC STATUS move_to_char()
 {
-    unsigned int	c;
+    int c;
     int			i;
     ECHAR		*p;
 
@@ -1793,7 +1794,7 @@ STATIC STATUS fd_word()
 
 STATIC STATUS fd_kill_word()
 {
-    int		i;
+    int	i;
     int OP;
 
     OP = Point;
@@ -1809,7 +1810,7 @@ STATIC STATUS fd_kill_word()
 
 STATIC STATUS bk_word()
 {
-    int		i;
+    int	i;
     ECHAR	*p;
 
     i = 0;

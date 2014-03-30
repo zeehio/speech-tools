@@ -422,7 +422,8 @@ void sig2coef(EST_Wave &sig, EST_Track &tr, EST_String type,
 void power(EST_Wave &sig, EST_Track &pow, float factor)
 {
     EST_FVector frame;
-    int window_start, window_size, pos, k;
+    int window_start, window_size, pos;
+    ssize_t k;
 
     EST_WindowFunc *wf =  EST_Window::creator("rectangular");
 
@@ -444,7 +445,8 @@ void power(EST_Wave &sig, EST_Track &pow, float factor)
 void energy(EST_Wave &sig, EST_Track &pow, float factor)
 {
     EST_FVector frame;
-    int window_start, window_size, pos, k;
+    int window_start, window_size, pos;
+    ssize_t k;
 
     EST_WindowFunc *wf =  EST_Window::creator("rectangular");
 

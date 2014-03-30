@@ -58,7 +58,7 @@ void synthesize_rf_event(EST_Track &fz, EST_Features &ev, float peak_f0)
 {
     float t, amp, f_shift, a=0, start_f0;
     float dur=0;  // for egcs
-    int j;
+    ssize_t j;
 
     f_shift = fz.shift();
 
@@ -93,7 +93,7 @@ void fill_connection_values(EST_Track &fz, float start_f0, float start_pos,
 		 float end_f0, float end_pos)
 {
     float f_shift, m;
-    int j;
+    ssize_t j;
     f_shift = fz.shift();
     if ((end_pos - start_pos) == 0)
 	m = 0.0;
@@ -134,7 +134,7 @@ void rfc_synthesis(EST_Track &fz, EST_Relation &ev, float f_shift, int no_conn)
     fz.fill_time(f_shift);
 
     // set default to be break (silence)
-    for (int i = 0; i < fz.num_frames(); ++i)
+    for (ssize_t i = 0; i < fz.num_frames(); ++i)
 	fz.set_break(i);
 
     // synthesize events
@@ -213,7 +213,7 @@ void fill_rise_fall_values(EST_Track &fz, float amp, float dur, float
     float t, a;
 
     // this ensures rounding errors don't multiply
-    int j = (int) rint(start_pos / f_shift); 
+    ssize_t j = (int) rint(start_pos / f_shift); 
     int n = 0;
     
 //    for (t = 0.0; t < (dur + (f_shift /2.0)); t += f_shift, ++j, ++n)
@@ -232,7 +232,7 @@ void fill_connection_values(EST_Track &fz, float start_f0, float start_pos,
 		 float f_shift)
 {
     // this ensures rounding errors don't multiply
-    int j = (int) rint(start_pos / f_shift); 
+    ssize_t j = (ssize_t) rint(start_pos / f_shift); 
 
     float m = (end_f0 - start_f0) / (end_pos - start_pos);
 
@@ -252,7 +252,7 @@ void fill_connection_values(EST_Track &fz, float start_f0, float start_pos,
 void fill_rise_fall_values(EST_Track &fz, float amp, float start_f0)
 {
     float t, a;
-    int j;
+    ssize_t j;
     float f_shift = fz.shift();
     float dur = fz.num_frames() * f_shift;
     
@@ -268,7 +268,7 @@ void fill_rise_fall_values(EST_Track &fz, float amp, float start_f0)
 void fill_connection_values(EST_Track &fz, float start_f0, float end_f0)
 {
     // this ensures rounding errors don't multiply
-    int j;
+    ssize_t j;
     float f_shift = fz.shift();
     float dur = fz.num_frames() * f_shift;
 
@@ -352,7 +352,7 @@ int rfc_synthesis_ld(EST_Track &fz, EST_Relation &ev, float f_shift, int no_conn
     fill_rfc_types(ev);
     
     // set default to be break (silence)
-    for (int i = 0; i < fz.num_frames(); ++i)
+    for (ssize_t i = 0; i < fz.num_frames(); ++i)
 	fz.set_break(i);
     
     for (e = ev.head(); e != 0; e = e->next())

@@ -42,6 +42,7 @@
 #define __TMatrix_H__
 
 #include <iostream>
+#include <cstddef>
 
 #include "EST_rw_status.h"
 #include "EST_TVector.h"
@@ -90,24 +91,24 @@ class EST_TMatrix : public EST_TVector<T>
 
 protected:
   /// Visible shape
-  unsigned int p_num_rows; 
+  ssize_t p_num_rows; 
   
   /// How to access the memory
-  unsigned int p_row_step;
+  ssize_t p_row_step;
 
-  INLINE unsigned int mcell_pos(int r, int c,
-			       int rs, int cs) const
+  INLINE ssize_t mcell_pos(ssize_t r, ssize_t c,
+			       ssize_t rs, ssize_t cs) const
     { return (rs==1?r:(r*rs)) + (cs==1?c:(c*cs));}
 
 
-  INLINE unsigned int mcell_pos(int r, int c) const
+  INLINE ssize_t mcell_pos(ssize_t r, ssize_t c) const
     {
 
       return mcell_pos(r, c, 
 		       this->p_row_step, this->p_column_step);
     }
 
-  INLINE unsigned int mcell_pos_1(int r, int c) const
+  INLINE ssize_t mcell_pos_1(ssize_t r, ssize_t c) const
     {
 
       (void)r;
@@ -115,27 +116,27 @@ protected:
     }
 
   /// quick method for returning `x[m][n]`
-  INLINE const T &fast_a_m(int r, int c) const 
+  INLINE const T &fast_a_m(ssize_t r, ssize_t c) const 
     { return this->p_memory[mcell_pos(r,c)]; }
-  INLINE T &fast_a_m(int r, int c) 
+  INLINE T &fast_a_m(ssize_t r, ssize_t c) 
     { return this->p_memory[mcell_pos(r,c)]; }
 
-  INLINE const T &fast_a_1(int r, int c) const 
+  INLINE const T &fast_a_1(ssize_t r, ssize_t c) const 
     { return this->p_memory[mcell_pos_1(r,c)]; }
-  INLINE T &fast_a_1(int r, int c) 
+  INLINE T &fast_a_1(ssize_t r, ssize_t c) 
     { return this->p_memory[mcell_pos_1(r,c)]; }
   
 
     /// Get and set values from array
   void set_values(const T *data, 
-		  int r_step, int c_step,
-		  int start_r, int num_r,
-		  int start_c, int num_c
+		  ssize_t r_step, ssize_t c_step,
+		  ssize_t start_r, ssize_t num_r,
+		  ssize_t start_c, ssize_t num_c
 		  );
   void get_values(T *data, 
-		  int r_step, int c_step,
-		  int start_r, int num_r,
-		  int start_c, int num_c
+		  ssize_t r_step, ssize_t c_step,
+		  ssize_t start_r, ssize_t num_r,
+		  ssize_t start_c, ssize_t num_c
 		  ) const;
 
   /// private resize and copy function. 
@@ -144,7 +145,7 @@ protected:
   void copy_data(const EST_TMatrix<T> &a); 
 
   /// resize the memory and reset the bounds, but don't set values.
-  void just_resize(int new_rows, int new_cols, T** old_vals);
+  void just_resize(ssize_t new_rows, ssize_t new_cols, T** old_vals);
 
   /// sets data and length to default values (0 in both cases).
   void default_vals();
@@ -157,11 +158,11 @@ public:
   EST_TMatrix(const EST_TMatrix<T> &m); 
 
   /// "size" constructor
-  EST_TMatrix(int rows, int cols); 
+  EST_TMatrix(ssize_t rows, ssize_t cols); 
 
   /// construct from memory supplied by caller
-  EST_TMatrix(int rows, int cols, 
-	      T *memory, int offset=0, int free_when_destroyed=0);
+  EST_TMatrix(ssize_t rows, ssize_t cols, 
+	      T *memory, ptrdiff_t offset=0, int free_when_destroyed=0);
 
   /// EST_TMatrix
 
@@ -173,44 +174,44 @@ public:
   //@{
 
   /// return number of rows
-  int num_rows() const {return this->p_num_rows;}
+  ssize_t num_rows() const {return this->p_num_rows;}
   /// return number of columns
-  int num_columns() const {return this->p_num_columns;}
+  ssize_t num_columns() const {return this->p_num_columns;}
 
   /// const access with no bounds check, care recommend
-  INLINE const T &a_no_check(int row, int col) const 
+  INLINE const T &a_no_check(ssize_t row, ssize_t col) const 
     { return fast_a_m_x(row,col); }
   /// access with no bounds check, care recommend
-  INLINE T &a_no_check(int row, int col) 
+  INLINE T &a_no_check(ssize_t row, ssize_t col) 
     { return fast_a_m_x(row,col); }
 
-  INLINE const T &a_no_check_1(int row, int col) const { return fast_a_1(row,col); }
-  INLINE T &a_no_check_1(int row, int col) { return fast_a_1(row,col); }
+  INLINE const T &a_no_check_1(ssize_t row, ssize_t col) const { return fast_a_1(row,col); }
+  INLINE T &a_no_check_1(ssize_t row, ssize_t col) { return fast_a_1(row,col); }
 
   /// const element access function 
-  const T &a_check(int row, int col) const;
+  const T &a_check(ssize_t row, ssize_t col) const;
   /// non-const element access function 
-  T &a_check(int row, int col);
+  T &a_check(ssize_t row, ssize_t col);
 
-  const T &a(int row, int col) const { return A_CHECK(row,col); }
-  T &a(int row, int col) { return A_CHECK(row,col); }
+  const T &a(ssize_t row, ssize_t col) const { return A_CHECK(row,col); }
+  T &a(ssize_t row, ssize_t col) { return A_CHECK(row,col); }
 
   /// const element access operator
-  const T &operator () (int row, int col) const { return a(row,col); }
+  const T &operator () (ssize_t row, ssize_t col) const { return a(row,col); }
   /// non-const element access operator
-  T &operator () (int row, int col) { return a(row,col); }
+  T &operator () (ssize_t row, ssize_t col) { return a(row,col); }
   
   //@}
 
-  bool have_rows_before(int n) const;
-  bool have_columns_before(int n) const;
+  bool have_rows_before(ssize_t n) const;
+  bool have_columns_before(ssize_t n) const;
 
   /** resize matrix. If `set=1`, then the current values in
       the matrix are preserved up to the new size `n`. If the
       new size exceeds the old size, the rest of the matrix is
       filled with the `def_val`
   */
-    void resize(int rows, int cols, int set=1); 
+    void resize(ssize_t rows, ssize_t cols, ssize_t set=1); 
 
   /// fill matrix with value v
   void fill(const T &v);
@@ -232,13 +233,13 @@ public:
   //@{
 
   /// Make the vector `rv` a window onto row `r`
-  void row(EST_TVector<T> &rv, int r, int start_c=0, int len=-1);
+  void row(EST_TVector<T> &rv, ssize_t r, ssize_t start_c=0, int len=-1);
   /// Make the vector `cv` a window onto column `c`
-  void column(EST_TVector<T> &cv, int c, int start_r=0, int len=-1);
+  void column(EST_TVector<T> &cv, ssize_t c, ssize_t start_r=0, int len=-1);
   /// Make the matrix `sm` a window into this matrix.
   void sub_matrix(EST_TMatrix<T> &sm,
-		  int r=0, int numr=EST_ALL, 
-		  int c=0, int numc=EST_ALL);
+		  ssize_t r=0, ptrdiff_t numr=EST_ALL, 
+		  ssize_t c=0, ptrdiff_t numc=EST_ALL);
   //@}
 
   /**@name Copy in and out
@@ -248,51 +249,51 @@ public:
     /** Copy row `r` of matrix to `buf`. `buf`
         should be pre-malloced to the correct size.
         */
-    void copy_row(int r, T *buf, int offset=0, int num=-1) const;
+    void copy_row(ssize_t r, T *buf, ptrdiff_t offset=0, int num=-1) const;
 
     /** Copy row `r` of matrix to
         `buf`. `buf` should be
         pre-malloced to the correct size.  */
     
-    void copy_row(int r, EST_TVector<T> &t, int offset=0, int num=-1) const;
+    void copy_row(ssize_t r, EST_TVector<T> &t, ptrdiff_t offset=0, int num=-1) const;
 
     /** Copy column `c` of matrix to `buf`. `buf`
         should be pre-malloced to the correct size.
         */
-    void copy_column(int c, T *buf, int offset=0, int num=-1) const;
+    void copy_column(ssize_t c, T *buf, ptrdiff_t offset=0, int num=-1) const;
 
     /** Copy column `c` of matrix to
         `buf`. `buf` should
         be pre-malloced to the correct size.  */
 
-    void copy_column(int c,  EST_TVector<T> &t, int offset=0, int num=-1)const;
+    void copy_column(ssize_t c,  EST_TVector<T> &t, ptrdiff_t offset=0, int num=-1)const;
 
     /** Copy buf into row `n` of matrix. 
         */
-    void set_row(int n, const T *buf, int offset=0, int num=-1);
+    void set_row(ssize_t n, const T *buf, ptrdiff_t offset=0, int num=-1);
 
-    void set_row(int n, const EST_TVector<T> &t, int offset=0, int num=-1)
+    void set_row(ssize_t n, const EST_TVector<T> &t, ptrdiff_t offset=0, int num=-1)
       { set_row(n, t.memory(), offset, num); }
 
-    void set_row(int r, 
-                 const EST_TMatrix<T> &from, int from_r, int from_offset=0,
-                 int offset=0, int num=-1); // set nth row
+    void set_row(ssize_t r, 
+                 const EST_TMatrix<T> &from, ssize_t from_r, ssize_t from_offset=0,
+                 ptrdiff_t offset=0, int num=-1); // set nth row
 
 
     /** Copy buf into column `n` of matrix.         
       */
-    void set_column(int n, const T *buf, int offset=0, int num=-1);
+    void set_column(ssize_t n, const T *buf, ptrdiff_t offset=0, int num=-1);
 
-    void set_column(int n, const EST_TVector<T> &t, int offset=0, int num=-1)
+    void set_column(ssize_t n, const EST_TVector<T> &t, ptrdiff_t offset=0, int num=-1)
       { set_column(n, t.memory(), offset, num); }
     
-    void set_column(int c, 
-                    const EST_TMatrix<T> &from, int from_c, int from_offset=0, 
-                    int offset=0, int num=-1); // set nth column
+    void set_column(ssize_t c, 
+                    const EST_TMatrix<T> &from, ssize_t from_c, ssize_t from_offset=0, 
+                    ptrdiff_t offset=0, int num=-1); // set nth column
 
   /** For when you absolutely have to have access to the memory.
     */
-  void set_memory(T *buffer, int offset, int rows, int columns, 
+  void set_memory(T *buffer, ptrdiff_t offset, ssize_t rows, ssize_t columns, 
 		  int free_when_destroyed=0);
 
   //@}
@@ -307,7 +308,7 @@ public:
 
   /// print matrix.
   friend std::ostream& operator << (std::ostream &st,const EST_TMatrix<T> &a)
-    {int i, j; 
+    {ssize_t i, j; 
         for (i = 0; i < a.num_rows(); ++i) {
             for (j = 0; j < a.num_columns(); ++j) 
                 st << a.a_no_check(i, j) << " "; st << std::endl;

@@ -51,7 +51,7 @@ static float compute_gradient(const EST_FVector &x, int num_points);
 
 void delta(EST_Track &tr, EST_Track &d, int regression_length)
 {
-    int reg_index, this_index;
+    ssize_t reg_index, this_index;
     
     // need at least two points to compute gradient
     if ((regression_length < 2)||(regression_length > MAX_REGRESSION_LENGTH)){
@@ -63,8 +63,8 @@ void delta(EST_Track &tr, EST_Track &d, int regression_length)
     // temp stores the points passed to compute_gradient
     EST_FVector temp(regression_length);
     
-    for (int j = 0; j < tr.num_channels(); j++ )
-	for (int i = 0; i < tr.num_frames(); i++)
+    for (ssize_t j = 0; j < tr.num_channels(); j++ )
+	for (ssize_t i = 0; i < tr.num_frames(); i++)
 	{
 	    // copy values needed to compute gradient into temp[]
 	    for (reg_index=0; reg_index<regression_length; reg_index++)

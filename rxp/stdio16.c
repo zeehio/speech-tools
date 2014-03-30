@@ -392,7 +392,7 @@ int Vsprintf(void *buf, CharacterEncoding enc, const char *format,
 	     va_list args)
 {
     int nchars;
-    FILE16 file = {0, 0, -1, StringRead, StringWrite, StringSeek, StringFlush, StringClose, FILE16_write};
+    FILE16 file = {0, 0, -1, StringRead, StringWrite, StringSeek, StringFlush, StringClose, FILE16_write, 0,0};
 
     file.handle = buf;
     file.enc = enc;
@@ -417,7 +417,10 @@ int Vfprintf(FILE16 *file, const char *format, va_list args)
     const char16 *q;
     char16 cbuf[1];
     int mflag;
-    int l, h, L;
+    int l, h;
+    #ifdef HAVE_LONG_DOUBLE
+    int L;
+    #endif
     int nchars = 0;
 
     while((c = *format++))
@@ -432,7 +435,10 @@ int Vfprintf(FILE16 *file, const char *format, va_list args)
 	width = 0;
 	prec = -1;
 	mflag=0;
-	l=0, h=0, L=0;
+	l=0, h=0;
+    #ifdef HAVE_LONG_DOUBLE
+    L=0;
+    #endif
 
 	while(1)
 	{
@@ -500,7 +506,7 @@ int Vfprintf(FILE16 *file, const char *format, va_list args)
 #endif
 	}
 
-	if(format - start + 1 > sizeof(fmt))
+	if(format - start + 1 > (int) sizeof(fmt))
 	{
 	  ERR("Printf: format specifier too long");
 	    errno = 0;
@@ -794,6 +800,7 @@ static int StringClose(FILE16 *file)
 
 static int StringFlush(FILE16 *file)
 {
+    (void) file;
     return 0;
 }
 

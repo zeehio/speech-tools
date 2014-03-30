@@ -152,7 +152,7 @@ static int connect_to_server(const char *host, int port)
 
 static void server_send(int s, const char *text)
 {
-  size_t n=strlen(text);
+  ssize_t n=strlen(text);
   ssize_t sent;
 
   while (n>0)

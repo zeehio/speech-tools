@@ -139,7 +139,7 @@ int track_divide(EST_TList<EST_Track> &mtfr, EST_Track &fv, EST_Relation &key)
     EST_Track a;
     EST_Item  *k, t;
     float kstart, length;
-    int i, j, l, n;
+    ssize_t i, j, l, n;
     
     mtfr.clear();
     
@@ -156,7 +156,7 @@ int track_divide(EST_TList<EST_Track> &mtfr, EST_Track &fv, EST_Relation &key)
     kstart = 0.0;
     
     length = end(*k) - kstart;
-    n = (int)(length / (float) fv.shift()) + 2;
+    n = (ssize_t)(length / (float) fv.shift()) + 2;
     a.resize(n, fv.num_channels());
     
     for (i = 0, l = 0; i < fv.num_frames(); ++i, ++l)
@@ -173,7 +173,7 @@ int track_divide(EST_TList<EST_Track> &mtfr, EST_Track &fv, EST_Relation &key)
 	    k = k->next();
 	    a.set_name(k->name());
 	    length = k->F("end") - kstart;
-	    n = (int)(length / (float) fv.shift()) + 2;
+	    n = (ssize_t)(length / (float) fv.shift()) + 2;
 	    //	    cout << "n frames: " << n << endl;
 	    a.resize(n, fv.num_channels());
 	    a.fill_time(fv.shift());

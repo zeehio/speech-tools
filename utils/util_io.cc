@@ -116,7 +116,7 @@ EST_String stdin_to_file()
     return tmpname;
 }
 
-int Stringtoi(EST_String s, int success)
+int Stringtoi(EST_String s, int &success)
 {
     char *a;
     int d;

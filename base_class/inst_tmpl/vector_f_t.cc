@@ -55,7 +55,7 @@ Instantiate_TSimpleVector(float)
 
 EST_write_status save(const EST_String &filename, const EST_TVector<float> &a)
 {
-    int i;
+    ssize_t i;
     ostream *outf;
     EST_String s;
     if (filename == "-")

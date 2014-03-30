@@ -165,7 +165,7 @@ template<class K, class V> class EST_TKVL {
   // Iteration support
 
 protected:
-  struct IPointer {  EST_Litem *p; };
+  struct IPointer {  EST_Litem *p = NULL; };
 
   void point_to_first(IPointer &ip) const { ip.p = list.head(); }
   void move_pointer_forwards(IPointer &ip) const { ip.p = ip.p->next(); }

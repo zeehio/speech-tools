@@ -44,6 +44,7 @@
 #include <istream>
 #include "EST_String.h"
 #include "EST_common.h"
+#include "EST_File.h"
 
 // I can never really remember this so we'll define it here
 /// The default whitespace characters
@@ -78,7 +79,7 @@ class EST_Token {
     EST_String punc;
     int linenum;
     int linepos;
-    int p_filepos;
+    EST_FilePos p_filepos;
     int p_quoted;
 
   public:
@@ -175,7 +176,7 @@ class EST_Token {
     ///
     void set_col(int c) { linepos = c; }
     /// Set file position in original \ref EST_TokenStream
-    void set_filepos(int c) { p_filepos = c; }
+    void set_filepos(EST_FilePos c) { p_filepos = c; }
     /// Return lower case version of token name
     EST_String lstring() { return downcase(pname); }
     /// Return upper case version of token name
@@ -185,7 +186,7 @@ class EST_Token {
     /// Line position in original \ref EST_TokenStream.
     int col(void) const { return linepos; }
     /// file position in original \ref EST_TokenStream.
-    int filepos(void) const { return p_filepos; }
+    EST_FilePos filepos(void) const { return p_filepos; }
 
     /// A string describing current position, suitable for error messages
     const EST_String pos_description() const;
@@ -250,7 +251,7 @@ class EST_TokenStream{
     int buffer_length;
     int pos;
     int linepos;
-    int p_filepos;
+    EST_FilePos p_filepos;
     int getch(void);
     EST_TokenStream &getch(char &C);
     int peeked_charp;
@@ -363,9 +364,9 @@ class EST_TokenStream{
     /// end of line
     int eoln();
     /// current file position in \ref EST_TokenStream
-    int filepos(void) const { return (type == tst_string) ? pos : p_filepos; }
+    EST_FilePos filepos(void) const { return (type == tst_string) ? pos : p_filepos; }
     /// tell, synonym for filepos
-    int tell(void) const { return filepos(); }
+    EST_FilePos tell(void) const { return filepos(); }
     /// seek, reposition file pointer
     int seek(int position);
     int seek_end();

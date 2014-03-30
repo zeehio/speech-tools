@@ -101,13 +101,13 @@ EST_Val &EST_Val::operator=(const EST_Val &c)
     return *this;
 }
 
-int EST_Val::to_int(void) const
+ssize_t EST_Val::to_int(void) const
 {
     // coerce this to an int
     if (t==val_float)
 	return (int)v.fval;
     else if (t==val_string)
-	return atoi(sval);
+	return atol(sval);
     else
 	return v.ival;  // just for completeness
 }

@@ -48,7 +48,7 @@
 #include "EST_wave_aux.h"
 #include "EST_TNamedEnum.h"
 #include "EST_WaveFile.h"
-
+#include "EST_File.h"
 #include "EST_Track.h"
 
 #include "waveP.h"
@@ -65,19 +65,19 @@ EST_Wave::EST_Wave()
     default_vals();
 }
 
-EST_Wave::EST_Wave(const EST_Wave &w)
+EST_Wave::EST_Wave(const EST_Wave &w) : EST_Featured(w)
 {
     default_vals();
     copy(w);
 }
 
-EST_Wave::EST_Wave(int n, int c, int sr)
+EST_Wave::EST_Wave(ssize_t n, ssize_t c, int sr)
 {
   default_vals(n,c);
   set_sample_rate(sr);
 }
 
-EST_Wave::EST_Wave(int samps, int chans,
+EST_Wave::EST_Wave(ssize_t samps, ssize_t chans,
 		   short *memory, int offset, int sample_rate, 
 		   int free_when_destroyed)
 {
@@ -86,7 +86,7 @@ EST_Wave::EST_Wave(int samps, int chans,
   set_sample_rate(sample_rate);
 }
 
-void EST_Wave::default_vals(int n, int c) 
+void EST_Wave::default_vals(ssize_t n, ssize_t c) 
 {
   // real defaults
   p_values.resize(n,c);
@@ -98,7 +98,7 @@ void EST_Wave::default_vals(int n, int c)
 void EST_Wave::free_wave()
 {
   if (!p_values.p_sub_matrix)
-    p_values.resize(0,0);
+    p_values.resize(0L,0L);
   clear_features();
 }
 
@@ -125,16 +125,16 @@ void EST_Wave::copy(const EST_Wave &w)
     copy_data(w);
 }
 
-short &EST_Wave::a(int i, int channel)
+short &EST_Wave::a(ssize_t i, ssize_t channel)
 {
-  if (i<0 || i>= num_samples())
+  if ((int) i<0 || i>= num_samples())
     {
       cerr << "Attempt to access sample " << i << " of a " << num_samples() << " sample wave.\n";
       if (num_samples()>0)
 	return *(p_values.error_return);
     }
 
-  if (channel<0 || channel>= num_channels())
+  if ( (int)channel<0 || channel>= num_channels())
     {
       cerr << "Attempt to access channel " << channel << " of a " << num_channels() << " channel wave.\n";
       if (num_samples()>0)
@@ -144,16 +144,16 @@ short &EST_Wave::a(int i, int channel)
   return p_values.a_no_check(i,channel);
 }
 
-short EST_Wave::a(int i, int channel) const
+short EST_Wave::a(ssize_t i, ssize_t channel) const
 {
   return ((EST_Wave *)this)->a(i,channel);
 }
 
-short &EST_Wave::a_safe(int i, int channel)
+short &EST_Wave::a_safe(ssize_t i, ssize_t channel)
 {
     static short out_of_bound_value = 0;
 
-    if ((i < 0) || (i >= num_samples()))
+    if (( (int)i < 0) || (i >= num_samples()))
     {   // need to give them something but they might have changed it
 	// so reinitialise it to 0 first
 	out_of_bound_value = 0;
@@ -163,9 +163,9 @@ short &EST_Wave::a_safe(int i, int channel)
 	return a_no_check(i,channel);
 }
 
-void EST_Wave::fill(short v, int channel)
+void EST_Wave::fill(short v, ssize_t channel)
 {
-    if (channel == EST_ALL)
+    if ((int) channel == EST_ALL)
     {
 	if (v == 0)  // this is *much* more efficient and common
 	    memset(values().memory(),0,num_samples()*num_channels()*2);
@@ -173,12 +173,12 @@ void EST_Wave::fill(short v, int channel)
 	    p_values.fill(v);
     }
     else 
-      for (int i = 0; i < num_samples(); ++i)
+      for (ssize_t i = 0; i < num_samples(); ++i)
 	p_values.a_no_check(i,channel) = v;
 }
 
 EST_read_status EST_Wave::load(const EST_String filename, 
-			       int offset, int length,
+			       int offset, ssize_t length,
 			       int rate)
 {
     EST_read_status stat = read_error;
@@ -196,11 +196,11 @@ EST_read_status EST_Wave::load(const EST_String filename,
 }
 
 EST_read_status EST_Wave::load(EST_TokenStream &ts,
-			       int offset, int length,
+			       int offset, ssize_t length,
 			       int rate)
 {
     EST_read_status stat = read_error;
-    int pos = ts.tell();
+    EST_FilePos pos = ts.tell();
     
     for(int n=0; n< EST_WaveFile::map.n() ; n++)
     {
@@ -238,7 +238,7 @@ EST_read_status EST_Wave::load(EST_TokenStream &ts,
 
 EST_read_status EST_Wave::load(const EST_String filename, 
 			       const EST_String type, 
-			       int offset, int length,
+			       int offset, ssize_t length,
 			       int rate)
 {
     EST_read_status stat = read_error;
@@ -259,7 +259,7 @@ EST_read_status EST_Wave::load(const EST_String filename,
 
 EST_read_status EST_Wave::load(EST_TokenStream &ts,
 			       const EST_String type, 
-			       int offset, int length,
+			       int offset, ssize_t length,
 			       int rate)
 {
     EST_WaveFileType t = EST_WaveFile::map.token(type);
@@ -287,8 +287,8 @@ EST_read_status EST_Wave::load(EST_TokenStream &ts,
 
 EST_read_status EST_Wave::load_file(const EST_String filename, 
 		     const EST_String type, int sample_rate,
-		     const EST_String stype, int bov, int nc, int offset,
-		     int length)
+		     const EST_String stype, int bov, ssize_t nc, int offset,
+		     ssize_t length)
 {
     EST_read_status stat = read_error;
     EST_TokenStream ts;
@@ -308,8 +308,8 @@ EST_read_status EST_Wave::load_file(const EST_String filename,
 
 EST_read_status EST_Wave::load_file(EST_TokenStream &ts,
 		     const EST_String type, int sample_rate,
-		     const EST_String stype, int bov, int nc, int offset,
-		     int length)
+		     const EST_String stype, int bov, ssize_t nc, int offset,
+		     ssize_t length)
 
 {
   EST_WaveFileType t = EST_WaveFile::map.token(type);
@@ -337,12 +337,12 @@ EST_read_status EST_Wave::load_file(EST_TokenStream &ts,
 }    
 
 void EST_Wave::sub_wave(EST_Wave &sw, 
-			int offset, int num,
-			int start_c, int nchan)
+			int offset, ssize_t num,
+			ssize_t start_c, ssize_t nchan)
 {
-  if (num == EST_ALL)
+  if ((int)num == EST_ALL)
     num = num_samples()-offset;
-  if (nchan == EST_ALL)
+  if ((int)nchan == EST_ALL)
     nchan = num_channels()-start_c;
 
   p_values.sub_matrix(sw.p_values, offset, num, start_c, nchan);
@@ -509,8 +509,8 @@ void EST_Wave::rescale(float gain, int normalize)
     if (normalize)
     {
 	int max = 0;
-	for (int i = 0; i < num_samples(); ++i)
-	  for (int j = 0; j < num_channels(); ++j)
+	for (ssize_t i = 0; i < num_samples(); ++i)
+	  for (ssize_t j = 0; j < num_channels(); ++j)
 	    if (abs(a_no_check(i,j)) > max)
 		max = abs(a_no_check(i,j));
 	if (fabs(max/32766.0-gain) < 0.001)
@@ -519,8 +519,8 @@ void EST_Wave::rescale(float gain, int normalize)
 	    factor *= 32766.0/(float)max;
     }
     
-    for (int i = 0; i < num_samples(); ++i)
-      for (int j = 0; j < num_channels(); ++j)
+    for (ssize_t i = 0; i < num_samples(); ++i)
+      for (ssize_t j = 0; j < num_channels(); ++j)
 	{
             if (factor == 1.0)
                 ns = a_no_check(i,j);  // avoid float fluctuations
@@ -545,30 +545,31 @@ void EST_Wave::rescale(float gain, int normalize)
 
 void EST_Wave::rescale( const EST_Track &fc )
 {
-  int ns, start_sample, end_sample;
+  int ns;
+  ssize_t start_sample, end_sample;
   float target1, target2, increment, factor, nsf;
   
-  int fc_length = fc.length();
-  int _num_channels = num_channels();
+  ssize_t fc_length = fc.length();
+  ssize_t _num_channels = num_channels();
 
-  cerr << ((int)(fc.t(fc_length-1) * p_sample_rate)) << endl;
+  cerr << ((ssize_t)(fc.t(fc_length-1) * p_sample_rate)) << endl;
 
-  if( ((int)(fc.t(fc_length-1) * p_sample_rate)) > num_samples() )
+  if( ((ssize_t)(fc.t(fc_length-1) * p_sample_rate)) > num_samples() )
     EST_error( "Factor contour track exceeds waveform length (%d samples)",
 		 (fc.t(fc_length-1) * p_sample_rate) - num_samples() );
 
-  start_sample = static_cast<unsigned int>( fc.t( 0 )*p_sample_rate );
-  target1 = fc.a(0,0); // could use separate channels for each waveform channel
+  start_sample = fc.t(0L)*p_sample_rate;
+  target1 = fc.a(0L,0L); // could use separate channels for each waveform channel
 
-  for ( int k = 1; k<fc_length; ++k ){
-    end_sample   = static_cast<unsigned int>( fc.t( k )*p_sample_rate );
+  for (ssize_t k = 1; k<fc_length; ++k ){
+    end_sample   = fc.t( k )*p_sample_rate;
     target2 = fc.a(k);
     
     increment = (target2-target1)/(end_sample-start_sample+1);
   
     factor = target1;
-    for( int i=start_sample; i<end_sample; ++i, factor+=increment )
-      for( int j=0; j<_num_channels; ++j ){
+    for( ssize_t i=start_sample; i<end_sample; ++i, factor+=increment )
+      for( ssize_t j=0; j<_num_channels; ++j ){
             if (factor == 1.0)
                 ns = a_no_check(i,j);  // avoid float fluctuations
             else if (factor == -1.0)
@@ -627,7 +628,7 @@ EST_Wave &EST_Wave::operator +=(const EST_Wave &w)
 // add wave p_values to existing wave in parallel to create multi-channel wave.
 EST_Wave &EST_Wave::operator |=(const EST_Wave &wi)
 {
-    int i, k;
+    ssize_t i, k;
     EST_Wave w = wi; // to allow resampling of const
 
     w.resample(p_sample_rate);  // far too difficult otherwise
@@ -647,7 +648,7 @@ EST_Wave &EST_Wave::operator |=(const EST_Wave &wi)
 
 ostream& operator << (ostream& p_values, const EST_Wave &sig)
 {
-    for (int i = 0; i < sig.num_samples(); ++i)
+    for (ssize_t i = 0; i < sig.num_samples(); ++i)
 	p_values << sig(i) << "\n";
     
     return p_values;

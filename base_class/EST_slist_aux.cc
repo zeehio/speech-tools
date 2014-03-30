@@ -193,10 +193,10 @@ int strlist_member(const EST_StrList &l,const EST_String &s)
     return FALSE;
 }
 
-int strlist_index(const EST_StrList &l,const EST_String &s)
+long int strlist_index(const EST_StrList &l,const EST_String &s)
 {
     EST_Litem *p;
-    int j=0;
+    ssize_t j=0;
     for (p = l.head(); p != 0; p = p->next())
     {
 	if (l.item(p) == s)
@@ -209,7 +209,7 @@ int strlist_index(const EST_StrList &l,const EST_String &s)
 
 void StrList_to_StrVector(EST_StrList &l, EST_StrVector &v)
 {
-    int len,i;
+    ssize_t len,i;
 
     len = l.length();
     v.resize(len);
@@ -223,16 +223,16 @@ void StrList_to_StrVector(EST_StrList &l, EST_StrVector &v)
 
 void StrVector_to_StrList(EST_StrVector &v, EST_StrList &l)
 {
-    int i;
+    ssize_t i;
     l.clear();
     for (i=0;i<v.length();i++)
       l.append(v[i]);
 }
 
-
-int StrVector_index(const EST_StrVector &v,const EST_String &s)
+/* FIXME: ssize_t is larger than long int because it is unsigned */
+long int StrVector_index(const EST_StrVector &v,const EST_String &s)
 {
-    int i;
+    ssize_t i;
     for(i=0;i<v.length();i++)
 	if(v(i) == s)
 	    return i;

@@ -49,6 +49,8 @@
 #include "EST_strcasecmp.h"
 #include "waveP.h"
 #include "EST_FileType.h"
+#include "EST_File.h"
+
 
 using namespace std;
 
@@ -343,6 +345,7 @@ enum EST_write_status save_wave_nist_data(FILE *fp, const short *data, int offse
 				     int sample_rate,
 				     enum EST_sample_type_t sample_type, int bo)
 {
+    (void) sample_rate;
     if (data == NULL)
        return write_ok;
 
@@ -373,6 +376,7 @@ enum EST_read_status load_wave_est(EST_TokenStream &ts, short **data, int
 				   EST_sample_type_t *sample_type, int *bo, 
 				   int offset, int length)
 {
+    (void) offset;
     int data_length, actual_bo;
     short *file_data;
     EST_String byte_order;
@@ -458,6 +462,7 @@ enum EST_write_status save_wave_est_data(FILE *fp, const short *data, int offset
 				       int sample_rate,
 				       enum EST_sample_type_t sample_type, int bo)
 {
+    (void) sample_rate;
     if (data == NULL)
        return write_ok;
 
@@ -700,6 +705,8 @@ enum EST_write_status save_wave_riff_data(FILE *fp, const short *data,
 				     int sample_rate,
 				     enum EST_sample_type_t sample_type, int bo)
 {
+    (void)sample_rate;
+    (void)bo;
     if (data == NULL)
        return write_ok;
 
@@ -932,7 +939,8 @@ enum EST_write_status save_wave_aiff_data(FILE *fp, const short *data, int offse
 				     int sample_rate,
 				     enum EST_sample_type_t sample_type, int bo)
 {
-
+    (void)bo;
+    (void)sample_rate;
     if (data == NULL)
        return write_ok;
     if ((sample_type == st_short) || (sample_type == st_uchar))
@@ -1021,6 +1029,9 @@ enum EST_write_status save_wave_ulaw_data(FILE *fp, const short *data, int offse
 				     int sample_rate,
 				     enum EST_sample_type_t sample_type, int bo)
 {
+    (void)sample_rate;
+    (void)sample_type;
+
     if (data == NULL)
        return write_ok;
 
@@ -1284,6 +1295,9 @@ enum EST_write_status save_wave_snd_data(FILE *fp, const short *data, int offset
 				    int sample_rate,
 				    enum EST_sample_type_t sample_type, int bo)
 {
+    (void)sample_rate;
+    (void)bo;
+
     if (data == NULL)
        return write_ok;
 
@@ -1469,6 +1483,9 @@ enum EST_write_status save_wave_audlab_data(FILE *fp, const short *data, int off
 				       int sample_rate,
 				       enum EST_sample_type_t sample_type, int bo)
 {
+    (void)sample_rate;
+    (void)sample_type;
+    (void)bo;
     if (data == NULL)
        return write_ok;
 
@@ -1555,7 +1572,7 @@ enum EST_read_status load_wave_sd(EST_TokenStream &ts, short **data, int
 	data_length = length *(*num_channels);
     
     file_data = walloc(unsigned char, sample_width * data_length);
-    fseek(fd,hdr->hdr_size+(sample_width*offset*(*num_channels)),
+    EST_fseek(fd,hdr->hdr_size+(sample_width*offset*(*num_channels)),
 	  SEEK_SET);
     if ((dl=fread(file_data,sample_width,data_length,fd)) != data_length)
     {
@@ -1633,6 +1650,8 @@ enum EST_write_status save_wave_sd_data(FILE *fp, const short *data,
 				   enum EST_sample_type_t sample_type, int bo)
 
 {
+    (void)bo;
+    (void)sample_rate;
     if (data == NULL)
        return write_ok;
 
@@ -1752,6 +1771,12 @@ enum EST_write_status save_wave_raw_header(FILE *fp,
 				    int sample_rate,
 				    enum EST_sample_type_t sample_type, int bo)
 {
+    (void)fp;
+    (void)num_samples;
+    (void)num_channels;
+    (void)sample_rate;
+    (void)sample_type;
+    (void)bo;
     return write_ok;
 }
 
@@ -1761,6 +1786,7 @@ enum EST_write_status save_wave_raw_data(FILE *fp, const short *data,
 				    int sample_rate,
 				    enum EST_sample_type_t sample_type, int bo)
 {
+    (void)sample_rate;
     if (data == NULL)
        return write_ok;
     

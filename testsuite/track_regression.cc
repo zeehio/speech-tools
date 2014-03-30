@@ -49,11 +49,11 @@ using namespace std;
 void dump_track(EST_Track &tr, EST_String comment)
 {
   printf("[ Track %s\n", (const char *)comment);
-  for (int f=0; f<tr.num_frames(); f++)
+  for (ssize_t f=0; f<tr.num_frames(); f++)
     if (tr.val(f))
       {
-	printf("  %3d:\t%3.3f", f, tr.t(f));
-	for(int c=0; c<tr.num_channels(); c++)
+	printf("  %3ld:\t%3.3f", f, tr.t(f));
+	for(ssize_t c=0; c<tr.num_channels(); c++)
 	  printf("\t%3.3f", tr.a(f,c));
 	printf("\n");
       }
@@ -71,8 +71,8 @@ int main(void)
   // This is different on different architectures (of course)
   // cout << "EST_Track size = " << sizeof(EST_Track) << " bytes.\n";
 
-  for(int i1=0; i1<tr.num_frames(); i1++)
-    for(int j1=0; j1<tr.num_channels(); j1++)
+  for(ssize_t i1=0; i1<tr.num_frames(); i1++)
+    for(ssize_t j1=0; j1<tr.num_channels(); j1++)
       {
 	tr.a(i1,j1) = i1 + j1/100.0;
 	tr.t(i1) = i1*0.5;

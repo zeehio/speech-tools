@@ -60,10 +60,10 @@ int ilist_member(const EST_IList &l,int i)
     return FALSE;
 }
 
-int ilist_index(const EST_IList &l,int i)
+long int ilist_index(const EST_IList &l,int i)
 {
     EST_Litem *p;
-    int j=0;
+    ssize_t j=0;
     for (p = l.head(); p != 0; p = p->next())
     {
 	if (l.item(p) == i)
@@ -77,7 +77,7 @@ int ilist_index(const EST_IList &l,int i)
 
 void IList_to_IVector(EST_IList &l, EST_IVector &v)
 {
-    int len,i;
+    ssize_t len,i;
 
     len = l.length();
     v.resize(len);
@@ -91,16 +91,16 @@ void IList_to_IVector(EST_IList &l, EST_IVector &v)
 
 void IVector_to_IList(EST_IVector &v, EST_IList &l)
 {
-    int i;
+    ssize_t i;
     l.clear();
     for (i=0;i<v.length();i++)
       l.append(v[i]);
 }
 
 
-int IVector_index(const EST_IVector &v,const int s)
+long int IVector_index(const EST_IVector &v,const int s)
 {
-    int i;
+    ssize_t i;
     for(i=0;i<v.length();i++)
 	if(v(i) == s)
 	    return i;

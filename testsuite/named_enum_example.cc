@@ -85,10 +85,10 @@ extern EST_TNamedEnum<Colour> ColourMap;
 
 Start_TNamedEnum(Colour, ColourMap)
 //  enum element         list of names
-  { c_unknown,		{"kinda brownish"}},
-  { c_red,		{"red", "scarlet"}},
-  { c_blue,		{"blue", "navy", "sad"}},
-  { c_unknown,		{NULL}} // looking up unknown names gives c_unknown
+  { c_unknown,		{"kinda brownish"},0},
+  { c_red,		{"red", "scarlet"},0},
+  { c_blue,		{"blue", "navy", "sad"},0},
+  { c_unknown,		{NULL},0} // looking up unknown names gives c_unknown
 				// looking up unknown enum values gives NULL
 End_TNamedEnum(Colour, ColourMap)
 
@@ -98,10 +98,10 @@ End_TNamedEnum(Colour, ColourMap)
 
 Start_TNamedEnum(Colour, SpanishColourMap)
 //  enum element         list of names
-  { c_unknown,		{"no conocido"}},
-  { c_red,		{"rojo", "escarlata", "sangre"}},
-  { c_blue,		{"azul", "piscina", "mar", "cielo"}},
-  { c_unknown,		{NULL}} 
+  { c_unknown,		{"no conocido"},0},
+  { c_red,		{"rojo", "escarlata", "sangre"},0},
+  { c_blue,		{"azul", "piscina", "mar", "cielo"},0},
+  { c_unknown,		{NULL},0} 
 End_TNamedEnum(Colour, SpanishColourMap)
 
 // ------- Alternative including extra information ---------------
@@ -125,7 +125,7 @@ Start_TNamedEnumI(Colour, colour_info,  RGBColourMap)
   { c_unknown,	{"kinda grey"},			{0x7f, 0x7f, 0x7f}},
   { c_red,	{"red", "scarlet"},		{0xff, 0, 0}},
   { c_blue,	{"blue", "navy", "sad"},	{0, 0, 0xff}},
-  { c_unknown,	{NULL}}
+  { c_unknown,	{NULL},{0,0,0}}
 End_TNamedEnumI(Colour, colour_info,  RGBColourMap)
 
 
@@ -182,7 +182,10 @@ int main(void)
     {
       cout << "\n\ncolour name map\n";
       cout.flush();
-      system("cat tmp/colour.map");
+      if (system("cat tmp/colour.map") != 0) {
+        cerr << "Error printing file to screen" << endl;
+        exit(-1);
+      }
     }
 
   // Of course this can result in the file not being valid when the
@@ -202,7 +205,10 @@ int main(void)
     {
       cout << "\n\ncolour name map (spanish)\n";
       cout.flush();
-      system("cat tmp/colour_spanish.map");
+      if (system("cat tmp/colour_spanish.map") != 0) {
+        cerr << "Error printing file to screen" << endl;
+        exit(-1);
+      }
     }
 
   // There are two corresponding ways to read in a map.
@@ -217,7 +223,10 @@ int main(void)
       cout << "\n\nread in table\n";
       LoadedColourMap.save("tmp/tmp.map");
       cout.flush();
-      system("cat tmp/tmp.map");
+      if(system("cat tmp/tmp.map") != 0) {
+        cerr << "Error printing file to screen" << endl;
+        exit(-1);
+      }
     }
 
   // If it's defined in the file using the names... 
@@ -230,7 +239,10 @@ int main(void)
 
       LoadedColourMap.save("tmp/tmp.map");
       cout.flush();
-      system("cat tmp/tmp.map");
+      if (system("cat tmp/tmp.map") != 0) {
+        cerr << "Error printing file to screen" << endl;
+        exit(-1);
+      }
     }
 
   exit(0);

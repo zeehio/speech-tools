@@ -251,7 +251,7 @@ void label_map(EST_Relation &seg, EST_Option &map)
 {
     EST_Item *p, *n;
     
-    for (p = seg.head(); p != 0; n = p)
+    for (p = seg.head(); p != 0; p = n)
     {
 	n = p->next();
 	if (map.present(p->name()))

@@ -92,7 +92,7 @@ void smooth_phrase(EST_Track &fz, EST_Track &speech, EST_Features &op,
 
 void smooth_portion(EST_Track &c, EST_Features &op)
 {
-    int i;
+    ssize_t i;
     float *a;  // need float * so it can be passed to array_smoother
     struct Ms_Op *ms;
     ms = new Ms_Op;
@@ -135,7 +135,7 @@ static void interp(const EST_Track &c, const EST_Track &speech, int fill,
 {
     // Interpolate between unvoiced sections, and ensure breaks
     // during silences
-    int i, n, p;
+    ssize_t i, n, p;
     float m;
     float n_val, p_val;
     float f = c.shift();

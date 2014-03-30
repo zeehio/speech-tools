@@ -48,9 +48,9 @@
 
 using namespace std;
 
-static int match_rf_point(EST_Track &fz, int b_start, int b_stop, 
-			  int e_start, int e_stop, 
-			  int &mi, int &mj);
+static int match_rf_point(EST_Track &fz, ssize_t b_start, ssize_t b_stop, 
+			  ssize_t e_start, ssize_t e_stop, 
+			  ssize_t &mi, ssize_t &mj);
 
 static void make_int_item(EST_Item &e, const EST_String name, float end, 
 				     float start_pos,
@@ -63,7 +63,7 @@ static void make_int_item(EST_Item &e, const EST_String name, float end,
 
 static int rf_match(EST_Track &fz, EST_Item &ev, float range);
 
-static int zero_cross(EST_Track &fz);
+static ssize_t zero_cross(EST_Track &fz);
 
 static int comp_extract(EST_Track &fz, EST_Track &part, float &start, float
 			&end, float min);
@@ -356,9 +356,9 @@ static int comp_extract(EST_Track &fz, EST_Track &part, float &start, float
 
 }
 
-static int zero_cross(EST_Track &fz)
+static ssize_t zero_cross(EST_Track &fz)
 {
-    for (int i = 0; i < fz.num_frames() - 1; ++i)
+    for (ssize_t i = 0; i < fz.num_frames() - 1; ++i)
 	if ((fz.a(i) >= 0.0) && (fz.a(i + 1) < 0.0))
 	    return i;
     
@@ -374,8 +374,8 @@ static int rf_match(EST_Track &fz, EST_Item &ev, float range)
 { 
     int n;
     EST_Track diff;
-    int start, stop;
-    int b_start, b_stop, e_start, e_stop, region;
+    ssize_t start, stop;
+    ssize_t b_start, b_stop, e_start, e_stop, region;
     EST_Features empty;
     
     if (fz.num_frames() <= 0)
@@ -497,7 +497,7 @@ static int rf_match(EST_Track &fz, EST_Item &ev, float range)
 static void silence_f0(EST_Relation &ev, EST_Track &fz)
 {
     EST_Item * e;
-    int i;
+    ssize_t i;
 
     for (e = ev.head(); e; e = e->next())
 	if (sil_item(*e))
@@ -631,7 +631,7 @@ static void make_int_item(EST_Item &tmp,
 static float distance(EST_Track &fz, int pos, EST_Track &new_fz, int
 	       num_points)
 {
-    int i;
+    ssize_t i;
     float distance = 0.0;
     float diff;
     
@@ -656,10 +656,10 @@ static float weight(float duration)
 // fz contour. The search is bounded by the b/e_start an b/e_stop
 // values. The contour fz, should have no breaks in it.
 
-static int match_rf_point(EST_Track &fz, int b_start, int b_stop, 
-			  int e_start, int e_stop, int &mi, int &mj)
+static int match_rf_point(EST_Track &fz, ssize_t b_start, ssize_t b_stop, 
+			  ssize_t e_start, ssize_t e_stop, ssize_t &mi, ssize_t &mj)
 {
-    int i, j, k;
+    ssize_t i, j, k;
     float s_pos, e_pos, s_freq, e_freq, t;
     float amp, duration, dist, ndist;
     float min_dist = MAXFLOAT;

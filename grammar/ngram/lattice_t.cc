@@ -51,7 +51,15 @@ Declare_TSortable_T(Lattice::Node *, Lattice_Node_P)
 Declare_TList_T(Lattice::symbol_t, Lattice_symbol_t_P)
 Declare_TSortable_T(Lattice::symbol_t, Lattice_symbol_t_P)
 
-Declare_TVector_Base_T(Lattice::symbol_t, {0}, {0}, Lattice_symbol_t_P)
+/* The next Declare_TVector_Base_T does not work, so I have written
+ * the macro contents directly. There should be a way to make the
+ * preprocessor understand, but I am not able to find it. Sergio Oller */
+//Declare_TVector_Base_T(Lattice::symbol_t, {0,0}, {0,0}, Lattice_symbol_t_P)
+static Lattice::symbol_t const Lattice_symbol_t_P_vec_def_val_s={0,0};
+static Lattice::symbol_t Lattice_symbol_t_P_vec_error_return_s={0,0};
+template <> Lattice::symbol_t const *EST_TVector<Lattice::symbol_t>::def_val=&Lattice_symbol_t_P_vec_def_val_s;
+template <> Lattice::symbol_t *EST_TVector<Lattice::symbol_t>::error_return=&Lattice_symbol_t_P_vec_error_return_s;
+
 
 #if defined(INSTANTIATE_TEMPLATES)
 

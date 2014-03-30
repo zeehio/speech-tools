@@ -49,6 +49,8 @@
 #include "EST_Ngrammar.h"
 #include "EST_Token.h"
 #include "EST_cutils.h"
+#include "EST_File.h"
+
 
 using namespace std;
 
@@ -75,7 +77,8 @@ load_ngram_arpa(const EST_String filename, EST_Ngrammar &n, const EST_StrList &v
     EST_TokenStream ts;
     EST_String s;
     int i,j,k, order=0;
-    double occur,weight;
+    double weight;
+    /*double occur;*/
     int this_num,this_order;
 
     if (ts.open(filename) == -1)
@@ -173,8 +176,8 @@ load_ngram_arpa(const EST_String filename, EST_Ngrammar &n, const EST_StrList &v
 		return misc_read_error;
 	    }
 
-	    occur = atof(ts.get().string());
-
+	    /*occur = atof(ts.get().string()); unused*/
+        ts.get().string();
 
 	    // can't for backoff grammars, need to set probs directly
 	    
@@ -335,7 +338,7 @@ load_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n)
     
     // Need to get to the position one after the newline and
     // who knows what TokenStream has already read,
-    fseek(ifd,(long)(ts.peek().filepos()+5),SEEK_SET);
+    EST_fseek(ifd,(long)(ts.peek().filepos()+5),SEEK_SET);
     
     if(!n.init(order,EST_Ngrammar::dense,vocab,pred_vocab))
     {
@@ -346,14 +349,14 @@ load_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n)
     
     EST_StrVector window(order);
     
-    freq_data_start = ftell(ifd);
-    fseek(ifd,0,SEEK_END);
-    freq_data_end = ftell(ifd);
+    freq_data_start = EST_ftell(ifd);
+    EST_fseek(ifd,0,SEEK_END);
+    freq_data_end = EST_ftell(ifd);
     num_entries = (freq_data_end-freq_data_start)/sizeof(double);
     double *dd = new double[num_entries];
     
     // Go back to start of data
-    fseek(ifd,freq_data_start,SEEK_SET);
+    EST_fseek(ifd,freq_data_start,SEEK_SET);
     
     if (fread(dd,sizeof(double),num_entries,ifd) != (unsigned)num_entries)
     {
@@ -661,8 +664,8 @@ save_ngram_arpa(const EST_String filename, EST_Ngrammar &n)
     // ARPA MIT-LL format - see HTK manual !!
     
     ostream *ost;
-    int i,num_n,o;
-    
+    int i,o;
+    /*int num_n;*/
     if (filename == "-")
 	ost = &cout;
     else
@@ -676,7 +679,7 @@ save_ngram_arpa(const EST_String filename, EST_Ngrammar &n)
     //*ost << *(n.vocab) << endl;
     
     // count number of ngrams
-    num_n = (int)n.samples();
+    /*num_n = (int)n.samples();*/
     *ost << "\\data\\" << endl;
     
     double *count = new double;

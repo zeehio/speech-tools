@@ -54,7 +54,7 @@ static inline int irint(float f) { return (int)(f+0.5); }
 static inline int irint(double f) { return (int)(f+0.5); }
 static inline int ifloor(float f) { return (int)(f); }
 
-float correlation(EST_Track &a, EST_Track &b, int cha, int chb);
+float correlation(EST_Track &a, EST_Track &b, ssize_t cha, ssize_t chb);
 
 /* Allow EST_Track to be used in an EST_Val */
 VAL_REGISTER_CLASS(track,EST_Track)
@@ -90,22 +90,22 @@ void time_med_smooth(EST_Track &c, float x)
 	cerr << "Error in smoothing: time spacing problem\n";
 	return;
     }
-    int n = (int)(x / c.shift());
-    for (int i = 0; i < c.num_channels(); ++i)
+    ssize_t n = (ssize_t)(x / c.shift());
+    for (ssize_t i = 0; i < c.num_channels(); ++i)
 	simple_med_smooth(c, n, i);
 }
 
 void time_mean_smooth(EST_Track &c, float x)
 {
-    int j;
+    ssize_t j;
     EST_Track t;
-    int n = (int)(x / c.shift());
+    ssize_t n = (int)(x / c.shift());
 
     for (j = 0; j < c.num_channels(); ++j)
 	simple_mean_smooth(c, n, j);
 }
 
-void simple_med_smooth(EST_Track &c, int n, int channel) 
+void simple_med_smooth(EST_Track &c, ssize_t n, ssize_t channel) 
 {// simple median smoother of order n
 
 
@@ -119,7 +119,7 @@ void simple_med_smooth(EST_Track &c, int n, int channel)
     if(n < 3)
 	return;
 
-    int i, j, h, k;
+    ssize_t i, j, h, k;
     float *a = new float[c.num_frames()];
     float *m = new float[n];
     h = n/2;
@@ -161,9 +161,9 @@ void simple_med_smooth(EST_Track &c, int n, int channel)
     delete [] m;
 }
 
-void simple_mean_smooth(EST_Track &c, int n, int channel)
+void simple_mean_smooth(EST_Track &c, ssize_t n, ssize_t channel)
 { // simple mean smoother of order n
-    int i, j, h, k=1;
+    ssize_t i, j, h, k=1;
     float *a = new float[c.num_frames()];
     float sum;
     h = n/2;
@@ -204,7 +204,7 @@ void simple_mean_smooth(EST_Track &c, int n, int channel)
 
 void absolute(EST_Track &tr)
 {
-    int i, j;
+    ssize_t i, j;
     for (i = 0; i < tr.num_frames(); ++i)
 	for (j = 0; j < tr.num_channels(); ++j)
 	    tr.a(i, j) = fabs(tr.a(i, j));
@@ -231,16 +231,16 @@ void normalise(EST_TrackList &trlist, EST_FVector &mean, EST_FVector &sd,
 void normalise(EST_Track &tr, EST_FVector &mean, EST_FVector &sd,
 	       float upper, float lower)
 {
-    for (int i = 0; i < tr.num_channels(); ++i)
+    for (ssize_t i = 0; i < tr.num_channels(); ++i)
 	normalise(tr, mean(i), sd(i), i, upper, lower);
 }
 
-void normalise(EST_Track &tr, float mean, float sd, int channel,
+void normalise(EST_Track &tr, float mean, float sd, ssize_t channel,
 	       float upper, float lower)
 {
     // This scales the data so that 2 standard deviations worth of values
     // lie between upper and lower.
-    int i;
+    ssize_t i;
     // cout << "upper = " << upper << " lower " << lower << endl;
     for (i = 0; i < tr.num_frames(); ++i)
 	if (!tr.track_break(i))
@@ -254,7 +254,7 @@ EST_Track differentiate(EST_Track &c, float samp_int)
     // this in a more sophisticated way!!!
     
     EST_Track diff;
-    int i, j;
+    ssize_t i, j;
     float dist;
     
     if (samp_int != 0.0)
@@ -277,9 +277,9 @@ EST_Track differentiate(EST_Track &c, float samp_int)
 
 EST_Track difference(EST_Track &a, EST_Track &b)
 {
-    int i, j;
+    ssize_t i, j;
     
-    int size = Lof(a.num_frames(), b.num_frames());
+    ssize_t size = Lof(a.num_frames(), b.num_frames());
     EST_Track diff = a;
     
     // ERROR REORG - this needs to return a proper error
@@ -297,11 +297,11 @@ EST_Track difference(EST_Track &a, EST_Track &b)
     return diff;
 }
 
-EST_Track difference(EST_Track &a, EST_Track &b, int channel_a, int channel_b)
+EST_Track difference(EST_Track &a, EST_Track &b, ssize_t channel_a, ssize_t channel_b)
 {
-    int i;
+    ssize_t i;
     
-    int size = Lof(a.num_frames(), b.num_frames());
+    ssize_t size = Lof(a.num_frames(), b.num_frames());
     EST_Track diff = a;
     
     for (i = 0; i < size; ++i)
@@ -312,7 +312,7 @@ EST_Track difference(EST_Track &a, EST_Track &b, int channel_a, int channel_b)
 
 EST_Track difference(EST_Track &a, EST_Track &b, EST_String fname)
 {
-    int ch_a, ch_b;
+    ssize_t ch_a, ch_b;
     EST_Track cor;
 
     if (!a.has_channel(fname))
@@ -336,15 +336,15 @@ EST_Track difference(EST_Track &a, EST_Track &b, EST_String fname)
 }
 
 
-float mean( const EST_Track &tr, int channel )
+float mean( const EST_Track &tr, ssize_t channel )
 {
-  if ( channel<0 || channel >= tr.num_channels() )
+  if ( (int)channel<0 || channel >= tr.num_channels() )
     EST_error( "Tried to access channel %d of %d channel track", 
 	       channel, tr.num_channels() );
 
   float mean=0.0;
-  int i, n;
-  int tr_num_frames = tr.num_frames();
+  ssize_t i, n;
+  ssize_t tr_num_frames = tr.num_frames();
 
   for( i=0, n=0; i<tr_num_frames; ++i )
     if( !tr.track_break(i) ){
@@ -361,7 +361,7 @@ void mean( const EST_Track &tr, EST_FVector &m )
 
   m.resize( tr_num_channels, 0 );
   
-  for( unsigned int i=0; i<tr_num_channels; ++i )
+  for( ssize_t i=0; i<tr_num_channels; ++i )
     m.a_no_check(i) = mean( tr, i );
 }
 
@@ -369,14 +369,14 @@ void mean( const EST_Track &tr, EST_FVector &m )
 /** Calculate the mead and standard deviation for a single channel of a track
 */
 
-void meansd(EST_Track &tr, float &m, float &sd, int channel)
+void meansd(EST_Track &tr, float &m, float &sd, ssize_t channel)
 {
-  int i, n;
+  ssize_t i, n;
 
   m = mean( tr, channel );
 
   float var=0.0;
-  int tr_num_frames = tr.num_frames();
+  ssize_t tr_num_frames = tr.num_frames();
   for( i=0, n=0; i<tr_num_frames; ++i)
     if( !tr.track_break(i) ){
       var += pow(tr.a_no_check(i, channel) - m, float(2.0));
@@ -395,10 +395,10 @@ void meansd(EST_Track &tr, float &m, float &sd, int channel)
 two tracks 
 @see abs_error, rms_error
 */
-float rms_error(EST_Track &a, EST_Track &b, int channel)
+float rms_error(EST_Track &a, EST_Track &b, ssize_t channel)
 {
-    int i;
-    int size = Lof(a.num_frames(), b.num_frames());
+    ssize_t i;
+    ssize_t size = Lof(a.num_frames(), b.num_frames());
     float sum = 0;
     
     for (i = 0; i < size; ++i)
@@ -409,10 +409,10 @@ float rms_error(EST_Track &a, EST_Track &b, int channel)
     return sum;
 }
 
-float abs_error(EST_Track &a, EST_Track &b, int channel)
+float abs_error(EST_Track &a, EST_Track &b, ssize_t channel)
 {
-    int i;
-    int size = Lof(a.num_frames(), b.num_frames());
+    ssize_t i;
+    ssize_t size = Lof(a.num_frames(), b.num_frames());
     float sum = 0;
     for (i = 0; i < size; ++i)
     {
@@ -423,10 +423,10 @@ float abs_error(EST_Track &a, EST_Track &b, int channel)
     return sum / size;
 }
 
-float correlation(EST_Track &a, EST_Track &b, int channela, int channelb)
+float correlation(EST_Track &a, EST_Track &b, ssize_t channela, ssize_t channelb)
 {
-    int i;
-    int size = Lof(a.num_frames(), b.num_frames());
+    ssize_t i;
+    ssize_t size = Lof(a.num_frames(), b.num_frames());
     float predict,real;
     EST_SuffStats x,y,xx,yy,xy,se,e;
     float cor,error;
@@ -462,7 +462,7 @@ float correlation(EST_Track &a, EST_Track &b, int channela, int channelb)
 
 void meansd(EST_Track &a, EST_FVector &m, EST_FVector &sd)
 {
-    int i;
+    ssize_t i;
     
     m.resize(a.num_channels());
     sd.resize(a.num_channels());
@@ -471,11 +471,11 @@ void meansd(EST_Track &a, EST_FVector &m, EST_FVector &sd)
 	meansd(a, m[i], sd[i], i);
 }
 
-void meansd(EST_TrackList &tl, float &mean, float &sd, int channel)
+void meansd(EST_TrackList &tl, float &mean, float &sd, ssize_t channel)
 {
     EST_Litem *p;
     float var=0.0;
-    int i, n;
+    ssize_t i, n;
 
     n = 0;
     mean = 0.0;
@@ -503,7 +503,7 @@ void meansd(EST_TrackList &tl, float &mean, float &sd, int channel)
 
 void meansd(EST_TrackList &tl, EST_FVector &m, EST_FVector &sd)
 {
-    int i;
+    ssize_t i;
     
     m.resize(tl.first().num_channels());
     sd.resize(tl.first().num_channels());
@@ -514,7 +514,7 @@ void meansd(EST_TrackList &tl, EST_FVector &m, EST_FVector &sd)
 
 EST_FVector rms_error(EST_Track &a, EST_Track &b)
 {
-    int i;
+    ssize_t i;
     EST_FVector e;
     
     // ERROR REORG - this needs to return a proper error
@@ -533,7 +533,7 @@ EST_FVector rms_error(EST_Track &a, EST_Track &b)
 
 EST_FVector abs_error(EST_Track &a, EST_Track &b)
 {
-    int i;
+    ssize_t i;
     EST_FVector e;
     
     // ERROR REORG - this needs to return a proper error
@@ -552,7 +552,7 @@ EST_FVector abs_error(EST_Track &a, EST_Track &b)
 
 EST_FVector correlation(EST_Track &a, EST_Track &b)
 {
-    int i;
+    ssize_t i;
     EST_FVector cor;
     
     // ERROR REORG - this needs to return a proper error
@@ -599,7 +599,7 @@ EST_FVector correlation(EST_Track &a, EST_Track &b, EST_String fname)
 
 EST_Track error(EST_Track &ref, EST_Track &test, int relax)
 {
-    int i, j, k, l;
+    ssize_t i, j, k, l;
     EST_Track diff;
     diff = ref;
     float t;
@@ -635,7 +635,7 @@ EST_Track error(EST_Track &ref, EST_Track &test, int relax)
 
 void align_to_track(EST_Track &tr, float &start, float &end)
 {
-  int is, ie;
+  ssize_t is, ie;
 
   // cout << " in " << start << " " << end << "\n";
 
@@ -676,8 +676,8 @@ void move_to_frame_ends(EST_Track &tr,
     int is = tr.index(start_t-offset);
     int ie = tr.index(end_t-offset);
 
-    int start_s, start_c, start_e;
-    int end_s, end_c, end_e=0;
+    ssize_t start_s, start_c, start_e;
+    ssize_t end_s, end_c, end_e=0;
 
     if (tr.has_channel(channel_length))
     {
@@ -700,7 +700,7 @@ int nearest_boundary(EST_Track &tr, float time, int sample_rate, float offset)
 
     float distance = 10000;
 
-    for (int i = 0; i < tr.num_frames(); ++i)
+    for (ssize_t i = 0; i < tr.num_frames(); ++i)
     {
 	float start, center, end;
 
@@ -718,7 +718,7 @@ int nearest_boundary(EST_Track &tr, float time, int sample_rate, float offset)
 
 void move_start(EST_Track &tr, float shift)
 {
-    for(int i=0; i<tr.num_frames(); i++)
+    for(ssize_t i=0; i<tr.num_frames(); i++)
 	tr.t(i) += shift;
 }
 
@@ -733,7 +733,7 @@ void set_start(EST_Track &tr, float start)
 void extract2(EST_Track &orig, float start, float end, EST_Track &ret)
 {
     int from, to;
-    int i, j;
+    ssize_t i, j;
     from = orig.index(start);
     to = orig.index_below(end);
 
@@ -764,11 +764,11 @@ void extract2(EST_Track &orig, float start, float end, EST_Track &ret)
 
 void extract(EST_Track &orig, float start, float end, EST_Track &ret)
 {
-    int new_num_frames;
+    ssize_t new_num_frames;
     
     ret.copy_setup(orig);
     
-    int i, j;
+    ssize_t i, j;
     int is = 0, ie = 0;
     
     is = orig.index(start);
@@ -821,17 +821,14 @@ int get_order(const EST_Track &tr)
 
 int sum_lengths(const EST_Track &t, 
 		int sample_rate,
-		int start_frame, int end_frame)
+		ssize_t start_frame, ssize_t end_frame)
 {
     (void)sample_rate;
     int l=0;
-    
-    if (end_frame < 0)
-	end_frame = t.num_frames();
-    
+        
     if (t.has_channel(channel_length))
-	for(int i=start_frame; i<end_frame; i++)
-	    l += (int)t.a(i, channel_length);
+	for(ssize_t i=start_frame; i<end_frame; i++)
+	    l += (ssize_t)t.a(i, channel_length);
     else
     {
 	cout << "no length channel";
@@ -851,9 +848,9 @@ void get_start_positions(const EST_Track &t, int sample_rate,
 	return;
     }
     
-    for(int i=0; i<t.num_frames(); i++)
+    for(ssize_t i=0; i<t.num_frames(); i++)
     {
-	int wstart, wcent, wend;
+	ssize_t wstart, wcent, wend;
 	get_frame(t, sample_rate, i, wstart, wcent, wend);
 	pos[i] = wstart;
 	// cout << "frame " << i << " t " << t.t(i) << " sr " << sample_rate << " offset " << t.a(i,channel_offset) << " cent " << wcent << " pos " << wstart << "\n";
@@ -887,7 +884,7 @@ void extract(EST_Track &tr, EST_Option &al)
 
 void extract_channel(EST_Track &orig, EST_Track &nt, EST_IList &ch_list)
 {
-    int new_ch, i, j, k;
+    ssize_t new_ch, i, j, k;
     EST_Litem *p;
     new_ch = ch_list.length();
     
@@ -917,8 +914,8 @@ void ParallelTracks(EST_Track &a, EST_TrackList &list,const EST_String &style)
     // "1" means take the size of the longest as the number of frames in
     // the created track.
     EST_Litem *p, *longest;
-    int num_channels, num_frames;
-    int i, j, k, n;
+    ssize_t num_channels, num_frames;
+    ssize_t i, j, k, n;
     
     for (num_channels=0,p=list.head(); p; p=p->next())
 	num_channels += list(p).num_channels();
@@ -959,10 +956,10 @@ void ParallelTracks(EST_Track &a, EST_TrackList &list,const EST_String &style)
 	a.t(i) = list(longest).t(i);
 }
 
-void channel_to_time(EST_Track &tr, int channel, float scale)
+void channel_to_time(EST_Track &tr, ssize_t channel, float scale)
 {  
     
-    for(int i=0; i < tr.num_frames(); i++)
+    for(ssize_t i=0; i < tr.num_frames(); i++)
     {
 	tr.t(i) = tr.a(i,channel) * scale;
     }
@@ -971,7 +968,7 @@ void channel_to_time(EST_Track &tr, int channel, float scale)
 
 void channel_to_time(EST_Track &tr, EST_ChannelType c, float scale)
 {
-    int channel = NO_SUCH_CHANNEL;
+    ssize_t channel = NO_SUCH_CHANNEL;
     
     if (tr.map() != 0 && (channel = (tr.map()->get(c)) != NO_SUCH_CHANNEL))
     {
@@ -987,7 +984,7 @@ void channel_to_time(EST_Track &tr, EST_ChannelType c, float scale)
 
 void channel_to_time(EST_Track &tr, const EST_String c_name, float scale)
 {
-    for (int c=0; c<tr.num_channels(); c++)
+    for (ssize_t c=0; c<tr.num_channels(); c++)
 	if (tr.channel_name(c) == c_name)
 	{
 	    channel_to_time(tr, c, scale);
@@ -998,10 +995,10 @@ void channel_to_time(EST_Track &tr, const EST_String c_name, float scale)
     abort();
 }
 
-void channel_to_time_lengths(EST_Track &tr, int channel, float scale)
+void channel_to_time_lengths(EST_Track &tr, ssize_t channel, float scale)
 {  
     float tt=0;
-    for(int i=0; i < tr.num_frames(); i++)
+    for(ssize_t i=0; i < tr.num_frames(); i++)
     {
 	// cout << "c_t_t " << i << " " << tt << "\n";
 	tr.t(i) = tt;
@@ -1012,7 +1009,7 @@ void channel_to_time_lengths(EST_Track &tr, int channel, float scale)
 
 void channel_to_time_lengths(EST_Track &tr, EST_ChannelType c, float scale)
 {
-    int channel = NO_SUCH_CHANNEL;
+    ssize_t channel = NO_SUCH_CHANNEL;
     
     if (tr.map()!=0 && (channel = tr.map()->get(c)) != NO_SUCH_CHANNEL)
     {
@@ -1028,7 +1025,7 @@ void channel_to_time_lengths(EST_Track &tr, EST_ChannelType c, float scale)
 
 void channel_to_time_lengths(EST_Track &tr, const EST_String c_name, float scale)
 {
-    for (int c=0; c<tr.num_channels(); c++)
+    for (ssize_t c=0; c<tr.num_channels(); c++)
 	if (tr.channel_name(c) == c_name)
 	{
 	    channel_to_time_lengths(tr, c, scale);
@@ -1096,7 +1093,7 @@ void track_info(EST_Track &t)
 	cout << "Frame shift: " << t.shift() << endl;
     else
 	cout << "Frame shift: varied" << endl;
-    for (int i = 0; i < t.num_channels(); ++i)
+    for (ssize_t i = 0; i < t.num_channels(); ++i)
 	cout << "Channel: " << i << ": " << t.channel_name(i) << endl;
 }
 

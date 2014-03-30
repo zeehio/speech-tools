@@ -53,7 +53,7 @@ static int pos_phone(const EST_Relation &seg, float x, float shift);
 
 void track_to_label(const EST_Track &tr, EST_Relation &lab, float thresh)
 {
-    int i;
+    ssize_t i;
     EST_Item *tmp_seg;
     int p_pos = FALSE;
     int c_pos = FALSE;
@@ -136,7 +136,7 @@ void label_to_track(const EST_Relation &lab, EST_Track &tr,
 		    range, float req_l, const EST_String &pad)
 {
     EST_Item tmp_seg;
-    int i;
+    ssize_t i;
     int n, endn;
 
     n = (int)ceil(lab.tail()->F("end")/shift);

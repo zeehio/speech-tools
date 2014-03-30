@@ -60,7 +60,7 @@ int linked(EST_Item *from, EST_Item *to)
 
 void add_link(EST_Item *from, EST_Item *to)
 {
-    EST_Item *d,*q;
+    EST_Item *d;
 
     // structurally add it 
     d = from->down();

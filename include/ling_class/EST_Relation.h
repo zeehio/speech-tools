@@ -37,6 +37,7 @@
 #ifndef __EST_RELATION_H__
 #define __EST_RELATION_H__
 
+#include <cstdlib>
 #include "EST_String.h"
 #include "EST_TList.h"
 #include "EST_TKVL.h"
@@ -68,8 +69,8 @@ class EST_Relation
     EST_Item *p_head;   
     EST_Item *p_tail;   // less meaningful in a tree
 
-    EST_Item *get_item_from_name(EST_THash<int,EST_Val> &inames,int name);
-    EST_Item *get_item_from_name(EST_TVector< EST_Item * > &inames,int name);
+    EST_Item *get_item_from_name(EST_THash<int,EST_Val> &inames,ssize_t name);
+    EST_Item *get_item_from_name(EST_TVector< EST_Item * > &inames,ssize_t name);
     EST_write_status save_items(EST_Item *item, 
 				ostream &outf,
 				EST_TKVL<void *,int> &contentnames,
@@ -77,7 +78,7 @@ class EST_Relation
 				int &node_count) const;
 
     static void node_tidy_up_val(int &k, EST_Val &v);
-    static void node_tidy_up(int &k, EST_Item *node);
+    static void node_tidy_up(ssize_t &k, EST_Item *node);
 
     EST_read_status load_items(EST_TokenStream &ts,
 			       const EST_THash<int,EST_Val> &contents);

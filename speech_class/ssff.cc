@@ -54,6 +54,7 @@
 #include "EST_walloc.h"
 #include "EST_TrackFile.h"
 #include "EST_FileType.h"
+#include "EST_File.h"
 
 using namespace std;
 
@@ -75,9 +76,10 @@ EST_read_status EST_TrackFile::load_ssff_ts(EST_TokenStream &ts, EST_Track &tr, 
 {
     (void)ishift;
     (void)startt;
-    int num_frames, num_channels;
+    ssize_t num_frames, num_channels;
     int swap = FALSE;
-    int i,j,pos,end;
+    ssize_t i,j;
+    EST_FilePos pos,end;
     float Start_Time, Record_Freq;
     EST_Features channels;
     EST_String c, name, type, size, cname;
@@ -169,10 +171,10 @@ EST_read_status EST_TrackFile::load_ssff_ts(EST_TokenStream &ts, EST_Track &tr, 
     // There's no num_records field in the header so have to use file's 
     // length to calculate it
     fp = ts.filedescriptor();
-    pos = ftell(fp);
-    fseek(fp,0,SEEK_END);
-    end = ftell(fp);
-    fseek(fp,pos,SEEK_SET);
+    pos = EST_ftell(fp);
+    EST_fseek(fp,0,SEEK_END);
+    end = EST_ftell(fp);
+    EST_fseek(fp,pos,SEEK_SET);
     if (num_channels == 0) { /* Dummy unlikely case (wrong format?) */
         num_frames = 0;
     } else {
@@ -247,7 +249,7 @@ EST_write_status EST_TrackFile::save_ssff(const EST_String filename, EST_Track t
 
 EST_write_status EST_TrackFile::save_ssff_ts(FILE *fp, EST_Track tr)
 {
-    int i,j;
+    ssize_t i,j;
     int need_prob_voice = 0;
     
     if (tr.equal_space() != 1)

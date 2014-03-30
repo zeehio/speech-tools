@@ -105,15 +105,17 @@ void srpd(EST_Wave &sig, EST_Track &fz, EST_Features &op)
 
 void srpd(EST_Wave &sig, EST_Track &fz, Srpd_Op &srpd_op, int resize)
 {
-    int i, rns, tracklen, j = 0;
+    ssize_t i, rns, tracklen, j = 0;
     SEGMENT_ segment;
     CROSS_CORR_ cc;
     STATUS_ pda_status, held_status;
     srpd_op.sample_freq = sig.sample_rate();
+    /* Unused variables:
     float min, max;
     min = srpd_op.min_pitch; // must store as set up routines corrupt
     max = srpd_op.max_pitch;
-
+    */
+    
     initialise_structures (&srpd_op, &segment, &cc);
     initialise_status (&srpd_op, &pda_status);
     initialise_status (&srpd_op, &held_status);

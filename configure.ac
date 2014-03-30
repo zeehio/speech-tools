@@ -89,7 +89,7 @@ AC_ARG_WITH([pulseaudio],
             [PULSE_AUDIO=])
 AC_SUBST(PULSE_AUDIO)
 
-AC_ARG_ENABLE([optimise],[ AS_HELP_STRING([--enable-optimization=NUM Choose optimization level from 0 to 4. Default 3. Level 4 disables debug. ])],
+AC_ARG_ENABLE([optimise],[ AS_HELP_STRING([--enable-optimise=NUM Choose optimization level from 0 to 4. Default 3. Level 4 disables debug. ])],
  [ if   test "x$enableval" = "x0"; then
        OPTIMISE=0
    elif test "x$enableval" = "x1"; then

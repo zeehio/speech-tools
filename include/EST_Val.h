@@ -48,6 +48,7 @@
 #ifndef __EST_VAL_H__
 #define __EST_VAL_H__
 
+#include <cstdlib>
 #include "EST_String.h"
 #include "EST_error.h"
 #include "EST_Contents.h"
@@ -69,19 +70,18 @@ extern val_type val_string;
     The EST_Val class is a container class, used to store a single
     item which can be an int, float, string or other user-defined
     class. It is often used as the base item in the EST_Features
-    class, to enable features
-    to take on values of different types.
+    class, to enable features to take on values of different types.
 */
 class EST_Val {
   private:
     val_type t;
     union
-    { int ival;
+    { ssize_t ival;
       float fval;
       EST_Contents *pval;} v;
     // * may have a string name as well as a value
     EST_String sval;
-    int to_int() const;
+    ssize_t to_int() const;
     float to_flt() const;
     const EST_String &to_str() const;
   public:
@@ -136,7 +136,7 @@ class EST_Val {
 	{if (t==val_int) return v.ival; return to_int();}
 
     /** returns the value, cast as an int */
-    int I(void) const
+    ssize_t I(void) const
 	{ return Int(); }
 
     /** returns the value, cast as a float */
@@ -175,6 +175,9 @@ class EST_Val {
 
     /** Assignment of val to an int */
     EST_Val &operator=(const int i) { t=val_int; v.ival=i; return *this;}
+
+    /** Assignment of val to an ssize_t */
+    EST_Val &operator=(ssize_t i) { t=val_int; v.ival=i; return *this;}
 
     /** Assignment of val to a float */
     EST_Val &operator=(const float f) { t=val_float; v.fval=f; return *this;}
@@ -237,7 +240,8 @@ class EST_Val {
     /**@name Automatic casting
      */
     ///@{
-
+    /** Automatically cast val as an ssize_t*/
+    operator ssize_t() const { return Int(); }
     /** Automatically cast val as an int*/
     operator int() const { return Int(); }
     /** Automatically cast val as an float*/

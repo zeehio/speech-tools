@@ -114,10 +114,10 @@ int StrListtoFList(EST_StrList &s, EST_FList &il);
 
 void StrList_to_StrVector(EST_StrList &l, EST_StrVector &v);
 void StrVector_to_StrList(EST_StrVector &v,EST_StrList &l);
-int  StrVector_index(const EST_StrVector &v,const EST_String &s);
+long int  StrVector_index(const EST_StrVector &v,const EST_String &s);
 
 int strlist_member(const EST_StrList &l,const EST_String &s);
-int strlist_index(const EST_StrList &l,const EST_String &s);
+long int strlist_index(const EST_StrList &l,const EST_String &s);
 
 // strips path off front of filename
 EST_String basename(EST_String full, EST_String ext=""); 
@@ -125,9 +125,9 @@ EST_String basename(EST_String full, EST_String ext="");
 // this is not the right place for these
 void IList_to_IVector(EST_IList &l, EST_IVector &v);
 void IVector_to_IList(EST_IVector &v,EST_IList &l);
-int  IVector_index(const EST_IVector &v,const int s);
+long int  IVector_index(const EST_IVector &v,const int s);
 
 int ilist_member(const EST_IList &l,int i);
-int ilist_index(const EST_IList &l,int i);
+long int ilist_index(const EST_IList &l,int i);
 
 #endif // __EST_STRING_AUX_H__

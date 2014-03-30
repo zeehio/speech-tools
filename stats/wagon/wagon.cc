@@ -380,7 +380,7 @@ static float test_tree_vector(WNode &tree,WDataSet &dataset,ostream *output)
     float predict, actual;
     EST_SuffStats x,y,xx,yy,xy,se,e;
     EST_SuffStats b;
-    int i,j,pos;
+    ssize_t i,j,pos;
     double cor,error;
     double count;
     EST_Litem *pp;
@@ -390,7 +390,7 @@ static float test_tree_vector(WNode &tree,WDataSet &dataset,ostream *output)
 	leaf = tree.predict_node((*dataset(p)));
 	pos = dataset(p)->get_int_val(wgn_predictee);
         for (j=0; j<wgn_VertexFeats.num_channels(); j++)
-            if (wgn_VertexFeats.a(0,j) > 0.0)
+            if (wgn_VertexFeats.a(0L,j) > 0.0)
             {
                 b.reset();
                 for (pp=leaf->get_impurity().members.head(); pp != 0; pp=pp->next())
@@ -469,7 +469,7 @@ static float test_tree_trajectory(WNode &tree,WDataSet &dataset,ostream *output)
     float predict, actual;
     EST_SuffStats x,y,xx,yy,xy,se,e;
     EST_SuffStats b;
-    int i,j,pos;
+    ssize_t i,j,pos;
     double cor,error;
     double count;
     EST_Litem *pp;
@@ -479,7 +479,7 @@ static float test_tree_trajectory(WNode &tree,WDataSet &dataset,ostream *output)
 	leaf = tree.predict_node((*dataset(p)));
 	pos = dataset(p)->get_int_val(wgn_predictee);
         for (j=0; j<wgn_VertexFeats.num_channels(); j++)
-            if (wgn_VertexFeats.a(0,j) > 0.0)
+            if (wgn_VertexFeats.a(0L,j) > 0.0)
             {
                 b.reset();
                 for (pp=leaf->get_impurity().members.head(); pp != 0; pp=pp->next())
@@ -651,7 +651,7 @@ static float test_tree_ols(WNode &tree,WDataSet &dataset,ostream *output)
 {
     // Test tree against data to get summary of results OLS
     EST_Litem *p;
-    WNode *leaf;
+    /*WNode *leaf;  // unused */
     float predict,real;
     EST_SuffStats x,y,xx,yy,xy,se,e;
     double cor,error;
@@ -659,7 +659,7 @@ static float test_tree_ols(WNode &tree,WDataSet &dataset,ostream *output)
 
     for (p=dataset.head(); p != 0; p=p->next())
     {
-	leaf = tree.predict_node((*dataset(p)));
+	/*leaf = */tree.predict_node((*dataset(p)));
         // do ols to get predict;
         predict = 0.0;
 	real = dataset(p)->get_flt_val(wgn_predictee);

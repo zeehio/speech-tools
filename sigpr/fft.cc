@@ -51,7 +51,7 @@
 static void FR2TR(int, float*, float*);
 static void FR4TR(int, int, float*, float*, float*, float*);
 static void FORD1(int, float*);
-static void FORD2(int, float*);
+static void FORD2(unsigned int, float*);
 
 /*
 ** FAST(b,n)
@@ -256,8 +256,9 @@ int power_spectrum(EST_FVector &real, EST_FVector &imag)
 int fastFFT(EST_FVector &invec) 
 {
     // Tony Robinsons
-    float fn;
-    int i, in, nn, n2pow, n4pow, nthpo;
+    /*float fn;*/
+    int i, in, nn, n2pow, n4pow;
+    /*int nthpo;*/
     
     // we could modify all the code to use vector classes ....
     // ... or we could do this:
@@ -277,8 +278,8 @@ int fastFFT(EST_FVector &invec)
 
     n2pow = fastlog2(n);
     if (n2pow <= 0) return 0;
-    nthpo = n;
-    fn = nthpo;
+    /*nthpo = n;*/
+    /*fn = nthpo;*/
     n4pow = n2pow / 2;
     
     /* radix 2 iteration required; do it now */  
@@ -475,54 +476,79 @@ void FORD1(int m, float *b) {
     }	
 }
 
-/*  the other inplace reordering subroutine */
-void FORD2(int m, float *b) 
-{
-  float t;
-  
-  int n = 0x1<<m, k, ij, ji, ij1, ji1;
-  
-  int l[16], l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15;
-  int j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14;
-  
+void FORD2(unsigned int m, float *b) {
+    float t;
+    const int n = 0x1<<m; /* 2^m */
+    unsigned int k;
+    float l[15];
+    #define l15 l[0]
+    #define l14 l[1]
+    #define l13 l[2]
+    #define l12 l[3]
+    #define l11 l[4]
+    #define l10 l[5]
+    #define l9 l[6]
+    #define l8 l[7]
+    #define l7 l[8]
+    #define l6 l[9]
+    #define l5 l[10]
+    #define l4 l[11]
+    #define l3 l[12]
+    #define l2 l[13]
+    #define l1 l[14]
+    l[0] = n;
 
-  l[1] = n;
-  for(k=2;k<=m;k++) l[k]=l[k-1]/2;
-  for(k=m;k<=14;k++) l[k+1]=2;
-  
-  l15=l[1];l14=l[2];l13=l[3];l12=l[4];l11=l[5];l10=l[6];l9=l[7];
-  l8=l[8];l7=l[9];l6=l[10];l5=l[11];l4=l[12];l3=l[13];l2=l[14];l1=l[15];
-
-  ij = 2;
-  
-  for(j1=2;j1<=l1;j1+=2)
-  for(j2=j1;j2<=l2;j2+=l1)
-  for(j3=j2;j3<=l3;j3+=l2)
-  for(j4=j3;j4<=l4;j4+=l3)
-  for(j5=j4;j5<=l5;j5+=l4)
-  for(j6=j5;j6<=l6;j6+=l5)
-  for(j7=j6;j7<=l7;j7+=l6)
-  for(j8=j7;j8<=l8;j8+=l7)
-  for(j9=j8;j9<=l9;j9+=l8)
-  for(j10=j9;j10<=l10;j10+=l9)
-  for(j11=j10;j11<=l11;j11+=l10)
-  for(j12=j11;j12<=l12;j12+=l11)
-  for(j13=j12;j13<=l13;j13+=l12)
-  for(j14=j13;j14<=l14;j14+=l13)
-  for(ji=j14;ji<=l15;ji+=l14) {
-    ij1 = ij-1; ji1 = ji - 1;
-    if(ij-ji<0) {
-      t = b[ij1-1];
-      b[ij1-1]=b[ji1-1];
-      b[ji1-1] = t;
-	
-      t = b[ij1];
-      b[ij1]=b[ji1];
-      b[ji1] = t;
+    for (k=1;k<m;++k) {
+        l[k] = l[k-1]/2;
     }
-    ij += 2;
-  }
-} 
+    /* g++ 4.8 with -O3 and -Warray-bounds will generate a
+       false warning on the next loop:
+    */
+    for (k=m;k<15;++k) { 
+        l[k] = 2;
+    }
+    int ij = 2;
+    for (int j1=2;j1<=l1;j1+=2) {
+    for (int j2=j1;j2<=l2;j2+=l1) {
+    for (int j3=j2;j3<=l3;j3+=l2) {
+    for (int j4=j3;j4<=l4;j4+=l3) {
+    for (int j5=j4;j5<=l5;j5+=l4) {
+    for (int j6=j5;j6<=l6;j6+=l5) {
+    for (int j7=j6;j7<=l7;j7+=l6) {
+    for (int j8=j7;j8<=l8;j8+=l7) {
+    for (int j9=j8;j9<=l9;j9+=l8) {
+    for (int j10=j9;j10<=l10;j10+=l9) {
+    for (int j11=j10;j11<=l11;j11+=l10) {
+    for (int j12=j11;j12<=l12;j12+=l11) {
+    for (int j13=j12;j13<=l13;j13+=l12) {
+    for (int j14=j13;j14<=l14;j14+=l13) {
+    for (int ji=j14;ji<=l15;ji+=l14) {
+      if (ij-ji < 0) {
+        t = b[ij-2];
+        b[ij-2] = b[ji-2];
+        b[ji-2] = t;
+        t  = b[ij-1];
+        b[ij-1] = b[ji-1];
+        b[ji-1] = t;
+      }
+      ij += 2;
+    }}}}}}}}}}}}}}}
+    #undef l15
+    #undef l13
+    #undef l12
+    #undef l11
+    #undef l10
+    #undef l9
+    #undef l8
+    #undef l7
+    #undef l6
+    #undef l5
+    #undef l4
+    #undef l3
+    #undef l2
+    #undef l1
+    return;
+}
 
 int fastlog2(int n) {
     int num_bits, power = 0;

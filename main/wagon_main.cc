@@ -74,7 +74,7 @@ static int set_Vertex_Feats(EST_Track &wgn_VertexFeats,
     EST_TokenStream ts;
 
     for (i=0; i<wgn_VertexFeats.num_channels(); i++)
-        wgn_VertexFeats.a(0,i) = 0.0;
+        wgn_VertexFeats.a(0L,i) = 0.0;
 
     ts.open_string(wagon_track_features);
     ts.set_WhiteSpaceChars(",- ");
@@ -89,12 +89,12 @@ static int set_Vertex_Feats(EST_Track &wgn_VertexFeats,
         if (token == "all")
         {
             for (i=0; i<wgn_VertexFeats.num_channels(); i++)
-                wgn_VertexFeats.a(0,i) = 1.0;
+                wgn_VertexFeats.a(0L,i) = 1.0;
             break;
         } else if ((ws == ",") || (ws == ""))
         {
             s = atoi(token.string());
-            wgn_VertexFeats.a(0,s) = 1.0;
+            wgn_VertexFeats.a(0L,s) = 1.0;
         } else if (ws == "-")
         {
             if (token == "")
@@ -102,10 +102,10 @@ static int set_Vertex_Feats(EST_Track &wgn_VertexFeats,
             else
                 e = atoi(token.string());
             for (i=s; i<=e && i<wgn_VertexFeats.num_channels(); i++)
-                wgn_VertexFeats.a(0,i) = 1.0;
+                wgn_VertexFeats.a(0L,i) = 1.0;
         } else
         {
-            printf("wagon: track_feats invalid: %s at position %d\n",
+            printf("wagon: track_feats invalid: %s at position %ld\n",
                    (const char *)wagon_track_features,
                    ts.filepos());
             exit(-1);
@@ -123,7 +123,7 @@ static int wagon_main(int argc, char **argv)
     EST_String wgn_oname;
     ostream *wgn_coutput = 0;
     float stepwise_limit = 0;
-    int feats_start=0, feats_end=0;
+    ssize_t feats_start=0, feats_end=0;
     int i;
 
     parse_command_line
@@ -268,7 +268,7 @@ static int wagon_main(int argc, char **argv)
         wgn_VertexTrack.load(al.val("-track"));
         wgn_VertexFeats.resize(1,wgn_VertexTrack.num_channels());
         for (i=0; i<wgn_VertexFeats.num_channels(); i++)
-            wgn_VertexFeats.a(0,i) = 1.0;
+            wgn_VertexFeats.a(0L,i) = 1.0;
     }
 
     if (al.present("-track_start"))
@@ -277,13 +277,13 @@ static int wagon_main(int argc, char **argv)
         if ((feats_start < 0) ||
             (feats_start > wgn_VertexTrack.num_channels()))
         {
-            printf("wagon: track_start invalid: %d out of %d channels\n",
+            printf("wagon: track_start invalid: %ld out of %ld channels\n",
                    feats_start,
                    wgn_VertexTrack.num_channels());
             exit(-1);
         }
         for (i=0; i<feats_start; i++)
-            wgn_VertexFeats.a(0,i) = 0.0; /* don't do feats up to start */
+            wgn_VertexFeats.a(0L,i) = 0.0; /* don't do feats up to start */
             
     }
 
@@ -293,14 +293,14 @@ static int wagon_main(int argc, char **argv)
         if ((feats_end < feats_start) ||
             (feats_end > wgn_VertexTrack.num_channels()))
         {
-            printf("wagon: track_end invalid: %d between start %d out of %d channels\n",
+            printf("wagon: track_end invalid: %ld between start %ld out of %ld channels\n",
                    feats_end,
                    feats_start,
                    wgn_VertexTrack.num_channels());
             exit(-1);
         }
         for (i=feats_end+1; i<wgn_VertexTrack.num_channels(); i++)
-            wgn_VertexFeats.a(0,i) = 0.0; /* don't do feats after end */
+            wgn_VertexFeats.a(0L,i) = 0.0; /* don't do feats after end */
     }
     if (al.present("-track_feats"))
     {   /* overrides start and end numbers */
@@ -310,7 +310,7 @@ static int wagon_main(int argc, char **argv)
 
     //    printf("Track feats\n");
     //    for (i=0; i<wgn_VertexTrack.num_channels(); i++)
-    //        if (wgn_VertexFeats.a(0,i) > 0.0)
+    //        if (wgn_VertexFeats.a(0L,i) > 0.0)
     //            printf("%d ",i);
     //    printf("\n");
 

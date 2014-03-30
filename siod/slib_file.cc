@@ -12,6 +12,7 @@
 #include "siod.h"
 #include "siodp.h"
 #include "EST_Pathname.h"
+#include "EST_File.h"
 
 static void siod_string_print(LISP exp, EST_String &sd);
 
@@ -375,10 +376,10 @@ LISP lputs(LISP str,LISP p)
  return(NIL);}
 
 LISP lftell(LISP file)
-{return(flocons((double)ftell(get_c_file(file,NULL))));}
+{return(flocons((double)EST_ftell(get_c_file(file,NULL))));}
 
 LISP lfseek(LISP file,LISP offset,LISP direction)
-{return((fseek(get_c_file(file,NULL),get_c_int(offset),get_c_int(direction)))
+{return((EST_fseek(get_c_file(file,NULL),get_c_int(offset),get_c_int(direction)))
 	? NIL : truth);}
 
 static LISP directory_entries(LISP ldir, LISP lnoflagdir)

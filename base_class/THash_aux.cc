@@ -42,7 +42,7 @@
 
 // default hash function, something like the one in Perl.
 
-unsigned int EST_HashFunctions::DefaultHash(const void *data, size_t size, unsigned int n)
+unsigned int EST_HashFunctions::DefaultHash(const void *data, ssize_t size, unsigned int n)
 {
   return DefaultHashFunction(data, size, n);
 }

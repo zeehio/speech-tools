@@ -59,13 +59,13 @@ EST_Track::EST_Track()
     default_vals();
 }
 
-EST_Track::EST_Track(const EST_Track &a)
+EST_Track::EST_Track(const EST_Track &a) : EST_Featured(a)
 { 
     default_vals();
     copy(a);
 }
 
-EST_Track::EST_Track(int n_frames, int n_channels)
+EST_Track::EST_Track(ssize_t n_frames, ssize_t n_channels)
 {
     default_vals();
     p_values.resize(n_frames, n_channels);
@@ -80,9 +80,9 @@ EST_Track::EST_Track(int n_frames, int n_channels)
     p_is_val.fill(d);
 }
 
-EST_Track::EST_Track(int n_frames, EST_TrackMap &map)
+EST_Track::EST_Track(ssize_t n_frames, EST_TrackMap &map)
 {
-  int n_channels = map.last_channel()+1;
+  ssize_t n_channels = map.last_channel()+1;
 
   default_vals();
   p_values.resize(n_frames, n_channels);
@@ -101,7 +101,7 @@ EST_Track::~EST_Track(void)
 
 void EST_Track::default_channel_names()
 {
-    for (int i = 0; i < num_channels(); ++i)
+    for (ssize_t i = 0; i < num_channels(); ++i)
 	set_channel_name("track" + itoString(i), i);
 }
 
@@ -121,7 +121,7 @@ void EST_Track::default_vals(void)
     init_features();
 }
 
-void EST_Track::set_break(int i) // make location i hold a break
+void EST_Track::set_break(ssize_t i) // make location i hold a break
 {
     if (i >= num_frames())
 	cerr << "Requested setting of break value of the end of the array\n";
@@ -130,12 +130,12 @@ void EST_Track::set_break(int i) // make location i hold a break
 }    
 
 
-void EST_Track::set_value(int i) // make location i hold a value
+void EST_Track::set_value(ssize_t i) // make location i hold a value
 {
     p_is_val[i] = 0;
 }    
 
-const EST_String EST_Track::channel_name(int i, const EST_ChannelNameMap &map, int strings_override) const
+const EST_String EST_Track::channel_name(ssize_t i, const EST_ChannelNameMap &map, int strings_override) const
 {
     (void)map;
     (void)strings_override;
@@ -165,19 +165,19 @@ const EST_String EST_Track::channel_name(int i, const EST_ChannelNameMap &map, i
 	return "track" + itoString(i);
 }    
 */
-void EST_Track::set_channel_name(const EST_String &fn, int i)
+void EST_Track::set_channel_name(const EST_String &fn, ssize_t i)
 {
     p_channel_names[i] = fn;
 }    
 
-void EST_Track::set_aux_channel_name(const EST_String &fn, int i)
+void EST_Track::set_aux_channel_name(const EST_String &fn, ssize_t i)
 {
     p_aux_names[i] = fn;
 }    
 
 ostream& operator << (ostream& s, const EST_Track &tr)
 {
-    int i, j;
+    ssize_t i, j;
     for (i = 0; i < tr.num_frames(); ++i)
     {
 	s << tr.t(i);
@@ -210,9 +210,9 @@ void EST_Track::copy_setup(const EST_Track& a)
     copy_features(a);
 }    
 
-void EST_Track::resize(int new_num_frames, int new_num_channels, bool set)
+void EST_Track::resize(ssize_t new_num_frames, ssize_t new_num_channels, bool set)
 {
-    int old_num_frames = num_frames();
+    ssize_t old_num_frames = num_frames();
 
     if (new_num_frames<0)
 	new_num_frames = num_frames();
@@ -224,7 +224,7 @@ void EST_Track::resize(int new_num_frames, int new_num_channels, bool set)
 
     // this ensures the new channels have a default name
     if (new_num_channels > num_channels())
-	for (int i = num_channels(); i < new_num_channels; ++i)
+	for (ssize_t i = num_channels(); i < new_num_channels; ++i)
 	    set_channel_name("track_" + itoString(i), i);
 
     p_values.resize(new_num_frames, new_num_channels, set);
@@ -234,7 +234,7 @@ void EST_Track::resize(int new_num_frames, int new_num_channels, bool set)
     p_aux.resize(new_num_frames, num_aux_channels(), set);
   
     // Its important that any new vals get set to 0
-    for (int i = old_num_frames; i < num_frames(); ++i)
+    for (ssize_t i = old_num_frames; i < num_frames(); ++i)
 	p_is_val.a_no_check(i) = 0;
 
 }
@@ -244,7 +244,7 @@ static void map_to_channels(EST_StrList &channel_map,
 {
     EST_Litem *p;
     EST_String b, type, first, last;
-    int n_f, n_l;
+    ssize_t n_f, n_l;
 
     for (p = channel_map.head(); p; p = p->next())
     {
@@ -273,7 +273,7 @@ static void map_to_channels(EST_StrList &channel_map,
 	    n_f = Stringtoi(first);
 	    n_l = Stringtoi(last);
 
-	    for (int i = n_f; i < n_l; ++i)
+	    for (ssize_t i = n_f; i < n_l; ++i)
 		channel_names.append(type + "_" + itoString(i));
 	    channel_names.append(type + "_N");
 	}
@@ -282,11 +282,11 @@ static void map_to_channels(EST_StrList &channel_map,
     }
 }
 
-void EST_Track::resize(int new_num_frames, EST_StrList &new_channels, bool set)
+void EST_Track::resize(ssize_t new_num_frames, EST_StrList &new_channels, bool set)
 {
     EST_StrList x;
     map_to_channels(new_channels, x);
-    int i;
+    ssize_t i;
     EST_Litem *p;
 
     int new_num_channels;
@@ -312,10 +312,10 @@ void EST_Track::resize(int new_num_frames, EST_StrList &new_channels, bool set)
 
 void EST_Track::resize_aux(EST_StrList &new_aux_channels, bool set)
 {
-    int i;
+    ssize_t i;
     EST_Litem *p;
 
-    int new_num_channels;
+    ssize_t new_num_channels;
     new_num_channels = new_aux_channels.length();
 
     p_aux_names.resize(new_num_channels);
@@ -329,7 +329,7 @@ void EST_Track::resize_aux(EST_StrList &new_aux_channels, bool set)
 
 EST_Track& EST_Track::operator+=(const EST_Track &a) // add to existing track
 {
-    int i, j, k;
+    ssize_t i, j, k;
     
     if (num_frames() == 0)	// i.e. no existing EST_Track to add to
     {
@@ -344,7 +344,7 @@ EST_Track& EST_Track::operator+=(const EST_Track &a) // add to existing track
 	return *this;
     }
     
-    int old_num = num_frames();
+    ssize_t old_num = num_frames();
     float old_end = end();
     this->resize(a.num_frames()+ this->num_frames(), this->num_channels());
     for (i = 0, j = old_num; i < a.num_frames(); ++i, ++j)
@@ -360,7 +360,7 @@ EST_Track& EST_Track::operator+=(const EST_Track &a) // add to existing track
 
 EST_Track& EST_Track::operator|=(const EST_Track &a)
 {				// add to existing track in parallel
-    int i, j, k;
+    ssize_t i, j, k;
     
     if (num_channels() == 0)	// i.e. no existing EST_Track to add to
     {
@@ -375,7 +375,7 @@ EST_Track& EST_Track::operator|=(const EST_Track &a)
 	return *this;
     }
     
-    int old_num = num_channels();
+    ssize_t old_num = num_channels();
     this->resize(a.num_frames(), this->num_channels() + a.num_channels());
     for (i = 0, j = old_num; i < a.num_channels(); ++i, ++j)
 	for (k = 0; k < num_frames(); ++k)
@@ -391,9 +391,9 @@ EST_Track &EST_Track::operator=(const EST_Track& a)
 }    
 
 
-int EST_Track::channel_position(const char *name, int offset) const
+ssize_t EST_Track::channel_position(const char *name, int offset) const
 {
-    int c;
+    ssize_t c;
     
     for (c=0; c<num_channels(); c++)
 	if (channel_name(c) == name)
@@ -402,9 +402,9 @@ int EST_Track::channel_position(const char *name, int offset) const
     return -1;
 }
 
-float &EST_Track::a(int i, const char *name, int offset)
+float &EST_Track::a(ssize_t i, const char *name, int offset)
 { 
-    int c;
+    ssize_t c;
     
     for (c=0; c<num_channels(); c++)
 	if (channel_name(c) == name)
@@ -414,9 +414,9 @@ float &EST_Track::a(int i, const char *name, int offset)
     return *(p_values.error_return);
 }
 
-EST_Val &EST_Track::aux(int i, const char *name)
+EST_Val &EST_Track::aux(ssize_t i, const char *name)
 { 
-    for (int c = 0; c < num_aux_channels(); c++)
+    for (ssize_t c = 0; c < num_aux_channels(); c++)
 	if (aux_channel_name(c) == name)
 	    return p_aux.a_no_check(i, c);
     
@@ -424,19 +424,19 @@ EST_Val &EST_Track::aux(int i, const char *name)
     return *(p_aux.error_return);
 }
 
-EST_Val &EST_Track::aux(int i, int c)
+EST_Val &EST_Track::aux(ssize_t i, ssize_t c)
 { 
     return p_aux(i, c);
 }
 
-EST_Val &EST_Track::aux(int i, int c) const
+EST_Val &EST_Track::aux(ssize_t i, ssize_t c) const
 { 
     return ((EST_Track *)this)->aux(i,c);
 }
 
 #define EPSILON (0.0001)
 
-float &EST_Track::a(float t, int c, EST_InterpType interp)
+float &EST_Track::a(float t, ssize_t c, EST_InterpType interp)
 {
     static float ia = 0.0;
     
@@ -444,9 +444,9 @@ float &EST_Track::a(float t, int c, EST_InterpType interp)
 	return p_values.a_no_check(index(t), c);
     else if (interp == it_linear)
     {
-	int i = index_below(t);
+	ssize_t i = index_below(t);
 	if (i < 0)
-	    return a(0,c);
+	    return a(0L,c);
 	
 	float n = a(i,c), n1 = a(i+1,c);
 	float tn = p_times(i), tn1 = p_times(i+1);
@@ -455,9 +455,9 @@ float &EST_Track::a(float t, int c, EST_InterpType interp)
     }
     else if (interp == it_linear_nz)
     {
-	int i = index_below(t);
+	ssize_t i = index_below(t);
 	if (i < 0)
-	    return a(0,c);
+	    return a(0L,c);
 	
 	float n = a(i,c), n1 = a(i+1,c);
 	if (fabs(n) < EPSILON || fabs(n1) < EPSILON)
@@ -469,12 +469,12 @@ float &EST_Track::a(float t, int c, EST_InterpType interp)
     return ia;
 }
 
-int EST_Track::index(float x) const
+ssize_t EST_Track::index(float x) const
 {
     if (equal_space())
     {
 	float s = shift();
-	int f = (int)( (x-t(0))/s+0.5 ); //don't assume track starts at t=0.0
+	ssize_t f = (ssize_t)( (x-t(0))/s+0.5 ); //don't assume track starts at t=0.0
 	if (f<0)
 	    f=0;
 	else if (f>= num_frames())
@@ -483,7 +483,7 @@ int EST_Track::index(float x) const
     }
     else if (num_frames() > 1) //if single frame, return that index (0)
     {
-	int bst, bmid, bend;
+	ssize_t bst, bmid, bend;
 	bst = 1;
 	bend = num_frames();
 	if (x < p_times.a_no_check(bst))
@@ -517,12 +517,12 @@ int EST_Track::index(float x) const
     return num_frames() -1;
 }
 
-int EST_Track::index_below(float x) const
+ssize_t EST_Track::index_below(float x) const
 {
     if (equal_space())
     {
 	float s = shift();
-	int f = (int)(x/s);
+	ssize_t f = (int)(x/s);
 	if (f<0)
 	    f=0;
 	else if (f>= num_frames())
@@ -531,14 +531,14 @@ int EST_Track::index_below(float x) const
     }
     else
     {
-	for (int i = 1; i < num_frames(); ++i)
+	for (ssize_t i = 1; i < num_frames(); ++i)
 	    if (x <= p_times.a_no_check(i))
 		return i - 1;
 	return num_frames()-1;
     }
 }
 
-int EST_Track::val(int i) const
+int EST_Track::val(ssize_t i) const
 {
     return !p_is_val(i);
 }
@@ -628,9 +628,9 @@ float EST_Track::shift() const
 /* tries to find the next value that isnt a break. Dont really
    know what to do on a fail, so just return 0 */
 
-int EST_Track::next_non_break(int j) const
+ssize_t EST_Track::next_non_break(ssize_t j) const
 {
-    int i = j;
+    ssize_t i = j;
     for (++i; i < num_frames(); ++i)
     {
 	//	cout << "i: " << i << " " << value[i] << endl;
@@ -643,9 +643,9 @@ int EST_Track::next_non_break(int j) const
 
 /* give the current point, returns the previous non-break */
 
-int EST_Track::prev_non_break(int j) const
+ssize_t EST_Track::prev_non_break(ssize_t j) const
 {
-    int i = j;
+    ssize_t i = j;
     for (--i; i >= 0 ; --i)
 	if (!track_break(i))
 	    return i;
@@ -701,9 +701,9 @@ void EST_Track::sample(float f_interval)
     p_equal_space = TRUE;
 }
 
-float EST_Track::interp_amp(float x, int c, float fl)
+float EST_Track::interp_amp(float x, ssize_t c, float fl)
 {
-    int i;
+    ssize_t i;
     float x1, x2, y1, y2, m;
     
     for (i = 0; i < num_frames(); ++i)
@@ -769,7 +769,7 @@ int EST_Track::interp_value(float x, float fl)
 
 float EST_Track::estimate_shift(float x)
 {
-    int i, j;
+    ssize_t i, j;
     for (j = 0; j < num_frames(); ++j)
 	if (p_times(j) > x)
 	    break;
@@ -787,31 +787,31 @@ float EST_Track::estimate_shift(float x)
 
 void EST_Track::fill_time( float t, int start )
 {
-  unsigned int nframes = num_frames();
+  ssize_t nframes = num_frames();
   
-  for( unsigned int i=0; i<nframes; ++i )
+  for( ssize_t i=0; i<nframes; ++i )
     p_times.a_no_check(i) = t * (float) (i + start);
 }
 
 void EST_Track::fill_time( float t, float startt )
 {
-  unsigned int nframes = num_frames();
+  ssize_t nframes = num_frames();
   
-  for( unsigned int i=0; i<nframes; ++i )
+  for( ssize_t i=0; i<nframes; ++i )
     p_times.a_no_check(i) = startt + (t * (float)i);
 }
 
 void EST_Track::fill_time( const EST_Track &t )
 {
-  unsigned int nframes = num_frames();
+  ssize_t nframes = num_frames();
 
-  for( unsigned int i=0; i<nframes; ++i )
+  for( ssize_t i=0; i<nframes; ++i )
     p_times.a_no_check(i) = t.t(i);
 }
 
 void EST_Track::rm_excess_breaks()
 {
-    int i, j, k;
+    ssize_t i, j, k;
     EST_FVector new_times;
     EST_CVector new_is_break;
     EST_FMatrix new_values;
@@ -846,8 +846,8 @@ void EST_Track::rm_excess_breaks()
 void EST_Track::rm_trailing_breaks()
 {
     if (num_frames() <=0 )
-	return;
-    int start, end;
+      return;
+    ssize_t start, end;
 
     for (start = 0; start < num_frames(); ++start)
 	if (!track_break(start))
@@ -860,10 +860,10 @@ void EST_Track::rm_trailing_breaks()
     if (start==0 && end==num_frames())
       return;
     
-    for (int i=start, j = 0; i < end; ++i, ++j)
+    for (ssize_t i=start, j = 0; i < end; ++i, ++j)
     {
 	p_times[j] = p_times(i);
-	for (int k = 0; k < num_channels(); k++)
+	for (ssize_t k = 0; k < num_channels(); k++)
 	    a_no_check(j, k) = a_no_check(i, k);
 	p_is_val[j] = p_is_val(i);
     }
@@ -876,7 +876,7 @@ void EST_Track::rm_trailing_breaks()
 
 void EST_Track::add_trailing_breaks()
 {
-    int i, j, k;
+    ssize_t i, j, k;
     EST_FVector new_times;
     EST_FMatrix new_values;
     int new_num = num_frames();
@@ -923,7 +923,7 @@ void EST_Track::pad_breaks()
     EST_FVector new_times;
     EST_FMatrix new_values;
     EST_CVector new_is_break;
-    int i, j, k, n;
+    ssize_t i, j, k, n;
     
     n = (int)(((end())/ shift()) + 1.0);
     int s = int(start()/ shift());
@@ -984,15 +984,15 @@ return TRUE;
 }
 
 static bool bounds_check(const EST_Track &t, 
-			 int f, int nf,
-			 int c, int nc,
+			 ssize_t f, ssize_t nf,
+			 ssize_t c, ssize_t nc,
 			 int set)
 {
   const char *what = set? "set" : "access";
 
   if (nf>0)
     {
-      if (f<0 || f >= t.num_frames())
+      if (f >= t.num_frames())
 	{
 	  cerr << "Attempt to " << what << " frame " << f << " of " << t.num_frames() << " frame track\n";
 	  return FALSE;
@@ -1006,7 +1006,7 @@ static bool bounds_check(const EST_Track &t,
 
   if (nc>0)
     {
-      if (c<0 || c >= t.num_channels())
+      if (c >= t.num_channels())
 	{
 	  cerr << "Attempt to " << what << " channel " << c << " of " << t.num_channels() << " channel track\n";
 	  return FALSE;
@@ -1021,7 +1021,7 @@ static bool bounds_check(const EST_Track &t,
 return TRUE;
 }
 
-float &EST_Track::a(int i, int c)
+float &EST_Track::a(ssize_t i, ssize_t c)
 {
   if (!bounds_check(*this, i,c,0))
       return *(p_values.error_return);
@@ -1029,15 +1029,15 @@ float &EST_Track::a(int i, int c)
   return p_values.a_no_check(i,c);
 }
 
-float EST_Track::a(int i, int c) const
+float EST_Track::a(ssize_t i, ssize_t c) const
 {
   return ((EST_Track *)this)->a(i,c);
 }
 
 int EST_Track::empty() const
 {
-    int i, num;
-    
+    ssize_t i, num;
+
     for (i = num = 0; i < num_frames(); ++i)
 	if (val(i))
 	    return 0;		// i.e. false
@@ -1047,7 +1047,7 @@ int EST_Track::empty() const
 
 void EST_Track::channel(EST_FVector &cv, const char * name, int startf, int nf)
 {
-    int n;
+    ssize_t n;
     if ((n = channel_position(name)) == -1)
     {
 	cerr << "No such channel " << name << endl;
@@ -1443,7 +1443,7 @@ void EST_Track::create_map(EST_ChannelNameMap &names)
 }
 
 
-void EST_Track::resize(int new_num_frames, EST_TrackMap &map)
+void EST_Track::resize(ssize_t new_num_frames, EST_TrackMap &map)
 {
     resize(new_num_frames, map.last_channel()+1);
     assign_map(map);
@@ -1451,17 +1451,17 @@ void EST_Track::resize(int new_num_frames, EST_TrackMap &map)
 
 
 
-int EST_Track::channel_position(EST_ChannelType type, int offset) const
+ssize_t EST_Track::channel_position(EST_ChannelType type, int offset) const
 { 
     if (p_map!=0)
     {
-	int p = (*p_map)(type);
+	ssize_t p = (*p_map)(type);
 	return (p!= NO_SUCH_CHANNEL)?(p+offset): NO_SUCH_CHANNEL;
     }
     return channel_position(EST_default_channel_names.name(type), offset);
 }
 
-float &EST_Track::a(int i, EST_ChannelType type, int offset)
+float &EST_Track::a(ssize_t i, EST_ChannelType type, int offset)
 { 
     short c = NO_SUCH_CHANNEL;
     

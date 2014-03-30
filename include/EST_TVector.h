@@ -152,27 +152,26 @@ public:
   T *p_memory; 
 
   /// Visible shape
-  unsigned int p_num_columns;
+  ssize_t p_num_columns;
 
   /// How to access the memory
-  unsigned int p_offset;
-  unsigned int p_column_step;
+  ssize_t p_offset;
+  ssize_t p_column_step;
   
   bool p_sub_matrix;
 
   
   /// The memory access rule, in one place for easy reference
-  INLINE unsigned int vcell_pos(unsigned int c,
-			        unsigned int cs) const
+  INLINE ssize_t vcell_pos(ssize_t c, ssize_t cs) const
     {return cs==1?c:c*cs;}
 
-  INLINE unsigned int vcell_pos(unsigned int c) const
+  INLINE ssize_t vcell_pos(ssize_t c) const
     {
       return vcell_pos(c, 
 		      p_column_step);
     }
 
-  INLINE unsigned int vcell_pos_1(unsigned int c) const
+  INLINE ssize_t vcell_pos_1(ssize_t c) const
     {
       return c;
     }
@@ -208,7 +207,7 @@ public:
   EST_TVector(const EST_TVector<T> &v); 
 
   /// "size" constructor - make vector of size n.
-  EST_TVector(int n); 
+  EST_TVector(ssize_t n); 
 
   /// construct from memory supplied by caller
   EST_TVector(int, 
@@ -232,7 +231,7 @@ public:
       new length exceeds the old length, the rest of the vector is
       filled with the `def_val`
   */
-  void resize(int n, int set=1); 
+  void resize(ssize_t n, int set=1); 
 
   /** For when you absolutely have to have access to the memory.
     */
@@ -245,44 +244,44 @@ public:
   ///@{
 
   /// number of items in vector.
-  INLINE int num_columns() const {return p_num_columns;}
+  INLINE ssize_t num_columns() const {return p_num_columns;}
   /// number of items in vector.
-  INLINE int length() const {return num_columns();}
+  INLINE ssize_t length() const {return num_columns();}
   /// number of items in vector.
-  INLINE int n() const {return num_columns();}
+  INLINE ssize_t n() const {return num_columns();}
 
   /// read-only const access operator: without bounds checking
-  INLINE const T &a_no_check(int n) const { return fast_a_v_x(n); }
+  INLINE const T &a_no_check(ssize_t n) const { return fast_a_v_x(n); }
   /// read/write non-const access operator: without bounds checking
-  INLINE T &a_no_check(int n) { return fast_a_v_x(n); }
+  INLINE T &a_no_check(ssize_t n) { return fast_a_v_x(n); }
   /// read-only const access operator: without bounds checking
-  INLINE const T &a_no_check_1(int n) const { return fast_a_1(n); }
+  INLINE const T &a_no_check_1(ssize_t n) const { return fast_a_1(n); }
   /// read/write non-const access operator: without bounds checking
-  INLINE T &a_no_check_1(int n) { return fast_a_1(n); }
+  INLINE T &a_no_check_1(ssize_t n) { return fast_a_1(n); }
 
   // #define pp_a_no_check(V,N) (pp_fast_a(V,N))
 
   /// read-only const access operator: with bounds checking
-  const T &a_check(int n) const;
+  const T &a_check(ssize_t n) const;
   /// read/write non-const access operator: with bounds checking
-  T &a_check(int n);
+  T &a_check(ssize_t n);
 
-  const T &a(int n) const { return A_CHECK(n); }
-  T &a(int n) { return A_CHECK(n); }
+  const T &a(ssize_t n) const { return A_CHECK(n); }
+  T &a(ssize_t n) { return A_CHECK(n); }
 
   /// read-only const access operator: return reference to nth member
-  const T &operator () (int n) const {return A_CHECK(n);}
+  const T &operator () (ssize_t n) const {return A_CHECK(n);}
 
   // PT
   // /// non const access operator: return reference to nth member
   //  T &operator () (int n) const {return a(n);}
 
   /// read/write non const access operator: return reference to nth member
-  T &operator [] (int n) { return A_CHECK(n); }
+  T &operator [] (ssize_t n) { return A_CHECK(n); }
 
   ///@}
 
-  void set_memory(T *buffer, int offset, int columns,
+  void set_memory(T *buffer, int offset, ssize_t columns,
 		  int free_when_destroyed=0);
 
   /// assignment operator

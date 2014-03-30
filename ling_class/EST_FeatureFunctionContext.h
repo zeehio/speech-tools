@@ -68,9 +68,9 @@ public:
   void clear_cache(void);
   void add_package(const EST_String name);
   bool package_included(const EST_String name) const;
-  const EST_Item_featfunc get_featfunc(const EST_String name, 
+  EST_Item_featfunc get_featfunc(const EST_String name, 
 				 int must=0);
-  const EST_Item_featfunc get_featfunc(const EST_String package,
+  EST_Item_featfunc get_featfunc(const EST_String package,
 				 const EST_String name, 
 				 int must=0);
 

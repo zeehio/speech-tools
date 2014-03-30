@@ -69,12 +69,12 @@ EST_FeatureData::~EST_FeatureData(void)
 {
 }
 
-int EST_FeatureData::num_samples() const
+ssize_t EST_FeatureData::num_samples() const
 {
     return fd.num_rows();
 }
 
-int EST_FeatureData::num_features() const
+ssize_t EST_FeatureData::num_features() const
 {
     return fd.num_columns();
 }
@@ -88,12 +88,12 @@ void EST_FeatureData::default_vals()
 */
 }
 
-void EST_FeatureData::set_num_samples(int num_samples, bool preserve)
+void EST_FeatureData::set_num_samples(ssize_t num_samples, bool preserve)
 {
     fd.resize(num_samples, fd.num_columns(), preserve);
 }
 
-void EST_FeatureData::resize(int num_samples, int num_features, bool preserve)
+void EST_FeatureData::resize(ssize_t num_samples, ssize_t num_features, bool preserve)
 {
     // If enlargement is required, give new features dummy names
     // and set their types to <STRING>. If preserve is set to 0
@@ -101,7 +101,7 @@ void EST_FeatureData::resize(int num_samples, int num_features, bool preserve)
 
     if (num_features > fd.num_columns())
     {
-	int i;
+	ssize_t i;
 	if (preserve)
 	    i = fd.num_columns();
 	else
@@ -113,7 +113,7 @@ void EST_FeatureData::resize(int num_samples, int num_features, bool preserve)
     fd.resize(num_samples, num_features, preserve);
 }
 
-void EST_FeatureData::resize(int num_samples, EST_Features &f, bool preserve)
+void EST_FeatureData::resize(ssize_t num_samples, EST_Features &f, bool preserve)
 {
     fd.resize(num_samples, f.length(), preserve);
     info = f;
@@ -164,7 +164,7 @@ int EST_FeatureData::update_values(const EST_String &feature_name, int max)
 {
     // This should be converted back to Hash tables once extra
     // iteration functions are added the EST_Hash.
-    int i, col;
+    ssize_t i, col;
     EST_Features values;
     EST_String v;
 
@@ -229,23 +229,23 @@ EST_FeatureData &EST_FeatureData::operator=(const EST_FeatureData &f)
 }
 
 */
-EST_Val &EST_FeatureData::a(int i, const EST_String &f)
+EST_Val &EST_FeatureData::a(ssize_t i, const EST_String &f)
 {
   (void)f;
   return fd.a(i, 0);
 }
 
-EST_Val &EST_FeatureData::a(int i, int j)
+EST_Val &EST_FeatureData::a(ssize_t i, ssize_t j)
 {
     return fd.a(i, j);
 }
-const EST_Val &EST_FeatureData::a(int i, const EST_String &f) const
+const EST_Val &EST_FeatureData::a(ssize_t i, const EST_String &f) const
 {
   (void)f;
     return fd.a(i, 0);
 }
 
-const EST_Val &EST_FeatureData::a(int i, int j) const
+const EST_Val &EST_FeatureData::a(ssize_t i, ssize_t j) const
 {
     return fd.a(i, j);
 }
@@ -494,7 +494,7 @@ EST_read_status EST_FeatureData::load(const EST_String &filename)
 
 ostream& operator << (ostream &st, const EST_FeatureData &d)
 {   
-    int i, j;
+    ssize_t i, j;
     EST_String t;
     EST_Val v;
 
