@@ -1344,7 +1344,7 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-   --enable-optimization=NUM Choose optimization level from 0 to 4. Default 3. Level 4 disables debug.
+   --enable-optimise=NUM Choose optimization level from 0 to 4. Default 3. Level 4 disables debug.
 
    --disable-warn  Disable warning flags
 
