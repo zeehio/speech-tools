@@ -53,12 +53,15 @@ AC_ARG_WITH([compiler],
             [AS_HELP_STRING([--with-compiler],
               [select a compiler])],
             [ if   test "x$withval" = "x"; then
-                COMPILER=$CC
+                COMPILER=`basename $CC`
               else
                 COMPILER=$withval
               fi
             ],
-            [COMPILER=$CC])
+            [COMPILER=`basename $CC`])
+if ! test -f "config/compilers/$COMPILER.mak"; then
+   COMPILER="custom"
+fi
 AC_SUBST(COMPILER)
 
 # Checks for libraries.
@@ -165,5 +168,5 @@ AC_FUNC_REALLOC
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([dup2 floor getcwd gethostbyname gethostname gettimeofday inet_ntoa memmove memset pow putenv rint socket sqrt strcasecmp strchr strcspn strdup strerror strrchr strspn strstr strtol])
 
-AC_CONFIG_FILES([config/config config/user_flags.mak])
+AC_CONFIG_FILES([config/config config/user_flags.mak config/compilers/custom.mak])
 AC_OUTPUT

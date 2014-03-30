@@ -213,7 +213,7 @@ bool EST_BackoffNgrammarState::accumulate(const EST_IVector &words,
 	s = get_child(words(words.n()-1-p_level));
 	if (s==NULL)
 	    // have to extend the tree
-	    s = add_child(p_pdf.get_discrete(),words);
+	    add_child(p_pdf.get_discrete(),words);
 
 	// get pointer again in case we built more than one level
 	s = get_child(words(words.n()-1-p_level));

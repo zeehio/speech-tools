@@ -4427,15 +4427,18 @@ $as_echo "#define AC_APPLE_UNIVERSAL_BUILD 1" >>confdefs.h
 # Check whether --with-compiler was given.
 if test "${with_compiler+set}" = set; then :
   withval=$with_compiler;  if   test "x$withval" = "x"; then
-                COMPILER=$CC
+                COMPILER=`basename $CC`
               else
                 COMPILER=$withval
               fi
 
 else
-  COMPILER=$CC
+  COMPILER=`basename $CC`
 fi
 
+if ! test -f "config/compilers/$COMPILER.mak"; then
+   COMPILER="custom"
+fi
 
 
 # Checks for libraries.
@@ -5118,7 +5121,7 @@ fi
 done
 
 
-ac_config_files="$ac_config_files config/config config/user_flags.mak"
+ac_config_files="$ac_config_files config/config config/user_flags.mak config/compilers/custom.mak"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5830,6 +5833,7 @@ do
   case $ac_config_target in
     "config/config") CONFIG_FILES="$CONFIG_FILES config/config" ;;
     "config/user_flags.mak") CONFIG_FILES="$CONFIG_FILES config/user_flags.mak" ;;
+    "config/compilers/custom.mak") CONFIG_FILES="$CONFIG_FILES config/compilers/custom.mak" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

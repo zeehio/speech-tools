@@ -411,7 +411,6 @@ static float test_tree_vector(WNode &tree,WDataSet &dataset,ostream *output)
                     error = predict-actual;
                 else
                     error = (predict-actual)/b.stddev();
-                error = predict-actual; /* awb_debug */
                 se.cumulate((error*error),count);
                 e.cumulate(fabs(error),count);
                 xx.cumulate(predict*predict,count);
@@ -500,7 +499,6 @@ static float test_tree_trajectory(WNode &tree,WDataSet &dataset,ostream *output)
                     error = predict-actual;
                 else
                     error = (predict-actual)/b.stddev();
-                error = predict-actual; /* awb_debug */
                 se.cumulate((error*error),count);
                 e.cumulate(fabs(error),count);
                 xx.cumulate(predict*predict,count);

@@ -1015,7 +1015,6 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
 	fhdr.fea_type = SWAPSHORT(fhdr.fea_type);
 	fhdr.num_fields = SWAPSHORT(fhdr.num_fields);
     }
-    pos = EST_ftell(fd);
     if (fhdr.num_samples == 0)  /* has to be derived from the file size */
     {
 	pos = EST_ftell(fd);
