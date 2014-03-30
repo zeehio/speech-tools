@@ -54,6 +54,7 @@ const static char *err_prefix = "Pulseaudio: ";
 
 static int transfer_pulse_wave(EST_Wave &inwave, EST_Option &al, int record)
 {
+    (void) al;
     short *waveform;
     int num_samples;
     int err, pa_ret;
