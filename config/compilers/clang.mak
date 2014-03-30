@@ -31,33 +31,14 @@
  ##                                                                       ##
  ###########################################################################
  ##                                                                       ##
- ##                 Author: Richard Caley (rjc@cstr.ed.ac.uk)             ##
- ##                   Date: Thu Oct  2 1997                               ##
+ ##                 Author: Sergio Oller <sergioller@gmail.com>           ##
+ ##                   Date: Sun Mar 30 2014                               ##
  ## --------------------------------------------------------------------  ##
- ## Settings for Linux.                                                   ##
+ ## Settings for clang. Fortunately clang is very compatible with gcc :-) ##
  ##                                                                       ##
  ###########################################################################
 
-include $(EST)/config/systems/default.mak
+include $(EST)/config/compilers/gcc_defaults.mak
 
-DEFAULT_JAVA_HOME=/usr/lib/jdk-1.1.6
-JAVA=/usr/bin/java
-JAVAC=/usr/bin/javac
-JAVAH=/usr/bin/javah
-
-TCL_LIBRARY = -ltcl
-OS_LIBS = 
-
-## the native audio module for this type of system
-NATIVE_AUDIO_MODULE = LINUX16
-
-## echo -n doesn't work
-ECHO_N = /usr/bin/printf "%s"
-
-GNUTEST=test
-
-## awk is gawk, so it does all we could desire and then more.
-NAWK=awk
-
-
-
+CC=clang
+CXX=clang++

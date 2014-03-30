@@ -32,7 +32,7 @@ dnl                                                                      ##
 dnl########################################################################
 
 AC_PREREQ([2.69])
-AC_INIT([speech-tools], [2.1-release], [festival-talk@festvox.org])
+AC_INIT([speech-tools], [2.3-current], [festival-talk@festvox.org])
 AC_CONFIG_SRCDIR([include/EST.h])
 
 # Checks for programs.
@@ -48,17 +48,17 @@ AC_CHECK_TOOL(AR, ar)
 
 AC_C_BIGENDIAN
 
-dnl Set compiler type in order to force honoring of CFLAGS etc
+
 AC_ARG_WITH([compiler],
             [AS_HELP_STRING([--with-compiler],
               [select a compiler])],
             [ if   test "x$withval" = "x"; then
-                COMPILER=from_autoconf
+                COMPILER=$CC
               else
                 COMPILER=$withval
               fi
             ],
-            [COMPILER=from_autoconf])
+            [COMPILER=$CC])
 AC_SUBST(COMPILER)
 
 # Checks for libraries.
@@ -165,5 +165,5 @@ AC_FUNC_REALLOC
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([dup2 floor getcwd gethostbyname gethostname gettimeofday inet_ntoa memmove memset pow putenv rint socket sqrt strcasecmp strchr strcspn strdup strerror strrchr strspn strstr strtol])
 
-AC_CONFIG_FILES([config/config config/compilers/from_autoconf.mak])
+AC_CONFIG_FILES([config/config config/user_flags.mak])
 AC_OUTPUT

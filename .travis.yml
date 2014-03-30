@@ -4,7 +4,7 @@ compiler:
 before_install:
   - sudo pip install cpp-coveralls --use-mirrors
 script:
-  - ./configure --enable-profile=gcov --with-compiler=gcc && make && make test
+  - ./configure --enable-profile=gcov && make && make test
 after_success:
   - coveralls --exclude rxp --exclude testsuite --exclude java
 

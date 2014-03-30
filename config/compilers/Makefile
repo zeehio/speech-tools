@@ -43,9 +43,7 @@ COMPILERS = gcc.mak gcc27.mak gcc28.mak gcc295.mak \
         jolt.mak jdk.mak jdk12.mak none.mak \
 	jikes.mak gcc296.mak gcc30.mak gcc31.mak gcc32.mak
 
-LOCAL_DISTCLEAN = from_autoconf.mak
-
-FILES = Makefile $(COMPILERS) gcc_defaults.mak suncc_defaults.mak jdk_defaults.mak jikes_defaults.mak from_autoconf.mak.in
+FILES = Makefile $(COMPILERS) gcc_defaults.mak suncc_defaults.mak jdk_defaults.mak jikes_defaults.mak
 
 include $(TOP)/config/common_make_rules
 

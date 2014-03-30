@@ -220,11 +220,11 @@ EST_DMatrix operator+(const EST_DMatrix &a, const EST_DMatrix &b);
 EST_DVector operator-(const EST_DVector &a, const EST_DVector &b);
 EST_DVector operator+(const EST_DVector &a, const EST_DVector &b);
 
-EST_DMatrix sub(const EST_DMatrix &a, int row, int col);
+EST_DMatrix sub(const EST_DMatrix &a, ssize_t row, ssize_t col);
 EST_DMatrix DMatrix_abs(const EST_DMatrix &a);
 
-EST_DMatrix row(const EST_DMatrix &a, int row);
-EST_DMatrix column(const EST_DMatrix &a, int col);
+EST_DMatrix row(const EST_DMatrix &a, ssize_t row);
+EST_DMatrix column(const EST_DMatrix &a, ssize_t col);
 
 
 /// least squares fit

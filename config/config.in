@@ -39,7 +39,7 @@ SYSTEM_TYPE=$(MACHINETYPE)_$(OSTYPE)$(OSREV)
 ###########################################################################
 ## Compiler.
 ## The definitions are in compilers/$(COMPILER).mak
-## Examples: gcc suncc egcs gcc28 from_autoconf
+## Examples: gcc clang suncc
 
 COMPILER=@COMPILER@
 
@@ -78,7 +78,7 @@ SHARED=@SHARED@
 
 ## Directory specific selections which override the above
 
-OPTIMISE_sigpr = 3
+#OPTIMISE_sigpr = 3
 
 ###########################################################################
 ## Feature selection.
@@ -219,6 +219,8 @@ ALSO_INCLUDE=
 include $(EST)/config/systems/$(SYSTEM_TYPE).mak
 
 include $(EST)/config/compilers/$(COMPILER).mak
+
+include $(EST)/config/user_flags.mak
 
 ifneq ($(JAVA_COMPILER),none)
     include $(EST)/config/compilers/$(JAVA_COMPILER).mak

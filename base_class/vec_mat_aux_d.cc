@@ -56,7 +56,7 @@ bool polynomial_fit(EST_DVector &x, EST_DVector &y,
 }
 
 bool polynomial_fit(EST_DVector &x, EST_DVector &y, EST_DVector &co_effs, 
-	       EST_DVector &weights, ssize_t order)
+	       EST_DVector &weights, int order)
 {
 
     if(order == 0){
