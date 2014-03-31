@@ -181,6 +181,10 @@ protected:
          { EST_Val pv(ival);features().set_path(name, pv); }
 
     /** set feature `name` to `val` */
+    void set(const EST_String &name, ssize_t ival)
+         { EST_Val pv(ival);features().set_path(name, pv); }
+
+    /** set feature `name` to `val` */
     void set(const EST_String &name, float fval)
          { EST_Val pv(fval); features().set_path(name,pv); }
 

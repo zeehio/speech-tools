@@ -100,6 +100,10 @@ class EST_Val {
     EST_Val(const int i)
 	{t=val_int; v.ival=i;}
 
+    /** Copy constructor for an ssize_t*/
+    EST_Val(const ssize_t i)
+	{t=val_int; v.ival=i;}
+
     /** Copy constructor for a float*/
     EST_Val(const float f)
 	{t=val_float; v.fval=f;}
