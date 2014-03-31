@@ -1855,9 +1855,9 @@ LISP closure_code(LISP exp)
 LISP closure_env(LISP exp)
 {return(exp->storage_as.closure.env);}
 
-int get_c_int(LISP x)
+long int get_c_int(LISP x)
 {if NFLONUMP(x) err("not a number",x);
- return((int)FLONM(x));}
+ return((long int)FLONM(x));}
 
 double get_c_double(LISP x)
 {if NFLONUMP(x) err("not a number",x);

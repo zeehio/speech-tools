@@ -27,7 +27,7 @@ void siod_print_welcome(EST_String extra_info);
 void siod_print_welcome(void);
 
 const char *get_c_string(LISP x);
-int get_c_int(LISP x);
+long int get_c_int(LISP x);
 double get_c_double(LISP x);
 float get_c_float(LISP x);
 LISP flocons(double x);
