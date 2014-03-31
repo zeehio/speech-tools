@@ -52,9 +52,9 @@ DEBUG_CCFLAGS   = -g
 DEBUG_CXXFLAGS  = -g
 DEBUG_LINKFLAGS = -g
 
-WARN_CCFLAGS   = -Wall -Wextra -Werror
-WARN_CXXFLAGS  = -Wall -Wextra -Werror
-WARN_LINKFLAGS = -Wall -Wextra -Werror
+WARN_CCFLAGS   = -Wall -Wextra -Werror -Wno-mismatched-tags
+WARN_CXXFLAGS  = -Wall -Wextra -Werror -Wno-mismatched-tags
+WARN_LINKFLAGS = -Wall -Wextra -Werror -Wno-mismatched-tags
 
 VERBOSE_CCFLAGS   =
 VERBOSE_CXXFLAGS  = 
