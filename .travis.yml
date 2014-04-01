@@ -9,7 +9,7 @@ matrix:
     - compiler: gcc
       env:
         global:
-          secure: "FhoCOqzCeWJcXBFiYUNpo6wkje9kIyMayOm7t3HxgUpPcPENkh8KaG4CvgZkThC+4pMj62LCBTgEDWDAF+cANS3PgwviJaDhRWyV8VQU9MBVOTnRMnue7AphqMUZFBME8krLVzvHHPmAuNt+b04mWCitNlmURhdXFn5dedLme6E="
+          - secure: "FhoCOqzCeWJcXBFiYUNpo6wkje9kIyMayOm7t3HxgUpPcPENkh8KaG4CvgZkThC+4pMj62LCBTgEDWDAF+cANS3PgwviJaDhRWyV8VQU9MBVOTnRMnue7AphqMUZFBME8krLVzvHHPmAuNt+b04mWCitNlmURhdXFn5dedLme6E="
       addons:
         coverity_scan:
           project:
