@@ -44,3 +44,8 @@ CC=clang
 CXX=clang++
 COMPILER_DESC_clang= clang compiler
 
+WARN_CCFLAGS   = -Wall -Wextra -Werror -Wno-mismatched-tags
+WARN_CXXFLAGS  = -Wall -Wextra -Werror -Wno-mismatched-tags
+WARN_LINKFLAGS = -Wall -Wextra -Werror -Wno-mismatched-tags
+
+
