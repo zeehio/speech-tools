@@ -302,6 +302,8 @@ enum EST_read_status get_track_esps(const char *filename, char ***fields,
 	    fprintf(stderr,"ESPS file: unexpected end of file when reading record %d\n", j);
 	    delete_esps_rec(rec);
 	    delete_esps_hdr(hdr);
+        fclose(fd);
+        return misc_read_error;
 	}
 	for (i = 0; i < order; ++i)
 	    switch (rec->field[i]->type)
