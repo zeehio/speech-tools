@@ -722,13 +722,13 @@ EST_Token &EST_TokenStream::get(void)
 
     char *word;
     int c,i,j;
-
-    for (i=0; (CLASS(c=getch_internal(),' ') && 
-	       ( c != EOF )); i++)
+    c=getch_internal();
+    for (i=0; (c != EOF && CLASS(c,' ')); i++)
     {
 	if (c == '\n') linepos++;
 	tok_wspace = check_extend_str(tok_wspace,i,&tok_wspacelen);
 	tok_wspace[i] = c;
+    c=getch_internal();
     }
     tok_wspace[i] = '\0';
 
@@ -759,7 +759,8 @@ EST_Token &EST_TokenStream::get(void)
 	    for (i=0,tok_stuff[i++]=c; 
 		 (
 		  !CLASS(c,'@') &&
-		  !CLASS(c=peekch_internal(),' ') && 
+          (c=peekch_internal(),
+		  c >= 0 && !CLASS(c,' ')) && 
 		  !CLASS(c,'@') &&
 		  ( c != EOF )) ;)
 	    {

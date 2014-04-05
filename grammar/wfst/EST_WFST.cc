@@ -631,6 +631,10 @@ EST_read_status EST_WFST::load_transitions_from_lisp(int s, LISP trans)
 	    cerr << "WFST load: unknown vocabulary in state transition" 
 		<< endl;
 	    cerr << "WFST load:  " << siod_sprint(car(t)) << endl;
+        ssize_t i;
+        /* Remove all added transitions: */
+        for (i=0;i<p_states[s]->transitions.length();i++)
+            delete (p_states[s]->transitions).nth(i);
 	    return read_format_error;
 	}
 	p_states[s]->add_transition(w,end,in,out);

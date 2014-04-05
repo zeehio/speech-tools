@@ -932,6 +932,7 @@ Lattice::minimise()
 
     if(!build_distinguished_state_table(dst)){
 	cerr << "Couldn't build distinguished state table" << endl;
+    delete[] dst;
 	return false;
     }
 

@@ -415,6 +415,7 @@ EST_write_status EST_FMatrix::est_save(const EST_String &filename,
 		    cerr << "EST_FMatrix: binsave: failed to write row " 
 			<< i << " column " << j 
 			    << " to \"" << filename << "\"" << endl;
+            if (fd != stdout) fclose(fd);
 		    return misc_write_error;
 		}
     }
@@ -495,6 +496,7 @@ EST_read_status EST_FMatrix::est_load(const EST_String &filename)
 	{
 	    cerr << "EST_FMatrix: binload: short file in \""  
 		<< filename << "\"" << endl;
+        wfree(buff);
 	    return misc_read_error;
 	}
 	if (swap)
@@ -665,6 +667,7 @@ EST_read_status EST_FVector::est_load(const EST_String &filename)
 	  {
 	    cerr << "EST_FVector: binload: short file in \""  
 		 << filename << "\"" << endl;
+        wfree(buff);
 	    return misc_read_error;
 	  }
 	if (swap)
@@ -902,6 +905,7 @@ EST_write_status EST_FVector::est_save(const EST_String &filename,
 	    {
 		cerr << "EST_FVector: binsave: failed to write item " 
 		     << i << " to \"" << filename << "\"" << endl;
+        if (fd != stdout) fclose(fd);
 		return misc_write_error;
 	    }
     }
