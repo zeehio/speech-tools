@@ -86,7 +86,7 @@ static float test_tree_vector(WNode &tree,WDataSet &dataset,ostream *output);
 static float test_tree_trajectory(WNode &tree,WDataSet &dataset,ostream *output);
 static float test_tree_ols(WNode &tree,WDataSet &dataset,ostream *output);
 static int wagon_split(int margin,WNode &node);
-static void find_best_question(WVectorVector &dset, WQuestion best_ques);
+static void find_best_question(WVectorVector &dset, WQuestion &best_ques);
 static void construct_binary_ques(int feat,WQuestion &test_ques);
 static float construct_float_ques(int feat,WQuestion &ques,WVectorVector &ds);
 static float construct_class_ques(int feat,WQuestion &ques,WVectorVector &ds);
