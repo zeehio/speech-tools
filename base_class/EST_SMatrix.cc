@@ -84,8 +84,11 @@ int EST_SMatrix::rateconv(int in_samp_freq, int out_samp_freq)
 	  if (osize > max_len)
 	    max_len = osize;
 	}
-      else
-	return -1;
+      else {
+         delete [] results;
+         delete [] len;
+	       return -1;
+      }
     }
   delete [] in_buf;
 

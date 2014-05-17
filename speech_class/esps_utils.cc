@@ -234,6 +234,7 @@ void add_fea_i(esps_hdr hdr,const char *name, int pos, int d)
     t->name = wstrdup(name);
     if (pos < 0) {
         fprintf(stderr, "%s", "ESPS: add_fea_i: pos should not be < 0\n");
+        delete_esps_fea(t);
         return;
     }
     if (pos == INT_MAX) {
@@ -632,6 +633,7 @@ esps_fea read_esps_fea(FILE *fd, esps_hdr hdr)
     }
     if (err==1) {
         fprintf(stderr, "ESPS read_hdr: Wrong format\n");
+        wfree(r);
         return NULL;
     }
 
@@ -783,6 +785,7 @@ void delete_esps_rec(esps_rec r)
 	wfree(r->field[i]);
     }
     wfree(r->field);
+    /* wfree(r); (already freed on delete_esps_hdr) */
     return;
 }
 
@@ -999,6 +1002,7 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
     {
         cerr << "Could not read ESPS header." << endl;
         cerr << "Wrong format" << endl;
+        delete_esps_hdr(hdr);
         return wrong_format;
     }
     
@@ -1171,10 +1175,12 @@ enum EST_write_status write_esps_hdr(esps_hdr hdr,FILE *fd)
     fhdr.sdr_size = 0;
     fhdr.magic = ESPS_MAGIC;
     strncpy(fhdr.date,ctime(&tx),26);
+    fhdr.date[25] = '\0';
     sprintf(fhdr.version,"1.91");  /* that's what all the others have */
     sprintf(fhdr.prog,"EDST");
     sprintf(fhdr.vers,"0.1");
     strncpy(fhdr.progcompdate,ctime(&tx),26);
+    fhdr.progcompdate[25] = '\0';
     fhdr.num_samples = hdr->num_records;
     fhdr.filler = 0;
     /* in each record */

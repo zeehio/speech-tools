@@ -246,6 +246,7 @@ int play_linux_wave(EST_Wave &inwave, EST_Option &al)
 	      THREAD_UNPROTECT();
 	      EST_warning("%s: failed to write to buffer (sr=%d)",aud_sys_name, sample_rate );
 		close(audio);
+        delete[] buf;
 		return -1;
 	    }
 	    // ioctl(audio, SNDCTL_DSP_SYNC, 0);
@@ -259,6 +260,8 @@ int play_linux_wave(EST_Wave &inwave, EST_Option &al)
       cerr << aud_sys_name << ": unable to set sample rate " <<
 	sample_rate << endl;
       close(audio);
+      wfree(waveform2);
+      wfree(waveform);
       return -1;
     }
     
@@ -330,6 +333,7 @@ int record_linux_wave(EST_Wave &inwave, EST_Option &al)
 		cerr << aud_sys_name << ": failed to read from audio device"
 		    << endl;
 		close(audio);
+        wfree(waveform2);
 		return -1;
 	    }
 	}

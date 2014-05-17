@@ -66,7 +66,7 @@ const char * const est_ostype = STRINGIZE(ESTOSTYPE);
 char *cmake_tmp_filename()
 {
     char *tdir;
-    char fname[1024];
+    char *fname;
     static int n=0;
     char *t1;
     int i,j;
@@ -83,8 +83,13 @@ char *cmake_tmp_filename()
 	if (t1[i] != '"')
 	    t1[j++]=t1[i];
 
+    /* Length of the tmp filename:
+       strlen(t1) + strlen("/est_00000_00000") + 1 (end of string character) */
+    size_t tmpfile_length = strlen(t1) + 17;
+    fname = walloc(char, tmpfile_length);
     sprintf(fname,"%s/est_%05ld_%05d",t1,(long)getpid(),n++);
-    return wstrdup(fname);
+    free(t1);
+    return fname;
 }
 
 enum EST_bo_t str_to_bo(const char *boname)

@@ -124,6 +124,10 @@ int socket_send_file(SOCKET_FD fd,const EST_String &filename)
     {
 	cerr << "socket_send_file: can't find file \"" <<
 	    filename << "\"\n";
+#ifndef WIN32
+	fflush(ffd);
+	fclose(ffd);
+#endif
 	return -1;
     }
 

@@ -300,6 +300,7 @@ load_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n)
     if (fread(&magic,sizeof(int),1,ifd) != 1)
     {
         cerr << "Could not read integer from " << filename << endl;
+        fclose(ifd);
         return misc_read_error;
     }
     if (SWAPINT(magic) == EST_NGRAMBIN_MAGIC)
@@ -375,6 +376,7 @@ load_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n)
 	    cerr << "EST_Ngrammar::load_ngram_cstr_bin unexpected end of frequency data" << endl;
 	    ts.close();
 	    fclose(ifd);
+        delete[] dd;
 	    return misc_read_error;	
 	}
 	for (k=n.p_states[i].pdf().item_start();
@@ -730,9 +732,8 @@ save_ngram_arpa(const EST_String filename, EST_Ngrammar &n)
     
     *ost << "\\end\\" << endl;
     
-    if (ost != &cout)
-	delete ost;
-    
+    if (ost != &cout) delete ost;
+    delete count;
     return write_ok;
 }
 

@@ -86,7 +86,7 @@ static float test_tree_vector(WNode &tree,WDataSet &dataset,ostream *output);
 static float test_tree_trajectory(WNode &tree,WDataSet &dataset,ostream *output);
 static float test_tree_ols(WNode &tree,WDataSet &dataset,ostream *output);
 static int wagon_split(int margin,WNode &node);
-static WQuestion find_best_question(WVectorVector &dset);
+static void find_best_question(WVectorVector &dset, WQuestion best_ques);
 static void construct_binary_ques(int feat,WQuestion &test_ques);
 static float construct_float_ques(int feat,WQuestion &ques,WVectorVector &ds);
 static float construct_class_ques(int feat,WQuestion &ques,WVectorVector &ds);
@@ -720,7 +720,7 @@ static int wagon_split(int margin, WNode &node)
     WNode *l,*r;
 
     node.set_impurity(WImpurity(node.get_data()));
-    q = find_best_question(node.get_data());
+    find_best_question(node.get_data(), q);
 
 /*    printf("q.score() %f impurity %f\n",
 	   q.get_score(),
@@ -784,12 +784,13 @@ void wgn_find_split(WQuestion &q,WVectorVector &ds,
 
 }
 
-static WQuestion find_best_question(WVectorVector &dset)
+static void find_best_question(WVectorVector &dset,
+                               WQuestion &best_ques)
 {
     //  Ask all possible questions and find the best one
     int i;
     float bscore,tscore;
-    WQuestion test_ques, best_ques;
+    WQuestion test_ques;
 
     bscore = tscore = WGN_HUGE_VAL;
     best_ques.set_score(bscore);
@@ -828,7 +829,7 @@ static WQuestion find_best_question(WVectorVector &dset)
 	}
     }
 
-    return best_ques;
+    return;
 }
 
 static float construct_class_ques(int feat,WQuestion &ques,WVectorVector &ds)
