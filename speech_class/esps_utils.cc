@@ -785,7 +785,7 @@ void delete_esps_rec(esps_rec r)
 	wfree(r->field[i]);
     }
     wfree(r->field);
-    wfree(r);
+    /* wfree(r); (already freed on delete_esps_hdr) */
     return;
 }
 
