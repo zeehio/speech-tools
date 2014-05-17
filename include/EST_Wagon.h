@@ -105,8 +105,9 @@ class WQuestion {
     EST_IList operandl;
     float score;
   public:
-    WQuestion() {;}
-    WQuestion(const WQuestion &s) 
+    WQuestion() {
+        this->score = WGN_HUGE_VAL;}
+    WQuestion(const WQuestion &s)
        { feature_pos=s.feature_pos;
          op=s.op; yes=s.yes; no=s.no; operand1=s.operand1;
 	 operandl = s.operandl; score=s.score;}
