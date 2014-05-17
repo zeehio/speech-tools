@@ -262,7 +262,7 @@ enum EST_read_status get_track_esps(const char *filename, char ***fields,
 				    int *num_points, int *num_fields,
 				    short *fixed)
 {
-    esps_hdr hdr;
+    esps_hdr hdr = NULL;
     esps_rec rec;
     FILE *fd;
     int i, j, order, num_recs;
@@ -277,6 +277,9 @@ enum EST_read_status get_track_esps(const char *filename, char ***fields,
     if ((rv=read_esps_hdr(&hdr,fd)) != format_ok)
     {
 	fclose(fd);
+    if (hdr != NULL) {
+        delete_esps_hdr(hdr);
+    }
 	return rv;
     }
     num_recs =  hdr->num_records;
