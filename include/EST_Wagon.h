@@ -106,6 +106,8 @@ class WQuestion {
     float score;
   public:
     WQuestion() {
+        this->yes = 0;
+        this->no = 0;
         this->score = WGN_HUGE_VAL;}
     WQuestion(const WQuestion &s)
        { feature_pos=s.feature_pos;
