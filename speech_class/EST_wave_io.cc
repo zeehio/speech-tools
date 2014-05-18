@@ -231,6 +231,10 @@ enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
         fprintf(stderr, "Command failed. Could not read nist file\n");
         fprintf(stderr, "To read embedded-shorten-v1.1 nist files, \n");
         fprintf(stderr, "shorten utility from Tony Robinson is required\n");
+        wfree(sample_coding);
+        wfree(byte_order);
+        wfree(tmpfile);
+        wfree(cmdstr);
         return misc_read_error;
     }
 	EST_TokenStream tt;
@@ -1750,8 +1754,10 @@ enum EST_read_status load_wave_raw(EST_TokenStream &ts, short **data, int
 	
 	file_data = walloc(unsigned char, data_length * sample_width *inc);
 	ts.seek(offset*sample_width*inc);
-	if ((int)ts.fread(file_data,sample_width,data_length) != data_length)
+	if ((int)ts.fread(file_data,sample_width,data_length) != data_length) {
+        wfree(file_data);
 	    return misc_read_error;
+    }
 	
 	*data = convert_raw_data(file_data,data_length,isample_type,ibo);
     }

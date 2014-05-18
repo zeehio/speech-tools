@@ -1614,6 +1614,7 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
       
     case HTK_DISCRETE:
       cerr << "Can't read HTK DISCRETE format file into track" << endl;
+      fclose(fp);
       return misc_read_error;
       break;
       
@@ -1647,12 +1648,16 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
       }
 
       if( (fread( compressA, sizeof(float), num_values, fp )) != static_cast<size_t>(num_values) ){
-	fclose( fp );
-	return read_format_error;
+          if (compressA != compressA_Buffer) delete[] compressA;
+          if (compressB != compressB_Buffer) delete[] compressB;
+          fclose( fp );
+          return read_format_error;
       }
       
       if( (fread( compressB, sizeof(float), num_values, fp )) != static_cast<size_t>(num_values) ){
-	fclose( fp );
+          if (compressA != compressA_Buffer) delete[] compressA;
+          if (compressB != compressB_Buffer) delete[] compressB;
+          fclose( fp );
 	return read_format_error;
       }
 
@@ -1671,6 +1676,8 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
     }
     
     if (num_values > UNREASONABLE_FRAME_SIZE){
+          if (compressA != compressA_Buffer) delete[] compressA;
+          if (compressB != compressB_Buffer) delete[] compressB;
       fclose(fp);
       return read_format_error;
     }
@@ -1692,17 +1699,23 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
     // check length of file is as expected from header info
     ssize_t dataBeginPosition = EST_ftell(fp);
     if( dataBeginPosition == -1 ){
+          if (compressA != compressA_Buffer) delete[] compressA;
+          if (compressB != compressB_Buffer) delete[] compressB;
       fclose(fp);
       return wrong_format;
     }
     
     if (EST_fseek(fp,0,SEEK_END)){
+          if (compressA != compressA_Buffer) delete[] compressA;
+          if (compressB != compressB_Buffer) delete[] compressB;
       fclose(fp);
       return wrong_format;
     }
     
     long file_length;
     if ((file_length = ftell(fp)) == -1){
+          if (compressA != compressA_Buffer) delete[] compressA;
+          if (compressB != compressB_Buffer) delete[] compressB;
       fclose(fp);
       return wrong_format;
     }
@@ -1724,6 +1737,8 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
     
     if( expected_vals != (num_values * new_frames) ){
       // it probably isn't HTK format after all
+          if (compressA != compressA_Buffer) delete[] compressA;
+          if (compressB != compressB_Buffer) delete[] compressB;
       fclose(fp);
       return wrong_format;
     }
@@ -1745,6 +1760,8 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
     // go to start of data
     if( EST_fseek(fp, dataBeginPosition, SEEK_SET) == -1 ){
       cerr << "Couldn't position htk file at start of data" << endl;
+          if (compressA != compressA_Buffer) delete[] compressA;
+          if (compressB != compressB_Buffer) delete[] compressB;
       fclose(fp);
       return misc_read_error;
     }

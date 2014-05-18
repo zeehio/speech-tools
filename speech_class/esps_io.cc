@@ -265,7 +265,7 @@ enum EST_read_status get_track_esps(const char *filename, char ***fields,
     esps_hdr hdr = NULL;
     esps_rec rec;
     FILE *fd;
-    int i, j, order, num_recs;
+    int i, j, order, num_recs, jj;
     enum EST_read_status rv;
     double d;
     char **tf;
@@ -306,6 +306,10 @@ enum EST_read_status get_track_esps(const char *filename, char ***fields,
 	    delete_esps_rec(rec);
 	    delete_esps_hdr(hdr);
         fclose(fd);
+        wfree(tf);
+        for (jj = 0; jj < num_recs; ++jj)
+	        wfree(ta[jj]);
+        wfree(ta);
         return misc_read_error;
 	}
 	for (i = 0; i < order; ++i)
