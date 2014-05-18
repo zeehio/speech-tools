@@ -1881,7 +1881,7 @@ STATIC int argify(ECHAR *line, ECHAR ***avp)
 
 STATIC STATUS last_argument()
 {
-    ECHAR	**av;
+    ECHAR	**av = NULL;
     ECHAR	*p;
     STATUS	s;
     int		ac;
@@ -1898,7 +1898,7 @@ STATIC STATUS last_argument()
     else
 	s = ac ? insert_string(av[ac - 1]) : CSstay;
 
-    if (ac)
+    if (av != NULL)
 	DISPOSE(av);
     DISPOSE(p);
     return s;
