@@ -333,60 +333,32 @@ void lpc2cep(const EST_FVector &lpc, EST_FVector &cep)
     }
 }
 
-// REORG - test this!!
+/* Sergio Oller <sergioller@gmail.com>
+ * This function returns the same ref coefficients as given by:
+ * sig2lpc(sig, acf, ref, lpc). (at least on my tests).
+ */
 void lpc2ref(const EST_FVector &lpc, EST_FVector &ref)
 {
-
-  // seem to get weird output from this - best not to use it !
-  EST_error("lpc2ref Code unfinished\n");
-
-  // LPC to reflection coefficients 
-  // from code from Borja Etxebarria
-  // This code does clever things with pointer and so has been
-  // left using float * arrays.
-
-  // simonk (May 99) : fixed because lpc coeffs always have energy at
-  // coeff 0 - the code here would need changing is lpc coeff 0 was
-  // ever made optional.
-  int lpc_offset=1;
-
-    int order = lpc.length() - 1;
-    int i,j;
-    float f,ai;
-    float *vo,*vx;
-    float *vn = new float[order];
-    
-    i = order - 1;
-    ref[i] = lpc(i+lpc_offset);
-    ai = lpc(i+lpc_offset);
-    f = 1-ai*ai;
-    i--;
-    
-    for (j=0; j<=i; j++)
-	ref[j] = (lpc(j+lpc_offset)+((ai*lpc(i-j+lpc_offset))))/f;
-    
-    /* vn=vtmp in previous #define */
-    // Check whether this should really be a pointer
-    vo = new float[order];
-    for (i = 0; i < order; ++i)
-	vo[i] = ref(i);
-
-    for ( ;i>0; ) 
-    {
-	ai=vo[i];
-	f = 1-ai*ai;
-	i--;
-	for (j=0; j<=i; j++)
-	    vn[j] = (vo[j]+((ai*vo[i-j])))/f;
-	
-	ref[i]=vn[i];
-	
-	vx = vn;
-	vn = vo;
-	vo = vx;
-    }
-    
-    delete [] vn;
+  ssize_t order = lpc.length() - 1;
+  ssize_t p,m, i;
+  float f;
+  float *x, *xp;
+  x = new float[order+1];
+  xp = new float[order+1];
+  for (i=0;i<lpc.length();i++)
+     x[i] = lpc(i);
+  for (p=order-1;p>0;p--) {
+      memcpy(xp,x,(order+1)*sizeof(float));
+      ref[p] = xp[p+1];
+      f = 1-ref[p]*ref[p];
+      for (m=0;m<p;m++) {
+          x[m+1] = (xp[m+1]+ref[p]*xp[p-m])/f;
+      }
+  }
+  ref[0] = x[1];
+  delete[] x;
+  delete[] xp;
+  return;
 }
 
 void ref2lpc(const EST_FVector &ref, EST_FVector &lpc)
