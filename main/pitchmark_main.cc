@@ -223,12 +223,14 @@ static EST_write_status save_ogi_bin(EST_Track &pm, EST_String filename, int sr)
     for (i = 0; i < pm.num_frames(); ++i)
 	d[i] = int(pm.t(i) * (float) sr);
     
-    if ((fp = fopen(filename, "wb")) == NULL)
+    if ((fp = fopen(filename, "wb")) == NULL) {
+    delete[] d;
 	return misc_write_error;
-    
+	}
     if (fwrite(d, pm.num_frames(), sizeof(int), fp) != 1)
     {
 	fclose(fp);
+    delete[] d;
 	return misc_write_error;
     }
     delete[] d;

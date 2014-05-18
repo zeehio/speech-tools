@@ -1606,10 +1606,12 @@ static int parse_dtd(Parser p)
     maybe_uppercase(p, name);
 
     skip_whitespace(s);
-
-    require(parse_external_id(p, 0, &publicid, &systemid, 
+    if ( parse_external_id(p, 0, &publicid, &systemid, 
 			      ParserGetFlag(p, XMLExternalIDs),
-			      ParserGetFlag(p, XMLExternalIDs)));
+			      ParserGetFlag(p, XMLExternalIDs)) < 0) {
+        Free(name);
+        return -1;
+    }
 
     if(systemid || publicid)
     {
@@ -1625,8 +1627,11 @@ static int parse_dtd(Parser p)
     if(looking_at(p, "["))
     {
 	int line = s->line_number, cpos = s->next;
-
-	require(read_markupdecls(p));
+    
+    if (read_markupdecls(p) < 0) {
+        Free(name);
+        return -1;
+    }
 	skip_whitespace(s);
 	internal_part = NewInternalEntity("", p->pbuf, parent, line, cpos, 1);
 	Consume(p->pbuf);

@@ -126,7 +126,7 @@ void smooth_portion(EST_Track &c, EST_Features &op)
 	    c.a(i) = a[i];
 	}
     }
-
+    delete ms;
     delete[] a;
 }
 

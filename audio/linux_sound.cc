@@ -260,7 +260,8 @@ int play_linux_wave(EST_Wave &inwave, EST_Option &al)
       cerr << aud_sys_name << ": unable to set sample rate " <<
 	sample_rate << endl;
       close(audio);
-      wfree(waveform2);
+      if (waveform2 != waveform)
+         wfree(waveform2);
       wfree(waveform);
       return -1;
     }

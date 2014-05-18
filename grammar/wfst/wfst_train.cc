@@ -222,11 +222,13 @@ void wfst_train(EST_WFST &wfst, LISP data)
 	if (max_entropy_state == -1)
 	{
 	    printf("No new max_entropy state\n");
+        delete [] state_data;
 	    break;
 	}
 	if (best_trans_list == NIL)
 	{
 	    printf("No best_trans in max_entropy state\n");
+        delete [] state_data;
 	    break;
 	}
 
@@ -241,6 +243,7 @@ void wfst_train(EST_WFST &wfst, LISP data)
 	if (c > 5000)
 	{
 	    printf("reached cycle end %d\n",c);
+        delete [] state_data;
 	    break;
 	}
         /* split on best split                      */
