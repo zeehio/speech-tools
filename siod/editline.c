@@ -1325,7 +1325,7 @@ void read_history(const char *history_file)
     {
 	ungetc(c,fd);
 	for (i=0; ((c=getc(fd)) != '\n') && (c != EOF); i++)
-	    if (i < 2047)
+	    if (i < 2046)
 		buff[i] = c;
 	buff[i] = '\0';
 	add_history(buff);
