@@ -107,7 +107,7 @@ class EST_WFST_State {
     EST_WFST_State(const EST_WFST_State &state);
     ~EST_WFST_State();
 
-    void add_transition(float w,
+    EST_WFST_Transition *add_transition(float w,
 					int end, 
 					int in,
 					int out);
