@@ -98,7 +98,7 @@ EST_WFST_State::~EST_WFST_State()
 
 }
 
-EST_WFST_Transition *EST_WFST_State::add_transition(float w,
+void EST_WFST_State::add_transition(float w,
 						    int end, 
 						    int in,
 						    int out)
@@ -106,7 +106,7 @@ EST_WFST_Transition *EST_WFST_State::add_transition(float w,
     // Add new transition
     EST_WFST_Transition *s = new EST_WFST_Transition(w,end,in,out);
     transitions.append(s);
-    return s;
+    return;
 }
 
 EST_WFST::~EST_WFST()
