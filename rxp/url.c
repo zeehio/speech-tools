@@ -367,7 +367,7 @@ bad:
 FILE16 *url_open(const char *url, const char *base, const char *type,
 		 char **merged_url)
 {
-    char *scheme, *host, *path, *m_url;
+    char *scheme =NULL, *host, *path, *m_url;
     int port;
     unsigned int i;
     FILE16 *f;
@@ -377,8 +377,9 @@ FILE16 *url_open(const char *url, const char *base, const char *type,
 
     /* Determine the merged URL */
 
-    if(!(m_url = url_merge(url, base, &scheme, &host, &port, &path)))
+    if(!(m_url = url_merge(url, base, &scheme, &host, &port, &path))) {
 	return 0;
+    }
 
 #ifdef HAVE_LIBZ
     len = strlen(m_url);
@@ -547,6 +548,7 @@ static FILE16 *http_open(const char *url,
     {
 	LT_ERROR1(LEFILE, "Error: system call connect failed: %s\n",
 		     Strerror());
+    close(s);
 	return 0;
     }
 

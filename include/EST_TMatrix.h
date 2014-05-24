@@ -171,7 +171,7 @@ public:
   /**@name access
     * Basic access methods for matrices.
     */
-  //@{
+  ///@{
 
   /// return number of rows
   ssize_t num_rows() const {return this->p_num_rows;}
@@ -201,7 +201,7 @@ public:
   /// non-const element access operator
   T &operator () (ssize_t row, ssize_t col) { return a(row,col); }
   
-  //@}
+  ///@}
 
   bool have_rows_before(ssize_t n) const;
   bool have_columns_before(ssize_t n) const;
@@ -230,7 +230,7 @@ public:
     * memory with the original, so altering values them alters
     * the original. 
     */
-  //@{
+  ///@{
 
   /// Make the vector `rv` a window onto row `r`
   void row(EST_TVector<T> &rv, ssize_t r, ssize_t start_c=0, int len=-1);
@@ -240,12 +240,12 @@ public:
   void sub_matrix(EST_TMatrix<T> &sm,
 		  ssize_t r=0, ptrdiff_t numr=EST_ALL, 
 		  ssize_t c=0, ptrdiff_t numc=EST_ALL);
-  //@}
+  ///@}
 
   /**@name Copy in and out
     * Copy data between buffers and the matrix.
     */
-  //@{
+  ///@{
     /** Copy row `r` of matrix to `buf`. `buf`
         should be pre-malloced to the correct size.
         */
@@ -296,11 +296,11 @@ public:
   void set_memory(T *buffer, ptrdiff_t offset, ssize_t rows, ssize_t columns, 
 		  int free_when_destroyed=0);
 
-  //@}
+  ///@}
 
   /**@name Matrix file input / output
     */
-  //@{
+  ///@{
   /// load Matrix from file - Not currently implemented.
   EST_read_status  load(const class EST_String &filename);
   /// save Matrix to file `filename`
@@ -311,11 +311,12 @@ public:
     {ssize_t i, j; 
         for (i = 0; i < a.num_rows(); ++i) {
             for (j = 0; j < a.num_columns(); ++j) 
-                st << a.a_no_check(i, j) << " "; st << std::endl;
+                st << a.a_no_check(i, j) << " ";
+            st << std::endl;
         }
         return st;
     }
-  //@}
+  ///@}
   
 };
 

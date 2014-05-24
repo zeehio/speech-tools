@@ -1835,7 +1835,7 @@ static int process_xml_decl(Parser p)
     Char *Value, *cp;
     char8 *value;
     CharacterEncoding enc = CE_unknown;
-    Char c;
+    int c;
 
     s->entity->ml_decl = ML_xml;
 
@@ -2913,15 +2913,20 @@ static int parse_entity_decl(Parser p, Entity ent, int line, int chpos)
     require(skip_dtd_whitespace(p, p->external_pe_depth > 0));
     require(parse_name(p, "for name in entity declaration"));
     CopyName(name);
-
-    require(expect_dtd_whitespace(p, "after name in entity declaration"));
+    if (expect_dtd_whitespace(p, "after name in entity declaration") <0) {
+        Free(name);
+        return -1;
+    }
 
     if(looking_at(p, "'") || looking_at(p, "\""))
     {
 	Char *value;
 
 	unget(p->source);
-	require(parse_string(p, "for value in entity declaration", LT_entity));
+	 if(parse_string(p, "for value in entity declaration", LT_entity) <0) {
+         Free(name);
+         return -1;
+     }
 	value = p->pbuf;
 	Consume(p->pbuf);
 
@@ -2933,16 +2938,26 @@ static int parse_entity_decl(Parser p, Entity ent, int line, int chpos)
 	char8 *publicid, *systemid;
 	NotationDefinition notation = 0;
 
-	require(parse_external_id(p, 1, &publicid, &systemid, 1, 1));
+	if (parse_external_id(p, 1, &publicid, &systemid, 1, 1) < 0) {
+        Free(name);
+        return -1;
+    }
 
-	require((t = skip_dtd_whitespace(p, p->external_pe_depth > 0)));
+	if ((t = skip_dtd_whitespace(p, p->external_pe_depth > 0)) < 0) {
+        Free(name);
+        return -1;
+    }
 	if(looking_at(p, "NDATA"))
 	{
 	    if(t == 0)
 		return error(p, "Whitespace missing before NDATA");
 	    if(pe)
 		return error(p, "NDATA not allowed for parameter entity");
-	    require(expect_dtd_whitespace(p, "after NDATA"));
+        if (expect_dtd_whitespace(p, "after NDATA") <0) {
+            Free(name);
+            Free(systemid);
+            return -1;
+        }
 	    require(parse_name(p, "for notation name in entity declaration"));
 	    maybe_uppercase_name(p);
 	    notation = FindNotationN(p->dtd, p->name, p->namelen);
@@ -2990,12 +3005,25 @@ static int parse_notation_decl(Parser p)
     CopyName(name);
     maybe_uppercase(p, name);
 
-    require(expect_dtd_whitespace(p, "after name in notation declaration"));
+    if (expect_dtd_whitespace(p, "after name in notation declaration") < 0) {
+        Free(name);
+        return -1;
+    }
     
-    require(parse_external_id(p, 1, &publicid, &systemid, 1, 0));
-
-    require(skip_dtd_whitespace(p, p->external_pe_depth > 0));
-    require(expect(p, '>', "at end of notation declaration"));
+    if (parse_external_id(p, 1, &publicid, &systemid, 1, 0) < 0) {
+        Free(name);
+        return -1;
+    }
+    
+    if (skip_dtd_whitespace(p, p->external_pe_depth > 0) < 0) {
+        Free(name);
+        return -1;
+    }
+    
+    if (expect(p, '>', "at end of notation declaration") < 0) {
+        Free(name);
+        return -1;
+    }
 
     if((def = FindNotation(p->dtd, name)))
     {
@@ -3139,7 +3167,7 @@ static int error(Parser p, const char8 *format, ...)
     verror(&p->xbit, format, args);
 
     p->state = PS_error;
-
+    va_end(args);
     return -1;
 }
 
@@ -3157,5 +3185,6 @@ static void warn(Parser p, const char8 *format, ...)
 	p->warning_callback(&bit, p->callback_arg);
     else
 	ParserPerror(p, &bit);
+    va_end(args);
 }
 

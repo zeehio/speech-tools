@@ -1333,6 +1333,13 @@ struct s1 {
     float  f2;
 };
 
+static void init_struct_s1(struct s1& s) {
+    memset(s.c,0,17);
+    s.f1=0;
+    s.f2=0;
+    return;
+}
+
 struct s2 {
     float f1;
     float f2;   
@@ -1342,6 +1349,18 @@ struct s2 {
     int i1;
     int i2;
 };
+
+static void init_struct_s2(struct s2& s) {
+    s.f1=0;
+    s.f2=0;
+    s.f3=0;
+    s.c1 = 0;
+    s.c2 = 0;
+    s.i1 = 0;
+    s.i2 = 0;
+    return;
+}
+
 
 struct audlabfh {
     struct s1 z; 
@@ -1354,6 +1373,18 @@ struct audlabfh {
     char  c5[64];
 };
 
+static void init_struct_audlabfh(struct audlabfh & s) {
+    init_struct_s1(s.z);
+    memset(s.file_type,0,8);
+    memset(s.c1, 0, 17);
+    memset(s.c2, 0, 17);
+    memset(s.c3, 0, 17);
+    s.start =0;
+    s.data_type = 0;
+    memset(s.c5,0,64);
+    return;
+}
+
 struct audlabsh {
     int   channel_count;
     char  serial;
@@ -1365,6 +1396,19 @@ struct audlabsh {
     char  c4[121];
     
 };
+
+static void init_struct_audlabsh(struct audlabsh & s) {
+    s.channel_count = 0;
+    s.serial = 0;
+    s.sample_rate = 0;
+    memset(s.c1, 0, 20);
+    s.i1 = 0;
+    s.c2 = 0;
+    memset(s.c3, 0, 121);
+    memset(s.c4, 0, 121);
+    return;
+}
+
 struct audlabsd {
     char descr[17];
     int sample_count;
@@ -1372,6 +1416,15 @@ struct audlabsd {
     float f1;
     struct s2 z;
 };
+
+static void init_struct_audlabsd(struct audlabsd & s) {
+    memset(s.descr, 0, 17);
+    s.sample_count = 0;
+    s.nbits = 0;
+    s.f1 = 0;
+    init_struct_s2(s.z);
+    return;
+}
 
 enum EST_read_status load_wave_audlab(EST_TokenStream &ts, short **data, int
 				      *num_samples, int *num_channels, int *word_size, int
@@ -1382,6 +1435,9 @@ enum EST_read_status load_wave_audlab(EST_TokenStream &ts, short **data, int
     struct audlabfh fh;
     struct audlabsh sh;
     struct audlabsd sd;
+    init_struct_audlabfh(fh);
+    init_struct_audlabsh(sh);
+    init_struct_audlabsd(sd);
     int data_length,sample_count;
     int hdr_length;
     int current_pos;
@@ -1449,7 +1505,10 @@ enum EST_write_status save_wave_audlab_header(FILE *fp,
     struct audlabfh fh;
     struct audlabsh sh;
     struct audlabsd sd;
-    
+
+    init_struct_audlabfh(fh);
+    init_struct_audlabsh(sh);
+    init_struct_audlabsd(sd);
     fh.start = sizeof (struct audlabfh) +
 	sizeof (struct audlabsh) + sizeof (struct audlabsd);
     fh.data_type = 2;
@@ -1545,8 +1604,9 @@ enum EST_read_status load_wave_sd(EST_TokenStream &ts, short **data, int
 	return misc_read_error;
     }
     
-    if ((rv=read_esps_hdr(&hdr,fd)) != format_ok)
-	return rv;
+    if ((rv=read_esps_hdr(&hdr,fd)) != format_ok) {
+        return rv;
+    }
     
     if (hdr->file_type != ESPS_SD)
     {
@@ -1623,6 +1683,7 @@ enum EST_write_status save_wave_sd_header(FILE *fp,
 		default:
 		    fprintf(stderr,"ESPS file: no support for sample_type %s\n",
 			    sample_type_to_str(sample_type));
+            delete_esps_hdr(hdr);
 		    return misc_write_error;
 		}
     /* I believe all of the following are necessary and in this order */

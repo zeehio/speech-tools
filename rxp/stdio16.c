@@ -364,23 +364,32 @@ CharacterEncoding GetFileEncoding(FILE16 *file)
 
 int Fprintf(FILE16 *file, const char *format, ...)
 {
+    int nchars;
     va_list args;
     va_start(args, format);
-    return Vfprintf(file, format, args);
+    nchars = Vfprintf(file, format, args);
+    va_end(args);
+    return nchars;
 }
 
 int Printf(const char *format, ...)
 {
+    int nchars;
     va_list args;
     va_start(args, format);
-    return Vfprintf(Stdout, format, args);
+    nchars = Vfprintf(Stdout, format, args);
+    va_end(args);
+    return nchars;
 }
 
 int Sprintf(void *buf, CharacterEncoding enc, const char *format, ...)
 {
+    int nchars;
     va_list args;
     va_start(args, format);
-    return Vsprintf(buf, enc, format, args);
+    nchars = Vsprintf(buf, enc, format, args);
+    va_end(args);
+    return nchars;
 }
 
 int Vprintf(const char *format, va_list args)
@@ -422,6 +431,7 @@ int Vfprintf(FILE16 *file, const char *format, va_list args)
     int L;
     #endif
     int nchars = 0;
+    memset(buf, 0, BufferSize*sizeof(char8));
 
     while((c = *format++))
     {

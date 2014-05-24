@@ -67,7 +67,6 @@ static int wfst_train_main(int argc, char **argv)
     EST_Option al;
     EST_StrList files;
     EST_String wfstfile;
-    FILE *ofd;
 
     parse_command_line
 	(argc, argv,
@@ -79,15 +78,6 @@ static int wfst_train_main(int argc, char **argv)
 	 "-heap <int> {210000}\n"+
 	 "                    Set size of Lisp heap, needed for large rulesets\n",
 	 files, al);
-    
-    if (al.present("-o"))
-    {
-	if ((ofd=fopen(al.val("-o"),"w")) == NULL)
-	    EST_error("can't open output file for writing \"%s\"",
-		      (const char *)al.val("-o"));
-    }
-    else
-	ofd = stdout;
 
     if (al.present("-wfst"))
 	wfstfile = al.val("-wfst");
