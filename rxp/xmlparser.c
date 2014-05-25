@@ -2367,7 +2367,10 @@ static int parse_element_decl(Parser p)
 	Consume(p->pbuf);
     }
 #endif
-    require(skip_dtd_whitespace(p, p->external_pe_depth > 0));
+    if (skip_dtd_whitespace(p, p->external_pe_depth > 0) < 0) {
+        Free(name);
+        return -1;
+    }
     require(expect(p, '>', "at end of element declaration"));
 
     if((def = FindElement(p->dtd, name)))
@@ -2801,7 +2804,11 @@ static int parse_attlist_decl(Parser p)
 	else
 	    default_value = 0;
 
-	require(skip_dtd_whitespace(p, p->external_pe_depth > 0));
+	if (skip_dtd_whitespace(p, p->external_pe_depth > 0) < 0 ) {
+        Free(allowed_values);
+        Free(name);
+        return -1;
+    }
 
 	if(FindAttribute(element, name))
 	{

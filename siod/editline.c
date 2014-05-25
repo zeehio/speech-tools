@@ -1865,7 +1865,7 @@ STATIC int argify(ECHAR *line, ECHAR ***avp)
 			p[ac] = NULL;
 			return ac;
 		    }
-		    COPYFROMTO(new, p, i * sizeof (char **));
+		    COPYFROMTO(new, p, i * sizeof (char *));
 		    i += MEM_INC;
 		    DISPOSE(p);
 		    *avp = p = new;
