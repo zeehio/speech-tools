@@ -357,7 +357,7 @@ float mean( const EST_Track &tr, ssize_t channel )
 
 void mean( const EST_Track &tr, EST_FVector &m )
 {
-  unsigned int tr_num_channels = tr.num_channels();
+  int tr_num_channels = tr.num_channels();
 
   m.resize( tr_num_channels, 0 );
   

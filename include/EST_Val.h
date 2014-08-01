@@ -96,9 +96,11 @@ class EST_Val {
     /** Copy constructor for another EST_Val*/
     EST_Val(const EST_Val &val);
 
+	#if (SSIZE_MAX != INT_MAX)
     /** Copy constructor for an int*/
     EST_Val(const int i)
 	{t=val_int; v.ival=i;}
+	#endif
 
     /** Copy constructor for an ssize_t*/
     EST_Val(const ssize_t i)
@@ -177,8 +179,10 @@ class EST_Val {
 
     ///@{
 
+	#if (SSIZE_MAX != INT_MAX)
     /** Assignment of val to an int */
     EST_Val &operator=(const int i) { t=val_int; v.ival=i; return *this;}
+    #endif
 
     /** Assignment of val to an ssize_t */
     EST_Val &operator=(ssize_t i) { t=val_int; v.ival=i; return *this;}
@@ -246,8 +250,10 @@ class EST_Val {
     ///@{
     /** Automatically cast val as an ssize_t*/
     operator ssize_t() const { return Int(); }
+	#if (SSIZE_MAX != INT_MAX)
     /** Automatically cast val as an int*/
     operator int() const { return Int(); }
+    #endif
     /** Automatically cast val as an float*/
     operator float() const { return Float(); }
     /** Automatically cast val as an string*/

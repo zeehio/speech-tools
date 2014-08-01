@@ -266,7 +266,7 @@ void pm_to_f0(EST_Track &pm, EST_Track &f0)
 
     for (ssize_t i = 0; i < f0.num_frames(); ++i)
     {
-	f0.a(i, 0L) = 1.0 / (f0.t(i) - prev_pm);
+	f0.a(i, 0) = 1.0 / (f0.t(i) - prev_pm);
 	prev_pm = f0.t(i);
     }
 }

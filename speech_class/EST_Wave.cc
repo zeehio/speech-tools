@@ -559,7 +559,7 @@ void EST_Wave::rescale( const EST_Track &fc )
 		 (fc.t(fc_length-1) * p_sample_rate) - num_samples() );
 
   start_sample = fc.t(0L)*p_sample_rate;
-  target1 = fc.a(0L,0L); // could use separate channels for each waveform channel
+  target1 = fc.a(static_cast<ssize_t>(0),0); // could use separate channels for each waveform channel
 
   for (ssize_t k = 1; k<fc_length; ++k ){
     end_sample   = fc.t( k )*p_sample_rate;

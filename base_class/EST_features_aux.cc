@@ -49,7 +49,7 @@ using namespace std;
 defineGetFunction(EST_Features, val, EST_Val, getVal)
 defineGetFunction(EST_Features, val, EST_String, getString)
 defineGetFunction(EST_Features, val, float, getFloat)
-defineGetFunction(EST_Features, val, int, getInteger)
+defineGetFunction(EST_Features, val, ssize_t, getInteger)
 VAL_REGISTER_FUNCPTR(pointer, void *)
 
 

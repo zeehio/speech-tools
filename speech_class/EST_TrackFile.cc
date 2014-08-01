@@ -750,21 +750,19 @@ EST_write_status EST_TrackFile::save_esps(const EST_String filename, EST_Track t
 
 EST_write_status EST_TrackFile::save_est_ts(FILE *fp, EST_Track tr)
 {
-    ssize_t i, j;
-
     fprintf(fp, "EST_File Track\n"); // EST header identifier.
     fprintf(fp, "DataType ascii\n");
-    fprintf(fp, "NumFrames %ld\n", tr.num_frames());
-    fprintf(fp, "NumChannels %ld\n", tr.num_channels());
-    fprintf(fp, "NumAuxChannels %ld\n", tr.num_aux_channels());
+    fprintf(fp, "NumFrames %zd\n", tr.num_frames());
+    fprintf(fp, "NumChannels %d\n", tr.num_channels());
+    fprintf(fp, "NumAuxChannels %d\n", tr.num_aux_channels());
     fprintf(fp, "EqualSpace %d\n",tr.equal_space());
 
     fprintf(fp, "BreaksPresent true\n");
-    for (i = 0; i < tr.num_channels(); ++i)
-	fprintf(fp, "Channel_%ld %s\n", i, (const char *)(tr.channel_name(i)));
+    for (int i = 0; i < tr.num_channels(); ++i)
+	fprintf(fp, "Channel_%d %s\n", i, (const char *)(tr.channel_name(i)));
 
-    for (i = 0; i < tr.num_aux_channels(); ++i)
-	fprintf(fp, "Aux_Channel_%ld %s\n", i, 
+    for (int i = 0; i < tr.num_aux_channels(); ++i)
+	fprintf(fp, "Aux_Channel_%d %s\n", i, 
 		(const char *)(tr.aux_channel_name(i)));
 
     EST_Featured::FeatEntries p;
@@ -775,13 +773,13 @@ EST_write_status EST_TrackFile::save_est_ts(FILE *fp, EST_Track tr)
 
     fprintf(fp, "EST_Header_End\n");
     
-    for (i = 0; i < tr.num_frames(); ++i)
+    for (ssize_t i = 0; i < tr.num_frames(); ++i)
     {
 	fprintf(fp, "%f\t", tr.t(i));
 	fprintf(fp, "%s\t", (char *)(tr.val(i) ? "1 " : "0 "));
-	for (j = 0; j < tr.num_channels(); ++j)
+	for (int j = 0; j < tr.num_channels(); ++j)
 	    fprintf(fp, "%f ", tr.a_no_check(i, j));
-	for (j = 0; j < tr.num_aux_channels(); ++j)
+	for (int j = 0; j < tr.num_aux_channels(); ++j)
 	    fprintf(fp, "%s ", (const char *)tr.aux(i, j).string());
 	fprintf(fp, "\n");
     }
@@ -826,25 +824,23 @@ EST_write_status EST_TrackFile::save_est_binary(const EST_String filename, EST_T
 
 EST_write_status EST_TrackFile::save_est_binary_ts(FILE *fp, EST_Track tr)
 {
-    ssize_t i,j;
-
     // This should be made optional
     bool breaks = TRUE;
 
     fprintf(fp, "EST_File Track\n");
     fprintf(fp, "DataType binary\n");
     fprintf(fp, "ByteOrder %s\n", ((EST_NATIVE_BO == bo_big) ? "10" : "01"));
-    fprintf(fp, "NumFrames %ld\n", tr.num_frames());
-    fprintf(fp, "NumChannels %ld\n",tr.num_channels());
+    fprintf(fp, "NumFrames %zd\n", tr.num_frames());
+    fprintf(fp, "NumChannels %d\n",tr.num_channels());
     fprintf(fp, "EqualSpace %d\n",tr.equal_space());
     if(breaks)
 	fprintf(fp, "BreaksPresent true\n");
     fprintf(fp, "CommentChar ;\n\n");
-    for (i = 0; i < tr.num_channels(); ++i)
-	fprintf(fp, "Channel_%ld %s\n",i,tr.channel_name(i).str());
+    for (int i = 0; i < tr.num_channels(); ++i)
+	fprintf(fp, "Channel_%d %s\n",i,tr.channel_name(i).str());
     fprintf(fp, "EST_Header_End\n");
 
-    for (i = 0; i < tr.num_frames(); ++i)
+    for (ssize_t i = 0; i < tr.num_frames(); ++i)
     {
 	// time
 	if((int)fwrite(&tr.t(i),4,1,fp) != 1)
@@ -858,7 +854,7 @@ EST_write_status EST_TrackFile::save_est_binary_ts(FILE *fp, EST_Track tr)
 		return misc_write_error;
 	}
 	// data - restricted to floats at this time
-	for (j = 0; j < tr.num_channels(); ++j)
+	for (int j = 0; j < tr.num_channels(); ++j)
 	    if(fwrite(&tr.a_no_check(i, j),4,1,fp) != 1)
 		return misc_write_error;
 	
@@ -1195,8 +1191,8 @@ static EST_write_status save_htk_as(const EST_String filename,
 	    }
 	    for (i = 0; i < track.num_frames(); ++i)
 	    {
-		short tempshort = (EST_BIG_ENDIAN ? (short)(track.a(i, 0L)) :
-				   SWAPSHORT((short)(track.a(i, 0L)))) ;
+		short tempshort = (EST_BIG_ENDIAN ? (short)(track.a(i, 0)) :
+				   SWAPSHORT((short)(track.a(i, 0)))) ;
 		fwrite((unsigned char*) &tempshort, 1, sizeof(short), outf);
 	    }
 	}
@@ -1935,7 +1931,7 @@ int track_to_espsf0(EST_Track &track, EST_Track &f0_track)
     for (ssize_t i = 0; i < track.num_frames(); ++i)
     {
 	f0_track.a(i, channel_voiced) = track.track_break(i) ? 0.1 : 1.2;
-	f0_track.a(i, channel_f0) = track.track_break(i) ? 0.0: track.a(i,0L);
+	f0_track.a(i, channel_f0) = track.track_break(i) ? 0.0: track.a(i,0);
     }
     
     f0_track.set_file_type(tff_esps);

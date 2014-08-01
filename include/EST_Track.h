@@ -111,7 +111,7 @@ protected:
     void pad_breaks();		     // put in extra breaks 
     
     int interp_value(float x, float f);
-    float interp_amp(float x, ssize_t c, float f);
+    float interp_amp(float x, int c, float f);
     float estimate_shift(float x);
     void copy(const EST_Track& a);
 
@@ -131,7 +131,7 @@ public:
     EST_Track(const EST_Track &a);
 
     /// resizing constructor
-    EST_Track(ssize_t num_frames, ssize_t num_channels);
+    EST_Track(ssize_t num_frames, int num_channels);
 
     /// resizing constructor
     EST_Track(ssize_t num_frames, EST_StrList &map);
@@ -149,7 +149,7 @@ public:
 	are kept, up to the limits imposed by the new number of frames
 	and channels. If the new track size is bigger, new positions
 	are filled with 0 */
-    void resize(ssize_t num_frames, ssize_t num_channels, bool preserve = 1);
+    void resize(ssize_t num_frames, int num_channels, bool preserve = 1);
 
     /** resize the track to have `num_frames` and `num_channels`.
 	if `preserve` is set to 1, any existing values in the track
@@ -179,10 +179,10 @@ public:
 	{ resize(n, EST_CURRENT, preserve); }
 
     /// set the name of the channel.
-    void set_channel_name(const EST_String &name, ssize_t channel);
+    void set_channel_name(const EST_String &name, int channel);
 
     /// set the name of the auxiliary channel.
-    void set_aux_channel_name(const EST_String &name, ssize_t channel);
+    void set_aux_channel_name(const EST_String &name, int channel);
 
     /// copy everything but data
 
@@ -336,7 +336,7 @@ public:
       { p_values.set_column(n, f, offset, num); }
 
     /** copy channel buf into pre-allocated channel n of track */
-    void copy_channel_in(ssize_t c, 
+    void copy_channel_in(int c, 
 		     const EST_Track &from, int from_c, int from_offset=0,
 		     int offset=0, int num=EST_ALL)
 	{ p_values.set_column(c, from.p_values, from_c, 
@@ -369,12 +369,12 @@ public:
     /** Return the position of channel `name` if it exists,
 	otherwise return -1.
     */
-    ssize_t channel_position(const char *name, int offset=0) const;
+    int channel_position(const char *name, int offset=0) const;
 
     /** Return the position of channel `name` if it exists,
 	otherwise return -1.
     */
-    ssize_t channel_position(EST_String name, int offset=0) const
+    int channel_position(EST_String name, int offset=0) const
 	{ return  channel_position((const char *)name, offset); }
 
 
@@ -412,13 +412,13 @@ public:
     //@{
 
     /** return amplitude of frame i, channel c.*/
-    float &a(ssize_t i, ssize_t c=0L);
-    float a(ssize_t i, ssize_t c=0L) const;
+    float &a(ssize_t i, int c=0);
+    float a(ssize_t i, int c=0) const;
 
     /** return amplitude of frame i, channel c with no bounds
 	checking. */
-    float &a_no_check(ssize_t i, ssize_t c=0) { return p_values.a_no_check(i,c); }
-    float a_no_check(ssize_t i, ssize_t c=0) const {return p_values.a_no_check(i,c);}
+    float &a_no_check(ssize_t i, int c=0) { return p_values.a_no_check(i,c); }
+    float a_no_check(ssize_t i, int c=0) const {return p_values.a_no_check(i,c);}
 
     /** return amplitude of point i, in the channel named name plus
 	offset. If you have a track with say channels called F0 and
@@ -427,13 +427,13 @@ public:
 	be accessed as t.a(45, "cepstrum", 5);
      */
 
-    float &a(ssize_t i, const char *name, int offset=0L);
+    float &a(ssize_t i, const char *name, int offset=0);
 
-    float  a(ssize_t i, const char *name, int offset=0L) const
+    float  a(ssize_t i, const char *name, int offset=0) const
 	{ return ((EST_Track *)this)->a(i, name, offset); }
-    float &a(ssize_t i, EST_String name, int offset=0L) 
+    float &a(ssize_t i, EST_String name, int offset=0) 
 	{ return a(i, (const char *)name, offset); }
-    float  a(ssize_t i, EST_String name, int offset=0L) const
+    float  a(ssize_t i, EST_String name, int offset=0) const
 	{ return ((EST_Track *)this)->a(i, (const char *)name, offset); }
 
     /** return amplitude of time t, channel c. This can be used for
@@ -447,24 +447,24 @@ public:
 	the end of a portion of track in which case the nearest
 	amplitude is returned.
     */
-    float &a(float t, ssize_t c=0L, EST_InterpType interp=it_nearest);	
-    float  a(float t, ssize_t c=0L, EST_InterpType interp=it_nearest) const
+    float &a(float t, int c=0, EST_InterpType interp=it_nearest);	
+    float  a(float t, int c=0, EST_InterpType interp=it_nearest) const
 	{ return ((EST_Track *)this)->a(t, c, interp); }	
 
 
     /** return amplitude of frame i, channel c. */
-    float &operator() (ssize_t i, ssize_t c)       { return a(i,c); }	
+    float &operator() (ssize_t i, int c)       { return a(i,c); }	
     /** return amplitude of frame i, channel 0. */
-    float &operator() (ssize_t i)              { return a(i,0L); }
-    float  operator() (ssize_t i, ssize_t c) const { return a(i,c); }	
-    float  operator() (ssize_t i) const        { return a(i,0L); }	
+    float &operator() (ssize_t i)              { return a(i,0); }
+    float  operator() (ssize_t i, int c) const { return a(i,c); }	
+    float  operator() (ssize_t i) const        { return a(i,0); }	
   
     /** return amplitude of frame nearest time t, channel c. */
-    float &operator() (float t, ssize_t c)       {return a(t,c); }
+    float &operator() (float t, int c)       {return a(t,c); }
     /** return amplitude of frame nearest time t, channel 0. */
-    float &operator() (float t)              {return a(t,0L); }
-    float  operator() (float t, ssize_t c) const {return a(t,c); }
-    float  operator() (float t) const        {return a(t,0L); }
+    float &operator() (float t)              {return a(t,0); }
+    float  operator() (float t, int c) const {return a(t,c); }
+    float  operator() (float t) const        {return a(t,0); }
 
     //@}
 
@@ -548,8 +548,8 @@ public:
 
     //@{
 
-    EST_Val &aux(ssize_t i, ssize_t c);
-    EST_Val &aux(ssize_t i, ssize_t c) const;
+    EST_Val &aux(ssize_t i, int c);
+    EST_Val &aux(ssize_t i, int c) const;
 
     EST_Val &aux(ssize_t i, const char *name);
     EST_Val aux(ssize_t i, const char *name) const
@@ -654,10 +654,10 @@ public:
     ssize_t length() const { return num_frames(); }
 
     /// return number of channels in track
-    ssize_t num_channels() const {return p_values.num_columns();}
+    int num_channels() const {return p_values.num_columns();}
 
     /// return number of auxiliary channels in track
-    ssize_t num_aux_channels() const {return p_aux.num_columns();}
+    int num_aux_channels() const {return p_aux.num_columns();}
 
     void add_trailing_breaks();
     void rm_trailing_breaks();
@@ -697,7 +697,7 @@ public:
 
     EST_TrackMap::P map() const { return p_map; }
 
-    ssize_t channel_position(EST_ChannelType type, int offset=0) const;
+    int channel_position(EST_ChannelType type, int offset=0) const;
 
 
 
@@ -721,11 +721,11 @@ public:
     EST_read_status load_channel_names(const EST_String name);
     EST_write_status save_channel_names(const EST_String name);
 
-    const EST_String channel_name(ssize_t channel, const EST_ChannelNameMap &map, int strings_override=1) const;
-    const EST_String channel_name(ssize_t channel, int strings_override=1) const 
+    const EST_String channel_name(int channel, const EST_ChannelNameMap &map, int strings_override=1) const;
+    const EST_String channel_name(int channel, int strings_override=1) const 
 	{ return channel_name(channel, EST_default_channel_names, strings_override); }
 
-    const EST_String aux_channel_name(ssize_t channel) const 
+    const EST_String aux_channel_name(int channel) const 
 	{ return p_aux_names(channel);}
 
     void resize(ssize_t num_frames, EST_TrackMap &map);

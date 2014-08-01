@@ -380,7 +380,7 @@ static float test_tree_vector(WNode &tree,WDataSet &dataset,ostream *output)
     float predict, actual;
     EST_SuffStats x,y,xx,yy,xy,se,e;
     EST_SuffStats b;
-    ssize_t i,j,pos;
+    ssize_t i,pos;
     double cor,error;
     double count;
     EST_Litem *pp;
@@ -389,8 +389,8 @@ static float test_tree_vector(WNode &tree,WDataSet &dataset,ostream *output)
     {
 	leaf = tree.predict_node((*dataset(p)));
 	pos = dataset(p)->get_int_val(wgn_predictee);
-        for (j=0; j<wgn_VertexFeats.num_channels(); j++)
-            if (wgn_VertexFeats.a(0L,j) > 0.0)
+        for (int j=0; j<wgn_VertexFeats.num_channels(); j++)
+            if (wgn_VertexFeats.a(static_cast<ssize_t>(0),j) > 0.0)
             {
                 b.reset();
                 for (pp=leaf->get_impurity().members.head(); pp != 0; pp=pp->next())
@@ -478,7 +478,7 @@ static float test_tree_trajectory(WNode &tree,WDataSet &dataset,ostream *output)
 	leaf = tree.predict_node((*dataset(p)));
 	pos = dataset(p)->get_int_val(wgn_predictee);
         for (j=0; j<wgn_VertexFeats.num_channels(); j++)
-            if (wgn_VertexFeats.a(0L,j) > 0.0)
+            if (wgn_VertexFeats.a(static_cast<ssize_t>(0),j) > 0.0)
             {
                 b.reset();
                 for (pp=leaf->get_impurity().members.head(); pp != 0; pp=pp->next())

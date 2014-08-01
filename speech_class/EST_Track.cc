@@ -65,7 +65,7 @@ EST_Track::EST_Track(const EST_Track &a) : EST_Featured(a)
     copy(a);
 }
 
-EST_Track::EST_Track(ssize_t n_frames, ssize_t n_channels)
+EST_Track::EST_Track(ssize_t n_frames, int n_channels)
 {
     default_vals();
     p_values.resize(n_frames, n_channels);
@@ -82,7 +82,7 @@ EST_Track::EST_Track(ssize_t n_frames, ssize_t n_channels)
 
 EST_Track::EST_Track(ssize_t n_frames, EST_TrackMap &map)
 {
-  ssize_t n_channels = map.last_channel()+1;
+  int n_channels = map.last_channel()+1;
 
   default_vals();
   p_values.resize(n_frames, n_channels);
@@ -101,7 +101,7 @@ EST_Track::~EST_Track(void)
 
 void EST_Track::default_channel_names()
 {
-    for (ssize_t i = 0; i < num_channels(); ++i)
+    for (int i = 0; i < num_channels(); ++i)
 	set_channel_name("track" + itoString(i), i);
 }
 
@@ -135,7 +135,7 @@ void EST_Track::set_value(ssize_t i) // make location i hold a value
     p_is_val[i] = 0;
 }    
 
-const EST_String EST_Track::channel_name(ssize_t i, const EST_ChannelNameMap &map, int strings_override) const
+const EST_String EST_Track::channel_name(int i, const EST_ChannelNameMap &map, int strings_override) const
 {
     (void)map;
     (void)strings_override;
@@ -165,19 +165,20 @@ const EST_String EST_Track::channel_name(int i, const EST_ChannelNameMap &map, i
 	return "track" + itoString(i);
 }    
 */
-void EST_Track::set_channel_name(const EST_String &fn, ssize_t i)
+void EST_Track::set_channel_name(const EST_String &fn, int i)
 {
     p_channel_names[i] = fn;
 }    
 
-void EST_Track::set_aux_channel_name(const EST_String &fn, ssize_t i)
+void EST_Track::set_aux_channel_name(const EST_String &fn, int i)
 {
     p_aux_names[i] = fn;
 }    
 
 ostream& operator << (ostream& s, const EST_Track &tr)
 {
-    ssize_t i, j;
+    ssize_t i;
+    int j;
     for (i = 0; i < tr.num_frames(); ++i)
     {
 	s << tr.t(i);
@@ -210,7 +211,7 @@ void EST_Track::copy_setup(const EST_Track& a)
     copy_features(a);
 }    
 
-void EST_Track::resize(ssize_t new_num_frames, ssize_t new_num_channels, bool set)
+void EST_Track::resize(ssize_t new_num_frames, int new_num_channels, bool set)
 {
     ssize_t old_num_frames = num_frames();
 
@@ -224,7 +225,7 @@ void EST_Track::resize(ssize_t new_num_frames, ssize_t new_num_channels, bool se
 
     // this ensures the new channels have a default name
     if (new_num_channels > num_channels())
-	for (ssize_t i = num_channels(); i < new_num_channels; ++i)
+	for (int i = num_channels(); i < new_num_channels; ++i)
 	    set_channel_name("track_" + itoString(i), i);
 
     p_values.resize(new_num_frames, new_num_channels, set);
@@ -312,10 +313,10 @@ void EST_Track::resize(ssize_t new_num_frames, EST_StrList &new_channels, bool s
 
 void EST_Track::resize_aux(EST_StrList &new_aux_channels, bool set)
 {
-    ssize_t i;
+    int i;
     EST_Litem *p;
 
-    ssize_t new_num_channels;
+    int new_num_channels;
     new_num_channels = new_aux_channels.length();
 
     p_aux_names.resize(new_num_channels);
@@ -391,9 +392,9 @@ EST_Track &EST_Track::operator=(const EST_Track& a)
 }    
 
 
-ssize_t EST_Track::channel_position(const char *name, int offset) const
+int EST_Track::channel_position(const char *name, int offset) const
 {
-    ssize_t c;
+    int c;
     
     for (c=0; c<num_channels(); c++)
 	if (channel_name(c) == name)
@@ -404,7 +405,7 @@ ssize_t EST_Track::channel_position(const char *name, int offset) const
 
 float &EST_Track::a(ssize_t i, const char *name, int offset)
 { 
-    ssize_t c;
+    int c;
     
     for (c=0; c<num_channels(); c++)
 	if (channel_name(c) == name)
@@ -416,7 +417,7 @@ float &EST_Track::a(ssize_t i, const char *name, int offset)
 
 EST_Val &EST_Track::aux(ssize_t i, const char *name)
 { 
-    for (ssize_t c = 0; c < num_aux_channels(); c++)
+    for (int c = 0; c < num_aux_channels(); c++)
 	if (aux_channel_name(c) == name)
 	    return p_aux.a_no_check(i, c);
     
@@ -424,19 +425,19 @@ EST_Val &EST_Track::aux(ssize_t i, const char *name)
     return *(p_aux.error_return);
 }
 
-EST_Val &EST_Track::aux(ssize_t i, ssize_t c)
+EST_Val &EST_Track::aux(ssize_t i, int c)
 { 
     return p_aux(i, c);
 }
 
-EST_Val &EST_Track::aux(ssize_t i, ssize_t c) const
+EST_Val &EST_Track::aux(ssize_t i, int c) const
 { 
     return ((EST_Track *)this)->aux(i,c);
 }
 
 #define EPSILON (0.0001)
 
-float &EST_Track::a(float t, ssize_t c, EST_InterpType interp)
+float &EST_Track::a(float t, int c, EST_InterpType interp)
 {
     static float ia = 0.0;
     
@@ -446,7 +447,7 @@ float &EST_Track::a(float t, ssize_t c, EST_InterpType interp)
     {
 	ssize_t i = index_below(t);
 	if (i < 0)
-	    return a(0L,c);
+	    return a(static_cast<ssize_t>(0),c);
 	
 	float n = a(i,c), n1 = a(i+1,c);
 	float tn = p_times(i), tn1 = p_times(i+1);
@@ -457,7 +458,7 @@ float &EST_Track::a(float t, ssize_t c, EST_InterpType interp)
     {
 	ssize_t i = index_below(t);
 	if (i < 0)
-	    return a(0L,c);
+	    return a(static_cast<ssize_t>(0),c);
 	
 	float n = a(i,c), n1 = a(i+1,c);
 	if (fabs(n) < EPSILON || fabs(n1) < EPSILON)
@@ -701,7 +702,7 @@ void EST_Track::sample(float f_interval)
     p_equal_space = TRUE;
 }
 
-float EST_Track::interp_amp(float x, ssize_t c, float fl)
+float EST_Track::interp_amp(float x, int c, float fl)
 {
     ssize_t i;
     float x1, x2, y1, y2, m;
@@ -985,7 +986,7 @@ return TRUE;
 
 static bool bounds_check(const EST_Track &t, 
 			 ssize_t f, ssize_t nf,
-			 ssize_t c, ssize_t nc,
+			 int c, ssize_t nc,
 			 int set)
 {
   const char *what = set? "set" : "access";
@@ -1021,7 +1022,7 @@ static bool bounds_check(const EST_Track &t,
 return TRUE;
 }
 
-float &EST_Track::a(ssize_t i, ssize_t c)
+float &EST_Track::a(ssize_t i, int c)
 {
   if (!bounds_check(*this, i,c,0))
       return *(p_values.error_return);
@@ -1029,7 +1030,7 @@ float &EST_Track::a(ssize_t i, ssize_t c)
   return p_values.a_no_check(i,c);
 }
 
-float EST_Track::a(ssize_t i, ssize_t c) const
+float EST_Track::a(ssize_t i, int c) const
 {
   return ((EST_Track *)this)->a(i,c);
 }
@@ -1451,7 +1452,7 @@ void EST_Track::resize(ssize_t new_num_frames, EST_TrackMap &map)
 
 
 
-ssize_t EST_Track::channel_position(EST_ChannelType type, int offset) const
+int EST_Track::channel_position(EST_ChannelType type, int offset) const
 { 
     if (p_map!=0)
     {

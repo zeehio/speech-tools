@@ -176,10 +176,11 @@ protected:
        A separate function is provided for each permissible value type
     */
     ///@{
+    #if (SSIZE_MAX != INT_MAX)
     /** set feature `name` to `val` */
     void set(const EST_String &name, int ival)
          { EST_Val pv(ival);features().set_path(name, pv); }
-
+	#endif
     /** set feature `name` to `val` */
     void set(const EST_String &name, ssize_t ival)
          { EST_Val pv(ival);features().set_path(name, pv); }

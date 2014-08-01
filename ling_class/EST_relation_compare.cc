@@ -872,7 +872,7 @@ void print_matrix_scores(EST_Relation &ref, EST_Relation &test, EST_FMatrix &a)
     }
 }
 
-long int row_hit(EST_FMatrix &m, ssize_t r)
+ssize_t row_hit(EST_FMatrix &m, ssize_t r)
 {
     ssize_t i;
     for (i = 0; i < m.num_columns(); ++i)
@@ -883,7 +883,7 @@ long int row_hit(EST_FMatrix &m, ssize_t r)
 }
 
 // return the row index of the first positive entry in column c
-long int column_hit(EST_FMatrix &m, ssize_t c)
+ssize_t column_hit(EST_FMatrix &m, ssize_t c)
 {
     ssize_t i;
     for (i = 0; i < m.num_rows(); ++i)
