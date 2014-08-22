@@ -61,7 +61,7 @@ LOCAL_CLEAN = $(DOXFILES)
 -include $(TOP)/config/common_make_rules
 
 %_man.dox: %_man.dox.body
-	./create_dox.sh $(TOP_BUILDDIR)/main/$* $@.body || exit 1
+	LD_LIBRARY_PATH=$(TOP_BUILDDIR)/lib ./create_dox.sh $(TOP_BUILDDIR)/main/$* $@.body || exit 1
 
 all_dox: $(DOXFILES)
 
