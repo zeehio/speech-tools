@@ -49,6 +49,10 @@ class EST_Regex;
 
 #include <cstdlib>
 
+class EST_String;
+int fcompare(const EST_String &a, const EST_String &b, const unsigned char *table=NULL);
+int fcompare(const EST_String &a, const char *b, const unsigned char *table=NULL);
+
 /** @class EST_String
   * @ingroup stringclasses
   * A non-copyleft implementation of a string class to use with
@@ -577,10 +581,10 @@ public:
       */
     ///@{
     friend int fcompare(const EST_String &a, const EST_String &b, 
-			const unsigned char *table=NULL);
+			const unsigned char *table);
 
     friend int fcompare(const EST_String &a, const char *b, 
-				const unsigned char *table=NULL);
+				const unsigned char *table);
     ///
     friend inline int fcompare(const EST_String &a, const EST_String &b, 
 			       const EST_String &table) 
