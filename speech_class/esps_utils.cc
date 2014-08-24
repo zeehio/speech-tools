@@ -726,7 +726,7 @@ void delete_esps_hdr(esps_hdr h)
     }
 }
 
-esps_rec new_esps_rec(esps_hdr hdr)
+esps_rec new_esps_rec(const esps_hdr hdr)
 {
     /* New esps record */
     esps_rec r = walloc(struct ESPS_REC_struct,1);

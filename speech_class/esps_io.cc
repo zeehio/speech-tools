@@ -115,6 +115,8 @@ enum EST_write_status put_esps(const char *filename,const char *style, float *t,
     }
 
     delete_esps_hdr(hdr);
+    wfree(hdr);
+    wfree(rec);
     fclose(fd);
 
     return write_ok;
@@ -129,14 +131,14 @@ enum EST_write_status put_track_esps(const char *filename, char **f_names,
     FILE *fd;
     int i, j;
 
-    hdr = make_esps_hdr();
-
     if ((fd = fopen(filename, "wb")) == NULL)
     {
 	fprintf(stderr,"ESPS file: cannot open file \"%s\" for writing\n",
 		filename);
 	return misc_write_error;
     }
+
+    hdr = make_esps_hdr();
 
     for (i = 0; i < order; ++i)
 	add_field(hdr,f_names[i],ESPS_DOUBLE,1);
@@ -166,6 +168,7 @@ enum EST_write_status put_track_esps(const char *filename, char **f_names,
 	write_esps_rec(rec,hdr,fd);
     }
 
+    delete_esps_rec(rec);
     delete_esps_hdr(hdr);
     fclose(fd);
     return write_ok;
@@ -211,8 +214,12 @@ enum EST_read_status get_esps(const char *filename, char *style,
 	{
 	    fprintf(stderr,"ESPS file: unexpected end of file when reading record %d\n", i);
 	    delete_esps_rec(rec);
+	    wfree(rec);
 	    delete_esps_hdr(hdr);
+	    wfree(hdr);
 	    fclose(fd);
+	    wfree(ta);
+	    wfree(tv);
 	    return misc_read_error;
 	}
 	if (ff0 == -1)     /* F0 field isn't explicitly labelled */
@@ -251,6 +258,7 @@ enum EST_read_status get_esps(const char *filename, char *style,
     else 
 	strcpy(style, "track");
     delete_esps_rec(rec);
+    wfree(rec);
     delete_esps_hdr(hdr);
     fclose(fd);
 
