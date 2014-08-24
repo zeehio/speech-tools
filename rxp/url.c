@@ -293,6 +293,7 @@ char *url_merge(const char *url, const char *base,
 	    LT_ERROR2(LEFILE,
 	     "Error: relative URL <%s> has scheme different from base <%s>\n",
 			 url, base);
+		Free(merged_path);
 	    goto bad;
 	}
     }
@@ -379,6 +380,8 @@ FILE16 *url_open(const char *url, const char *base, const char *type,
     /* Determine the merged URL */
 
     if(!(m_url = url_merge(url, base, &scheme, &host, &port, &path))) {
+	Free(path);
+	Free(scheme);
 	return 0;
     }
 

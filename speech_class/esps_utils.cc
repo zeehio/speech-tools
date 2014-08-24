@@ -574,6 +574,11 @@ esps_fea read_esps_fea(FILE *fd, esps_hdr hdr)
     {                 
 	if (fread(&sdata,sizeof(short),1,fd) != 1) err = 1;
 	if (hdr->swapped) sdata = SWAPSHORT(sdata);
+	if (sdata > SHRT_MAX/4) {
+		fprintf(stderr, "ESPS: fea record too large\n");
+		wfree(r);
+		return NULL;
+	}
 	r->clength = sdata * 4;
     }
     else
@@ -841,7 +846,7 @@ int read_esps_rec(esps_rec r, esps_hdr hdr, FILE *fd)
 	  case ESPS_CODED:
 	    for(j=0; j < r->field[i]->dimension; j++)
 	    {
-		if (fread(&shortdata,2,1,fd) == 0) return EOF;
+		if (fread(&shortdata,2,1,fd) != 1) return EOF;
 		if (hdr->swapped) shortdata = SWAPSHORT(shortdata);
 		r->field[i]->v.sval[j] = shortdata;
 	    }
@@ -1022,9 +1027,15 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
     if (fhdr.num_samples == 0)  /* has to be derived from the file size */
     {
 	pos = EST_ftell(fd);
-	EST_fseek(fd,0,SEEK_END);
+	if (pos < 0) return misc_read_error;
+	if (EST_fseek(fd,0,SEEK_END) != 0) {
+		return misc_read_error;
+	}
 	end = EST_ftell(fd);
-	EST_fseek(fd,pos,SEEK_SET);
+	if (end < 0) return misc_read_error;
+	if (EST_fseek(fd,pos,SEEK_SET) != 0) {
+		return misc_read_error;
+	}
 	fhdr.num_samples = (end - preamble.data_offset)/preamble.record_size;
     }
     hdr->num_records = fhdr.num_samples;
