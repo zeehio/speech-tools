@@ -89,7 +89,7 @@ void debug_memory_summary(void)
 }
 
 #else
-void *safe_walloc(int size)
+void *safe_walloc(size_t size)
 {
     char *p;
     
@@ -103,7 +103,7 @@ void *safe_walloc(int size)
 
     if (p == NULL)
     {
-	fprintf(stderr,"WALLOC: failed to malloc %d bytes\n",size);
+	fprintf(stderr,"WALLOC: failed to malloc %zu bytes\n",size);
 	exit(-1);  /* I'd rather not do this but this is the only safe */
 	           /* thing to do */
     }

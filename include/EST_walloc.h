@@ -41,9 +41,10 @@
 #define __EST_WALLOC_H__
 #if defined(__cplusplus)
 extern "C" {
+#include <stdlib.h>
 #endif
 
-void *safe_walloc(int size);
+void *safe_walloc(size_t size);
 void *safe_wcalloc(int size);
 void *safe_wrealloc(void *ptr, int size);
 #define walloc(TYPE,SIZE) ((TYPE *)safe_walloc(sizeof(TYPE)*(SIZE)))
