@@ -422,7 +422,7 @@ EST_read_status EST_UtteranceFile::load_apml(EST_TokenStream &ts,
   if ((stream=ts.filedescriptor())==NULL)
     return read_error;
 
-  long long int pos=EST_ftell(stream);
+  EST_FilePos pos=EST_ftell(stream);
 
   {
 
@@ -473,7 +473,7 @@ EST_read_status EST_UtteranceFile::load_genxml(EST_TokenStream &ts,
   if ((stream=ts.filedescriptor())==NULL)
     return read_error;
 
-  long long int pos=EST_ftell(stream);
+  EST_FilePos pos=EST_ftell(stream);
 
   {
   char buf[81];
