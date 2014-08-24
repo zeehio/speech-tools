@@ -108,7 +108,9 @@ class WQuestion {
     WQuestion() {
         this->yes = 0;
         this->no = 0;
-        this->score = WGN_HUGE_VAL;}
+        this->score = WGN_HUGE_VAL;
+        this->op = wnop_equal;
+        this->feature_pos = 0;}
     WQuestion(const WQuestion &s)
        { feature_pos=s.feature_pos;
          op=s.op; yes=s.yes; no=s.no; operand1=s.operand1;
