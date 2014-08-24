@@ -53,7 +53,7 @@
 	template class EST_TList< TLIST_ ## TAG ## _VAL >; \
 	template class EST_TItem< TLIST_ ## TAG ## _VAL >; \
 	template const char *error_name(EST_TList< TYPE > val); \
-        Instantiate_TIterator_T( EST_TList<TYPE>, EST_TList<TYPE>::IPointer, TYPE, TList_ ## TAG ## _itt);
+        Instantiate_TIterator_T( EST_TList<TYPE>, EST_TList<TYPE>::IPointer, TYPE, TList_ ## TAG ## _itt)
 
 #define Instantiate_TList_T(TYPE, TAG) \
 	Instantiate_TList_T_MIN(TYPE, TAG)

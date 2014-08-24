@@ -421,7 +421,7 @@ long repl_c_string(char *str,
  else
    return(2);}
 
-#ifdef unix
+#ifdef __unix__
 #include <sys/types.h>
 #include <sys/times.h>
 double myruntime(void)
