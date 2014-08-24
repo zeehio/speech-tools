@@ -38,6 +38,7 @@
 /*=======================================================================*/
 #include <fstream>
 #include <iostream>
+#include <sstream> /* for a workaround in printf with size_t */
 #include <cstdlib>
 #include <cmath>
 #include <time.h>
@@ -750,9 +751,16 @@ EST_write_status EST_TrackFile::save_esps(const EST_String filename, EST_Track t
 
 EST_write_status EST_TrackFile::save_est_ts(FILE *fp, EST_Track tr)
 {
+	/* size_t does not have a ISO C++ printf format specifier (%zd is
+	 * not standard for C++ 1998 nor C++ 2003). We use a workaround. */
+	std::stringstream tmpstring;
+	std::string tmpstring2;
+
     fprintf(fp, "EST_File Track\n"); // EST header identifier.
     fprintf(fp, "DataType ascii\n");
-    fprintf(fp, "NumFrames %zd\n", tr.num_frames());
+    tmpstring << tr.num_frames();
+    tmpstring2 = tmpstring.str();
+    fprintf(fp, "NumFrames %s\n", tmpstring2.c_str());
     fprintf(fp, "NumChannels %d\n", tr.num_channels());
     fprintf(fp, "NumAuxChannels %d\n", tr.num_aux_channels());
     fprintf(fp, "EqualSpace %d\n",tr.equal_space());
@@ -826,11 +834,18 @@ EST_write_status EST_TrackFile::save_est_binary_ts(FILE *fp, EST_Track tr)
 {
     // This should be made optional
     bool breaks = TRUE;
+	/* size_t does not have a ISO C++ printf format specifier (%zd is
+	 * not standard for C++ 1998 nor C++ 2003). We use a workaround. */
+	std::stringstream tmpstring;
+	std::string tmpstring2;
 
     fprintf(fp, "EST_File Track\n");
     fprintf(fp, "DataType binary\n");
     fprintf(fp, "ByteOrder %s\n", ((EST_NATIVE_BO == bo_big) ? "10" : "01"));
-    fprintf(fp, "NumFrames %zd\n", tr.num_frames());
+    tmpstring.str("");
+    tmpstring << tr.num_frames();
+    tmpstring2 = tmpstring.str();
+    fprintf(fp, "NumFrames %s\n", tmpstring2.c_str());
     fprintf(fp, "NumChannels %d\n",tr.num_channels());
     fprintf(fp, "EqualSpace %d\n",tr.equal_space());
     if(breaks)

@@ -40,6 +40,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <fstream>
+#include <sstream>
 #include <cmath>
 #include <climits>
 using namespace std;
@@ -379,6 +380,8 @@ EST_write_status EST_FMatrix::est_save(const EST_String &filename,
     // Binary save with short header for byte swap and sizes
     ssize_t i,j;
     FILE *fd;
+    std::stringstream tmpstring;
+    std::string tmpstring2;
     if (filename == "-")
 	fd = stdout;
     else if ((fd = fopen(filename, "wb")) == NULL)
@@ -400,9 +403,14 @@ EST_write_status EST_FMatrix::est_save(const EST_String &filename,
     }
     else
 	fprintf(fd,"DataType ascii\n");
-
-    fprintf(fd,"rows %zu\n",num_rows());
-    fprintf(fd,"columns %zu\n",num_columns());
+	tmpstring.str("");
+	tmpstring << num_rows();
+	tmpstring2 = tmpstring.str();
+    fprintf(fd,"rows %s\n",tmpstring2.c_str());
+	tmpstring.str("");
+	tmpstring << num_columns();
+	tmpstring2 = tmpstring.str();
+    fprintf(fd,"columns %s\n",tmpstring2.c_str());
 
     fprintf(fd,"EST_Header_End\n");
 
@@ -873,6 +881,8 @@ EST_write_status EST_FVector::est_save(const EST_String &filename,
     // Binary save with short header for byte swap and sizes
     ssize_t i;
     FILE *fd;
+    std::stringstream tmpstring;
+    std::string tmpstring2;
     if (filename == "-")
 	fd = stdout;
     else if ((fd = fopen(filename, "wb")) == NULL)
@@ -895,7 +905,10 @@ EST_write_status EST_FVector::est_save(const EST_String &filename,
     else
 	fprintf(fd,"DataType ascii\n");
 
-    fprintf(fd,"length %zu\n",length());
+    tmpstring.str("");
+    tmpstring << length();
+    tmpstring2 = tmpstring.str();
+    fprintf(fd,"length %s\n", tmpstring2.c_str());
     fprintf(fd,"EST_Header_End\n");
 
     if (type == "est_binary")
