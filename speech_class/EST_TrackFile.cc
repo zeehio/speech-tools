@@ -1589,6 +1589,7 @@ EST_read_status EST_TrackFile::load_htk(const EST_String filename, EST_Track &tm
     switch(base_samp_type){
     case HTK_WAVE:
       cerr << "Can't read HTK WAVEFORM format file into track" << endl;
+      fclose(fp);
       return misc_read_error;
       break;
       

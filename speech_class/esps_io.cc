@@ -170,6 +170,8 @@ enum EST_write_status put_track_esps(const char *filename, char **f_names,
 
     delete_esps_rec(rec);
     delete_esps_hdr(hdr);
+    wfree(rec);
+    wfree(hdr);
     fclose(fd);
     return write_ok;
 }
@@ -261,6 +263,7 @@ enum EST_read_status get_esps(const char *filename, char *style,
     wfree(rec);
     delete_esps_hdr(hdr);
     fclose(fd);
+    wfree(hdr);
 
     return format_ok;
 }
@@ -318,6 +321,8 @@ enum EST_read_status get_track_esps(const char *filename, char ***fields,
         for (jj = 0; jj < num_recs; ++jj)
 	        wfree(ta[jj]);
         wfree(ta);
+        wfree(rec);
+        wfree(hdr);
         return misc_read_error;
 	}
 	for (i = 0; i < order; ++i)
@@ -365,6 +370,8 @@ enum EST_read_status get_track_esps(const char *filename, char ***fields,
     delete_esps_hdr(hdr);
 
     fclose(fd);
+    wfree(rec);
+    wfree(hdr);
     return format_ok;
 }
 

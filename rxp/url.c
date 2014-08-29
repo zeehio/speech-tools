@@ -537,6 +537,7 @@ static FILE16 *http_open(const char *url,
 	LT_ERROR1(LEFILE,
 		     "Error: can't find address for host in http URL \"%s\"\n",
 		     url);
+    close(s);
 	return 0;
     }
 
