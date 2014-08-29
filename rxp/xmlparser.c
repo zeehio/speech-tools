@@ -2271,7 +2271,10 @@ static int parse_element_decl(Parser p)
     CopyName(name);
     maybe_uppercase(p, name);
 
-    require(expect_dtd_whitespace(p, "after name in element declaration"));
+    if (expect_dtd_whitespace(p, "after name in element declaration") <0) {
+		Free(name);
+		return -1;
+	}
 
     if(looking_at(p, "EMPTY"))
     {
@@ -2726,8 +2729,11 @@ static int parse_attlist_decl(Parser p)
 
 	if(type != AT_enumeration)
 	{
-	    require(expect_dtd_whitespace(p, "after attribute type"));
-        }
+		if(expect_dtd_whitespace(p, "after attribute type") < 0) {
+			Free(name);
+			return -1;
+		}
+    }
 
 	if(type == AT_notation || type == AT_enumeration)
 	{
@@ -2785,7 +2791,10 @@ static int parse_attlist_decl(Parser p)
 	else if(looking_at(p, "#FIXED"))
 	{
 	    default_type = DT_fixed;
-	    require(expect_dtd_whitespace(p, "after #FIXED"));
+	    if (expect_dtd_whitespace(p, "after #FIXED") <0) {
+			Free(allowed_values);
+			return -1;
+		}
 	}
 	else
 	    default_type = DT_none;
@@ -2997,6 +3006,7 @@ static int parse_entity_decl(Parser p, Entity ent, int line, int chpos)
 	if(!DefineEntity(p->dtd, e, pe))
 	    return error(p, "System error");
 
+	Free(e);
     return 0;
 }
 

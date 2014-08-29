@@ -600,8 +600,10 @@ esps_fea read_esps_fea(FILE *fd, esps_hdr hdr)
     if (fread(&sdata,sizeof(short),1,fd) != 1) err = 1;
     if (hdr->swapped) sdata = SWAPSHORT(sdata);
     r->dtype = sdata;
-    if (esps_alloc_fea(r) == -1)
-	return NULL;
+    if (esps_alloc_fea(r) == -1) {
+		wfree(r);
+        return NULL;
+    }
     for (i=0; i<r->count; i++)
     {
 	switch (r->dtype)
@@ -910,7 +912,7 @@ int esps_record_size(esps_hdr hdr)
     esps_rec r = new_esps_rec(hdr);
     int size = r->size;
     delete_esps_rec(r);
-
+	wfree(r);
     return size;
 }
 
@@ -1027,13 +1029,21 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
     if (fhdr.num_samples == 0)  /* has to be derived from the file size */
     {
 	pos = EST_ftell(fd);
-	if (pos < 0) return misc_read_error;
+	if (pos < 0) {
+		delete_esps_hdr(hdr);
+		return misc_read_error;
+	}
 	if (EST_fseek(fd,0,SEEK_END) != 0) {
+        delete_esps_hdr(hdr);
 		return misc_read_error;
 	}
 	end = EST_ftell(fd);
-	if (end < 0) return misc_read_error;
+	if (end < 0) {
+		delete_esps_hdr(hdr);
+		return misc_read_error;
+	}
 	if (EST_fseek(fd,pos,SEEK_SET) != 0) {
+        delete_esps_hdr(hdr);
 		return misc_read_error;
 	}
 	fhdr.num_samples = (end - preamble.data_offset)/preamble.record_size;

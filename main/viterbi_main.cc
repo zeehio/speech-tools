@@ -330,7 +330,7 @@ static void print_results(EST_Relation &wstream)
 	fprintf(fd,"%s %f\n",(const char *)predict,pscore);
     }
 
-    if (out_file != "-")
+    if (fd != stdout)
 	fclose(fd);
 
 }

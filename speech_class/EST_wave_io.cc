@@ -1605,6 +1605,8 @@ enum EST_read_status load_wave_sd(EST_TokenStream &ts, short **data, int
     }
     
     if ((rv=read_esps_hdr(&hdr,fd)) != format_ok) {
+		delete_esps_hdr(hdr);
+		wfree(hdr);
         return rv;
     }
     
