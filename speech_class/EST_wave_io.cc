@@ -247,6 +247,8 @@ enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
 	wfree(tmpfile);
 	wfree(cmdstr);
 	tt.close();
+	wfree(byte_order);
+	wfree(sample_coding);
 	return rval;
     }
 
@@ -1658,6 +1660,7 @@ enum EST_read_status load_wave_sd(EST_TokenStream &ts, short **data, int
     *bo = EST_NATIVE_BO;
     *word_size = 2;
     delete_esps_hdr(hdr);
+    wfree(hdr);
     return format_ok;
     
 }
@@ -1686,6 +1689,7 @@ enum EST_write_status save_wave_sd_header(FILE *fp,
 		    fprintf(stderr,"ESPS file: no support for sample_type %s\n",
 			    sample_type_to_str(sample_type));
             delete_esps_hdr(hdr);
+            wfree(hdr);
 		    return misc_write_error;
 		}
     /* I believe all of the following are necessary and in this order */

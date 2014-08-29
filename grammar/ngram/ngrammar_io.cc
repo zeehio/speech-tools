@@ -305,8 +305,10 @@ load_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n)
     }
     if (SWAPINT(magic) == EST_NGRAMBIN_MAGIC)
 	swap = TRUE;
-    else if (magic != EST_NGRAMBIN_MAGIC)
-	return wrong_format;
+    else if (magic != EST_NGRAMBIN_MAGIC) {
+		fclose(ifd);
+        return wrong_format;
+    }
     if (ts.open(ifd, FALSE) == -1)
 	return misc_read_error;
     
@@ -364,6 +366,7 @@ load_ngram_cstr_bin(const EST_String filename, EST_Ngrammar &n)
 	cerr << "EST_Ngrammar::load_ngram_cstr_bin format does not have expected number of entries" << endl;
 	ts.close();
 	fclose(ifd);
+	delete[] dd;
 	return misc_read_error;
     }
     if (swap)
