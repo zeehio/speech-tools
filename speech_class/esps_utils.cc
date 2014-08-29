@@ -601,6 +601,7 @@ esps_fea read_esps_fea(FILE *fd, esps_hdr hdr)
     if (hdr->swapped) sdata = SWAPSHORT(sdata);
     r->dtype = sdata;
     if (esps_alloc_fea(r) == -1) {
+		wfree(r->name);
 		wfree(r);
         return NULL;
     }
@@ -1010,6 +1011,7 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
         cerr << "Could not read ESPS header." << endl;
         cerr << "Wrong format" << endl;
         delete_esps_hdr(hdr);
+        wfree(hdr);
         return wrong_format;
     }
     
@@ -1031,19 +1033,23 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
 	pos = EST_ftell(fd);
 	if (pos < 0) {
 		delete_esps_hdr(hdr);
+		wfree(hdr);
 		return misc_read_error;
 	}
 	if (EST_fseek(fd,0,SEEK_END) != 0) {
         delete_esps_hdr(hdr);
+        wfree(hdr);
 		return misc_read_error;
 	}
 	end = EST_ftell(fd);
 	if (end < 0) {
 		delete_esps_hdr(hdr);
+		wfree(hdr);
 		return misc_read_error;
 	}
 	if (EST_fseek(fd,pos,SEEK_SET) != 0) {
         delete_esps_hdr(hdr);
+        wfree(hdr);
 		return misc_read_error;
 	}
 	fhdr.num_samples = (end - preamble.data_offset)/preamble.record_size;
@@ -1116,6 +1122,7 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
     {
 	fprintf(stderr,"ESPS hdr: got lost in the header (record description)\n");
 	delete_esps_hdr(hdr);
+	wfree(hdr);
 	return misc_read_error;
     }
     /* other types ... */

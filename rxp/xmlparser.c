@@ -2793,6 +2793,7 @@ static int parse_attlist_decl(Parser p)
 	    default_type = DT_fixed;
 	    if (expect_dtd_whitespace(p, "after #FIXED") <0) {
 			Free(allowed_values);
+			Free(name);
 			return -1;
 		}
 	}
@@ -3006,7 +3007,7 @@ static int parse_entity_decl(Parser p, Entity ent, int line, int chpos)
 	if(!DefineEntity(p->dtd, e, pe))
 	    return error(p, "System error");
 
-	Free(e);
+	//Free(e);
     return 0;
 }
 

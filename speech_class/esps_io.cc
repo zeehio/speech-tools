@@ -198,7 +198,6 @@ enum EST_read_status get_esps(const char *filename, char *style,
     if ((rv=read_esps_hdr(&hdr,fd)) != format_ok)
     {
 	fclose(fd);
-	wfree(hdr);
 	return rv;
     }
     ta = walloc(float,hdr->num_records);
@@ -264,6 +263,7 @@ enum EST_read_status get_esps(const char *filename, char *style,
     wfree(rec);
     delete_esps_hdr(hdr);
     fclose(fd);
+    wfree(hdr);
 
     return format_ok;
 }
@@ -370,6 +370,8 @@ enum EST_read_status get_track_esps(const char *filename, char ***fields,
     delete_esps_hdr(hdr);
 
     fclose(fd);
+    wfree(rec);
+    wfree(hdr);
     return format_ok;
 }
 

@@ -178,7 +178,7 @@ enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
     int system_return;
     unsigned char *file_data;
     enum EST_sample_type_t actual_sample_type;
-    char *byte_order, *sample_coding;
+    char *byte_order, *sample_coding=0;
     int n;
     int current_pos;
 
@@ -196,16 +196,19 @@ enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
 	nist_get_param_int(header,"sample_rate",def_load_sample_rate);
     byte_order = nist_get_param_str(header,"sample_byte_format",
 				    (EST_BIG_ENDIAN ? "10" : "01"));
-    sample_coding = nist_get_param_str(header,"sample_coding","pcm");
     if (streq(byte_order,"mu-law"))
     {
+	wfree(byte_order);
 	byte_order = wstrdup((EST_BIG_ENDIAN ? "10" : "01"));
 	sample_coding = wstrdup("ULAW");
     }
-    if (streq(byte_order,"a-law"))
+    else if (streq(byte_order,"a-law"))
     {
+	wfree(byte_order);
 	byte_order = wstrdup((EST_BIG_ENDIAN ? "10" : "01"));
 	sample_coding = wstrdup("ALAW");
+    } else {
+	sample_coding = nist_get_param_str(header,"sample_coding","pcm");
     }
 
     /* code for reading in Tony Robinson's shorten files.
@@ -1607,8 +1610,6 @@ enum EST_read_status load_wave_sd(EST_TokenStream &ts, short **data, int
     }
     
     if ((rv=read_esps_hdr(&hdr,fd)) != format_ok) {
-		delete_esps_hdr(hdr);
-		wfree(hdr);
         return rv;
     }
     
@@ -1706,6 +1707,7 @@ enum EST_write_status save_wave_sd_header(FILE *fp,
     if ((rv=write_esps_hdr(hdr,fp)) != write_ok)
     {
 	delete_esps_hdr(hdr);
+	wfree(hdr);
 	return rv;
     }
     /* lets ignore desired bo and sample type for the time being */
