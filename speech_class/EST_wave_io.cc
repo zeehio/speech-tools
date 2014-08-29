@@ -1609,7 +1609,8 @@ enum EST_read_status load_wave_sd(EST_TokenStream &ts, short **data, int
 	return misc_read_error;
     }
     
-    if ((rv=read_esps_hdr(&hdr,fd)) != format_ok) {
+    rv=read_esps_hdr(&hdr,fd);
+    if (rv != format_ok) {
         return rv;
     }
     
@@ -1617,6 +1618,7 @@ enum EST_read_status load_wave_sd(EST_TokenStream &ts, short **data, int
     {
 	fprintf(stderr,"ESPS file: not an FEA_SD file\n");
 	delete_esps_hdr(hdr);
+	wfree(hdr);
 	return misc_read_error;
     }
     
@@ -1712,6 +1714,7 @@ enum EST_write_status save_wave_sd_header(FILE *fp,
     }
     /* lets ignore desired bo and sample type for the time being */
     delete_esps_hdr(hdr);
+    wfree(hdr);
     return write_ok;
 }
 

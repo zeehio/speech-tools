@@ -579,7 +579,17 @@ esps_fea read_esps_fea(FILE *fd, esps_hdr hdr)
 		wfree(r);
 		return NULL;
 	}
+	if (sdata < 0) {
+		fprintf(stderr, "ESPS: fea record too small\n");
+		wfree(r);
+		return NULL;
+	}
 	r->clength = sdata * 4;
+	if (r->clength > SHRT_MAX -1) {
+		fprintf(stderr, "ESPS: fea record wrong size\n");
+		wfree(r);
+		return NULL;
+	}
     }
     else
     {
@@ -1142,6 +1152,7 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
 	{
 	    fprintf(stderr,"ESPS hdr: guessed wrong about FEA_SD file (no 'samples' field)\n");
 	    delete_esps_hdr(hdr);
+	    wfree(hdr);
 	    return misc_read_error;
 	}
     }

@@ -2765,8 +2765,11 @@ static int parse_attlist_decl(Parser p)
 
 	    require(expect(p, ')',
 		  "at end of enumerated value list in attlist declaration"));
-	    require(expect_dtd_whitespace(p, "after enumerated value list "
-					     "in attlist declaration"));
+		if(expect_dtd_whitespace(p, "after enumerated value list "
+					     "in attlist declaration") < 0) {
+			 Free(name);
+			 return -1;
+		}
 
 	    allowed_values = Malloc((nvalues+1)*sizeof(Char *));
 	    if(!allowed_values)
