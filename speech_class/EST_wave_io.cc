@@ -1675,13 +1675,13 @@ enum EST_read_status load_wave_sd(EST_TokenStream &ts, short **data, int
     else
 	data_length = length *(*num_channels);
     
-    file_data = walloc(unsigned char, sample_width * data_length);
     if (EST_fseek(fd,
                   hdr->hdr_size+(sample_width*offset*(*num_channels)),
 	              SEEK_SET) != 0) {
        fprintf(stderr, "WAVE read: esps: could not set file to read position");
        return misc_read_error;
     }
+    file_data = walloc(unsigned char, sample_width * data_length);
     if ((dl=fread(file_data,sample_width,data_length,fd)) != data_length)
     {
 	fprintf(stderr,"WAVE read: esps short file %s\n",

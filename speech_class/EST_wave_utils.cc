@@ -241,13 +241,6 @@ short *convert_raw_data(unsigned char *file_data,int data_length,
 	wfree(file_data);
 	return d;
     }
-    else if (sample_type == st_alaw)
-    {
-	d = walloc(short,data_length);
-	alaw_to_short(file_data,d,data_length);
-	wfree(file_data);
-	return d;
-    }
 #if 0
     else if (sample_type == st_adpcm)
     {   /* Not really checked yet */

@@ -684,11 +684,13 @@ static char *esps_get_field_name(FILE *fd, esps_hdr hdr, int expect_source)
   if (hdr->file_type == ESPS_SD || expect_source) {
     if (fseek(fd,6,SEEK_CUR) != 0) {  /* skip some zeroes */
 		fputs("error skipping some zeroes", stderr);
+		wfree(name);
 		return wstrdup("ERROR");
 	}
   }  else {
     if (fseek(fd,2,SEEK_CUR) != 0){  /* skip some zeroes */
 		fputs("error skipping some zeroes", stderr);
+		wfree(name);
 		return wstrdup("ERROR");
 	}
   }
@@ -697,11 +699,13 @@ static char *esps_get_field_name(FILE *fd, esps_hdr hdr, int expect_source)
     {
       if (fread(&size,sizeof(short),1,fd) != 1) {
           fprintf(stderr, "ESPS: wrong field format\n");
+		  wfree(name);
           return NULL;
       }
       if (hdr->swapped) size = SWAPSHORT(size);
       if (EST_fseek(fd,size,SEEK_CUR) != 0) {
 		fprintf(stderr, "esps read error\n");
+		wfree(name);
 		return NULL;
 	}
     }
@@ -1124,8 +1128,8 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
 	hdr->field_dimension[i] = intdata;
     }
     /* 0 -> num_fields-1 -- probably ordering information */
-    EST_fseek(fd,hdr->num_fields*4,SEEK_CUR);               /* ordering info */
-    EST_fseek(fd,hdr->num_fields*2,SEEK_CUR);               /* zeros */
+    if (EST_fseek(fd,hdr->num_fields*4,SEEK_CUR) != 0) err = 1;               /* ordering info */
+    if (EST_fseek(fd,hdr->num_fields*2,SEEK_CUR) != 0) err = 1;               /* zeros */
     hdr->field_type = walloc(short,hdr->num_fields);    
     for (i=0; i<hdr->num_fields; i++)
     {
