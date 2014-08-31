@@ -260,9 +260,13 @@ enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
     else
 	data_length = length*(*num_channels);
 
+    if (ts.seek(current_pos+NIST_HDR_SIZE+(sample_width*offset*(*num_channels))) != 0) {
+		fprintf(stderr, "WAVE read: Could not seek in file. Read error");
+		wfree(sample_coding);
+		wfree(byte_order);
+		return misc_read_error;
+	}
     file_data = walloc(unsigned char,sample_width * data_length);
-
-    ts.seek(current_pos+NIST_HDR_SIZE+(sample_width*offset*(*num_channels)));
 
     n = ts.fread(file_data,sample_width,data_length);
 
@@ -582,7 +586,10 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
     if ((sample_width == 1) && (actual_sample_type == st_short))
 	actual_sample_type = st_uchar; /* oops I meant 8 bit */
 
-    ts.seek((dsize-16)+ts.tell());     /* skip rest of header */
+    if (ts.seek((dsize-16)+ts.tell()) != 0) {     /* skip rest of header */
+		fprintf(stderr, "Could not skip header. Read error");
+		return misc_read_error;
+	}
     while (1)
     {
 	if (ts.fread(info,sizeof(char),4) != 4)
@@ -601,7 +608,10 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 	{			/* some other type of chunk -- skip it */
 	    if (ts.fread(&samps,4,1) != 1) return misc_read_error;
 	    if (EST_BIG_ENDIAN) samps = SWAPINT(samps);
-	    ts.seek(samps+ts.tell());	/* skip rest of header */
+	    if (ts.seek(samps+ts.tell()) != 0) {	/* skip rest of header */
+			fprintf(stderr, "Could not seek in file. Read error");
+			return misc_read_error;
+		}
 	    /* Hope this is the right amount */
 	}
 	else
@@ -611,17 +621,23 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 	    //return misc_read_error;
 	    if(ts.fread(&dsize,4,1) != 1) return misc_read_error;
 	    if (EST_BIG_ENDIAN) dsize = SWAPINT(dsize);
-	    ts.seek(dsize+ts.tell());     /* skip this chunk */
+	    if (ts.seek(dsize+ts.tell()) != 0) {     /* skip this chunk */
+			fprintf(stderr, "Wav file: Read error");
+			return misc_read_error;
+		}
 	}
     }
     if (length == 0)
 	data_length = (samps - offset)*(*num_channels);
     else
 	data_length = length*(*num_channels);
-    
+        
+    if (ts.seek((sample_width*offset*(*num_channels))+ts.tell()) != 0) {
+		fprintf(stderr, "Read error\n");
+		return misc_read_error;
+	}
+	
     file_data = walloc(unsigned char,sample_width * data_length);
-    
-    ts.seek((sample_width*offset*(*num_channels))+ts.tell());
     if ((dsize=ts.fread(file_data,sample_width,data_length)) != data_length)
     {
 	/*  It seems so many WAV files have their datasize wrong I'll */
@@ -849,7 +865,10 @@ enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
 		    return misc_read_error;
 		}
 	    
-	    ts.seek(ssndchunk.offset+(comm_channels*offset)+ts.tell());
+	    if (ts.seek(ssndchunk.offset+(comm_channels*offset)+ts.tell()) != 0) {
+			fprintf(stderr, "AIFF: Read error\n");
+			return misc_read_error;
+		}
 	    if (length == 0)
  		data_length = (comm_samples-offset)*comm_channels;
   	    else
@@ -877,10 +896,12 @@ enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
 	}
 	else 
 	{			/* skip bytes in chunk */
-	    ts.seek(ts.tell()+chunk.size);
+	    if (ts.seek(ts.tell()+chunk.size) != 0) {
+			fprintf(stderr, "AIFF: Read error\n");
+			return misc_read_error;
 	}
     }
-    
+	}
     return format_ok;
 }
 
@@ -997,8 +1018,11 @@ enum EST_read_status load_wave_ulaw(EST_TokenStream &ts, short **data, int
     else
 	data_length = length;
 
+    if (ts.seek(offset) != 0) {
+		fprintf(stderr, "ulaw: Read error\n");
+		return misc_read_error;
+	}
     ulaw = walloc(unsigned char, data_length);
-    ts.seek(offset);
     if (ts.fread(ulaw,1,data_length) != data_length)
     {
 	wfree(ulaw);
@@ -1080,8 +1104,11 @@ enum EST_read_status load_wave_alaw(EST_TokenStream &ts, short **data, int
     else
 	data_length = length;
 
+    if (ts.seek(offset) != 0) {
+		fprintf(stderr, "alaw: Read error\n");
+		return misc_read_error;
+	}
     alaw = walloc(unsigned char, data_length);
-    ts.seek(offset);
     if (ts.fread(alaw,1,data_length) != data_length)
     {
 	wfree(alaw);
@@ -1220,8 +1247,11 @@ enum EST_read_status load_wave_snd(EST_TokenStream &ts, short **data, int
     else
 	data_length = length *(*num_channels);
     
+    if (ts.seek(current_pos+header.hdr_size+(sample_width*offset*(*num_channels))) != 0) {
+		fprintf(stderr, "WAVE read: seek error\n");
+		return misc_read_error;
+	}
     file_data = walloc(unsigned char, sample_width * data_length);
-    ts.seek(current_pos+header.hdr_size+(sample_width*offset*(*num_channels)));
     if ((n=ts.fread(file_data,sample_width,data_length)) != data_length)
     {
 	fprintf(stderr,"WAVE read: short file %s\n",
@@ -1480,8 +1510,11 @@ enum EST_read_status load_wave_audlab(EST_TokenStream &ts, short **data, int
     else
 	data_length = length *(*num_channels);
     
+    if (ts.seek(current_pos+hdr_length+(sizeof(short)*offset*(*num_channels))) != 0) {
+		fprintf(stderr, "audlab: read error\n");
+		return misc_read_error;
+	}
     *data = walloc(short,sizeof(short) * data_length);
-    ts.seek(current_pos+hdr_length+(sizeof(short)*offset*(*num_channels)));
     
     if ((int)ts.fread(*data, sizeof(short), data_length) != data_length)
     {
@@ -1785,7 +1818,10 @@ enum EST_read_status load_wave_raw(EST_TokenStream &ts, short **data, int
 	
 	ts.seek_end();
 	guess = (int)(1.2*ts.tell()/7)+10; /* rough guess of the num of samps */
-	ts.seek(0);
+	if (ts.seek(0) != 0) {
+		fprintf(stderr, "Load asci wave: seek error\n");
+		return misc_read_error;
+	}
 	*data = walloc(short, guess);
 	i=0;
 	while (!ts.eof())
