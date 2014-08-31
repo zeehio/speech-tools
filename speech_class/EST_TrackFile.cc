@@ -683,7 +683,7 @@ EST_read_status load_snns_res(const EST_String filename, EST_Track &tr,
     return format_ok;
 }
 
-EST_write_status EST_TrackFile::save_esps(const EST_String filename, EST_Track tr)
+EST_write_status EST_TrackFile::save_esps(const EST_String filename, EST_Track& tr)
 {
     EST_write_status rc;
     ssize_t i, j;
@@ -749,7 +749,7 @@ EST_write_status EST_TrackFile::save_esps(const EST_String filename, EST_Track t
     return rc;
 }
 
-EST_write_status EST_TrackFile::save_est_ts(FILE *fp, EST_Track tr)
+EST_write_status EST_TrackFile::save_est_ts(FILE *fp, EST_Track& tr)
 {
 	/* size_t does not have a ISO C++ printf format specifier (%zd is
 	 * not standard for C++ 1998 nor C++ 2003). We use a workaround. */
@@ -795,7 +795,7 @@ EST_write_status EST_TrackFile::save_est_ts(FILE *fp, EST_Track tr)
 }
 
 EST_write_status EST_TrackFile::save_est_ascii(const EST_String filename, 
-					       EST_Track tr)
+					       EST_Track& tr)
 {
     FILE *fd;
     EST_write_status r;
@@ -812,7 +812,7 @@ EST_write_status EST_TrackFile::save_est_ascii(const EST_String filename,
     return r;
 }
 
-EST_write_status EST_TrackFile::save_est_binary(const EST_String filename, EST_Track tr)
+EST_write_status EST_TrackFile::save_est_binary(const EST_String filename, EST_Track& tr)
 {
     FILE *fd;
     EST_write_status r;
@@ -830,7 +830,7 @@ EST_write_status EST_TrackFile::save_est_binary(const EST_String filename, EST_T
 
 }
 
-EST_write_status EST_TrackFile::save_est_binary_ts(FILE *fp, EST_Track tr)
+EST_write_status EST_TrackFile::save_est_binary_ts(FILE *fp, EST_Track& tr)
 {
     // This should be made optional
     bool breaks = TRUE;
@@ -877,7 +877,7 @@ EST_write_status EST_TrackFile::save_est_binary_ts(FILE *fp, EST_Track tr)
     return write_ok;
 }
 
-EST_write_status EST_TrackFile::save_ascii(const EST_String filename, EST_Track tr)
+EST_write_status EST_TrackFile::save_ascii(const EST_String filename, EST_Track& tr)
 {
     
     if (tr.equal_space() == TRUE)
@@ -909,7 +909,7 @@ EST_write_status EST_TrackFile::save_ascii(const EST_String filename, EST_Track 
     return write_ok;
 }
 
-EST_write_status EST_TrackFile::save_xgraph(const EST_String filename, EST_Track tr)
+EST_write_status EST_TrackFile::save_xgraph(const EST_String filename, EST_Track& tr)
 {
     
     ostream *outf;
@@ -1055,7 +1055,7 @@ EST_write_status save_snns_pat(const EST_String filename,
    }
    */
 
-EST_write_status EST_TrackFile::save_xmg(const EST_String filename, EST_Track tr)
+EST_write_status EST_TrackFile::save_xmg(const EST_String filename, EST_Track& tr)
 {
     ostream *outf;
     ssize_t i, j;
@@ -1265,32 +1265,32 @@ static int htk_swapped_header(htk_header *header)
     
 }
 
-EST_write_status EST_TrackFile::save_htk(const EST_String filename, EST_Track tmp)
+EST_write_status EST_TrackFile::save_htk(const EST_String filename, EST_Track& tmp)
 {
     return save_htk_as(filename, tmp, HTK_FBANK);
 }
 
-EST_write_status EST_TrackFile::save_htk_fbank(const EST_String filename, EST_Track tmp)
+EST_write_status EST_TrackFile::save_htk_fbank(const EST_String filename, EST_Track& tmp)
 {
     return save_htk_as(filename, tmp, HTK_FBANK);
 }
 
-EST_write_status EST_TrackFile::save_htk_mfcc(const EST_String filename, EST_Track tmp)
+EST_write_status EST_TrackFile::save_htk_mfcc(const EST_String filename, EST_Track& tmp)
 {
     return save_htk_as(filename, tmp, HTK_MFCC);
 }
 
-EST_write_status EST_TrackFile::save_htk_mfcc_e(const EST_String filename, EST_Track tmp)
+EST_write_status EST_TrackFile::save_htk_mfcc_e(const EST_String filename, EST_Track& tmp)
 {
     return save_htk_as(filename, tmp, HTK_MFCC | HTK_ENERGY);
 }
 
-EST_write_status EST_TrackFile::save_htk_user(const EST_String filename, EST_Track tmp)
+EST_write_status EST_TrackFile::save_htk_user(const EST_String filename, EST_Track& tmp)
 {
     return save_htk_as(filename, tmp, HTK_USER);
 }
 
-EST_write_status EST_TrackFile::save_htk_discrete(const EST_String filename, EST_Track tmp)
+EST_write_status EST_TrackFile::save_htk_discrete(const EST_String filename, EST_Track& tmp)
 {
     return save_htk_as(filename, tmp, HTK_DISCRETE);
 }
