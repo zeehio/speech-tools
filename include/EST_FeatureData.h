@@ -70,7 +70,7 @@ converting appropriate fields to a EST_FMatrix.
 
 class EST_FeatureSample : public EST_ValVector {
 private:
-    bool p_sub_fd;
+    /*bool p_sub_fd;*/
 
     void default_vals();
     void free_internals();
@@ -123,7 +123,7 @@ public:
 
 class EST_FeatureData{
 private:
-    bool p_sub_fd;
+    /*bool p_sub_fd;*/
 
     void default_vals();
     void free_internals();
