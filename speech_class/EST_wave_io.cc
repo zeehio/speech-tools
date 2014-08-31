@@ -1864,11 +1864,11 @@ enum EST_read_status load_wave_raw(EST_TokenStream &ts, short **data, int
 	else
 	    data_length = length;
 	
-	file_data = walloc(unsigned char, data_length * sample_width *inc);
 	if (ts.seek(offset*sample_width*inc) != 0) {
 		fprintf(stderr, "Error seeking in file\n");
 		return misc_read_error;
 	}
+	file_data = walloc(unsigned char, data_length * sample_width *inc);
 	if ((int)ts.fread(file_data,sample_width,data_length) != data_length) {
         wfree(file_data);
 	    return misc_read_error;

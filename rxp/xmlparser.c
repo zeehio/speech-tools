@@ -2759,7 +2759,10 @@ static int parse_attlist_decl(Parser p)
 		p->pbuf[p->pbufnext + p->namelen] = 0;
 		p->pbufnext += (p->namelen + 1);
 		nvalues++;
-		require(skip_dtd_whitespace(p, p->external_pe_depth > 0));
+		if (skip_dtd_whitespace(p, p->external_pe_depth > 0) < 0) {
+			Free(name);
+			return -1;
+		}
 	    }
 	    while(looking_at(p, "|"));
 
