@@ -241,7 +241,14 @@ enum EST_read_status load_wave_nist(EST_TokenStream &ts, short **data, int
         return misc_read_error;
     }
 	EST_TokenStream tt;
-	tt.open(tmpfile);
+	if (tt.open(tmpfile) < 0) {
+		fprintf(stderr, "Could not open %s\n", tmpfile);
+        wfree(sample_coding);
+        wfree(byte_order);
+        wfree(tmpfile);
+        wfree(cmdstr);
+		return misc_read_error;
+	}
 	
 	rval = load_wave_nist(tt, data, num_samples,
 			      num_channels, word_size, sample_rate,
@@ -400,7 +407,7 @@ enum EST_read_status load_wave_est(EST_TokenStream &ts, short **data, int
     EST_read_status r;
     EST_sample_type_t actual_sample_type;
     
-    offset = 0;
+    /*offset = 0;*/
     
     if ((r = read_est_header(ts, hinfo, ascii, t)) != format_ok)
 	return r;

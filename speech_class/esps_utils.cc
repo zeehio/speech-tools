@@ -564,6 +564,11 @@ esps_fea read_esps_fea(FILE *fd, esps_hdr hdr)
     {   /* next short is the size in bytes */
 	if (fread(&sdata,sizeof(short),1,fd) != 1) err = 1;
 	if (hdr->swapped) sdata = SWAPSHORT(sdata);
+	if (sdata < 0 || sdata > SHRT_MAX -1) {
+		fprintf(stderr, "ESPS: fea record wrong size\n");
+		wfree(r);
+		return NULL;		
+	}
 	r->clength = sdata;
     }
     else if ((r->type == 13) ||   /* a feature and value */
@@ -670,11 +675,11 @@ static char *esps_get_field_name(FILE *fd, esps_hdr hdr, int expect_source)
       return wstrdup("ERROR");
     }
   if (hdr->swapped) size = SWAPSHORT(size);
-  if (size < 0 ) {
+  if (size < 0 || size > SHRT_MAX -1) {
       fputs("error reading field size\n", stderr);
       return wstrdup("ERROR");
   }
-  name = walloc(char,((size_t) size)+1);
+  name = walloc(char, size+1);
   if (fread(name,1,size,fd) != (unsigned)size)
     {
       fputs("error reading field name\n", stderr);
@@ -1161,8 +1166,14 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
 	return misc_read_error;
     }
     /* other types ... */
-    EST_fseek(fd,9*2,SEEK_CUR);                             /* other types */
-    EST_fseek(fd,hdr->num_fields*2,SEEK_CUR);               /* zeros */
+    if (EST_fseek(fd,9*2,SEEK_CUR) != 0) {            /* other types */
+		fprintf(stderr, "ESPS hdr: fseek error\n");
+		return misc_read_error;
+	}
+    if (EST_fseek(fd,hdr->num_fields*2,SEEK_CUR) != 0) {    /* zeros */
+		fprintf(stderr, "ESPS hdr: fseek error\n");
+		return misc_read_error;
+	}
     /* Now we can read the field names */
     hdr->field_name = walloc(char *,hdr->num_fields);
 
