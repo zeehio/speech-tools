@@ -103,7 +103,7 @@ STATIC int FindMatches(char *dir,char *file,char ***avp)
 	    if ((neww = NEW(char*, ac + MEM_INC)) == NULL)
 		break;
 	    if (ac) {
-		COPYFROMTO(neww, av, ac * sizeof (char **));
+		COPYFROMTO(neww, av, ac * sizeof (char *));
 		DISPOSE(av);
 	    }
 	    *avp = av = neww;
@@ -120,7 +120,7 @@ STATIC int FindMatches(char *dir,char *file,char ***avp)
     /* Clean up and return. */
     (void)closedir(dp);
     if (ac)
-	qsort(av, ac, sizeof (char **), compare);
+	qsort(av, ac, sizeof (char *), compare);
     return ac;
 #else
     *avp=NULL;

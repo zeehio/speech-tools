@@ -251,7 +251,7 @@ static char **command_completion (char *text,int start,int end)
     {
 	/* If there are at least two, Sort them  */
 	for (i=0; matches[i] != NULL; i++);
-	qsort(matches,i,sizeof(char **),qsort_str_compare);
+	qsort(matches,i,sizeof(char *),qsort_str_compare);
     }
 
     return matches;
