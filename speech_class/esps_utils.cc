@@ -670,17 +670,28 @@ static char *esps_get_field_name(FILE *fd, esps_hdr hdr, int expect_source)
       return wstrdup("ERROR");
     }
   if (hdr->swapped) size = SWAPSHORT(size);
-  name = walloc(char,size+1);
+  if (size < 0 ) {
+      fputs("error reading field size\n", stderr);
+      return wstrdup("ERROR");
+  }
+  name = walloc(char,((size_t) size)+1);
   if (fread(name,1,size,fd) != (unsigned)size)
     {
       fputs("error reading field name\n", stderr);
       strncpy(name, "ERROR", size);
     }
   name[size] = '\0';
-  if (hdr->file_type == ESPS_SD || expect_source)
-    fseek(fd,6,SEEK_CUR);  /* skip some zeroes */
-  else
-    fseek(fd,2,SEEK_CUR);
+  if (hdr->file_type == ESPS_SD || expect_source) {
+    if (fseek(fd,6,SEEK_CUR) != 0) {  /* skip some zeroes */
+		fputs("error skipping some zeroes", stderr);
+		return wstrdup("ERROR");
+	}
+  }  else {
+    if (fseek(fd,2,SEEK_CUR) != 0){  /* skip some zeroes */
+		fputs("error skipping some zeroes", stderr);
+		return wstrdup("ERROR");
+	}
+  }
 
   if (expect_source)
     {
@@ -689,7 +700,10 @@ static char *esps_get_field_name(FILE *fd, esps_hdr hdr, int expect_source)
           return NULL;
       }
       if (hdr->swapped) size = SWAPSHORT(size);
-      EST_fseek(fd,size,SEEK_CUR);
+      if (EST_fseek(fd,size,SEEK_CUR) != 0) {
+		fprintf(stderr, "esps read error\n");
+		return NULL;
+	}
     }
 
   return name;
@@ -823,7 +837,7 @@ int read_esps_rec(esps_rec r, esps_hdr hdr, FILE *fd)
 	  case ESPS_DOUBLE:
 	    for(j=0; j < r->field[i]->dimension; j++)
 	    {
-		if (fread(&doubledata,8,1,fd) == 0) return EOF;
+		if (fread(&doubledata,8,1,fd) != 1) return EOF;
 		if (hdr->swapped) swapdouble(&doubledata);
 		r->field[i]->v.dval[j] = doubledata;
 	    }
@@ -831,7 +845,7 @@ int read_esps_rec(esps_rec r, esps_hdr hdr, FILE *fd)
 	  case ESPS_FLOAT:
 	    for(j=0; j < r->field[i]->dimension; j++)
 	    {
-		if (fread(&floatdata,4,1,fd) == 0) return EOF;
+		if (fread(&floatdata,4,1,fd) != 1) return EOF;
 		if (hdr->swapped) swapfloat(&floatdata);
 		r->field[i]->v.fval[j] = floatdata;
 	    }
@@ -839,7 +853,7 @@ int read_esps_rec(esps_rec r, esps_hdr hdr, FILE *fd)
 	  case ESPS_INT:
 	    for(j=0; j < r->field[i]->dimension; j++)
 	    {
-		if (fread(&intdata,4,1,fd) == 0) return EOF;
+		if (fread(&intdata,4,1,fd) != 1) return EOF;
 		if (hdr->swapped) intdata = SWAPINT(intdata);
 		r->field[i]->v.ival[j] = intdata;
 	    }
@@ -847,7 +861,7 @@ int read_esps_rec(esps_rec r, esps_hdr hdr, FILE *fd)
 	  case ESPS_SHORT:
 	    for(j=0; j < r->field[i]->dimension; j++)
 	    {
-		if (fread(&shortdata,2,1,fd) == 0) return EOF;
+		if (fread(&shortdata,2,1,fd) != 1) return EOF;
 		if (hdr->swapped) shortdata = SWAPSHORT(shortdata);
 		r->field[i]->v.sval[j] = shortdata;
 	    }
@@ -1012,6 +1026,13 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
     if (fread(&(fhdr.fea_type), sizeof(short), 1, fd) != 1) err=1;
     if (fread(&(fhdr.fil2), sizeof(short), 1, fd) != 1) err=1;
     if (fread(&(fhdr.num_fields), sizeof(short), 1, fd) != 1) err=1;
+    if (fhdr.num_fields < 0 || fhdr.num_fields > SHRT_MAX -1 ) {
+		cerr << "Wrong ESPS header: Wrong number of fields" << endl;
+		fhdr.num_fields = 0;
+        delete_esps_hdr(hdr);
+        wfree(hdr);
+		return wrong_format;
+	}
     if (fread(&(fhdr.fil3), sizeof(short), 1, fd) != 1) err=1;
     if (fread(&(fhdr.fil4), sizeof(int), 9, fd) != 9) err=1;
     if (fread(&(fhdr.fil5), sizeof(int), 8, fd) != 8) err=1;
@@ -1325,42 +1346,144 @@ enum EST_write_status write_esps_hdr(esps_hdr hdr,FILE *fd)
 	fprintf(stderr,"esps write header: can't fseek to start of file\n");
 	return misc_write_error;
     }
-    fwrite(&(preamble.machine_code),sizeof(int),1,fd);
-    fwrite(&(preamble.check_code),sizeof(int),1,fd);
-    fwrite(&(preamble.data_offset),sizeof(int),1,fd);
-    fwrite(&(preamble.record_size),sizeof(int),1,fd);
-    fwrite(&(preamble.check),sizeof(int),1,fd);
-    fwrite(&(preamble.edr),sizeof(int),1,fd);
-    fwrite(&(preamble.fil1),sizeof(int),1,fd);
-    fwrite(&(preamble.foreign_hd),sizeof(int),1,fd);
+    if (fwrite(&(preamble.machine_code),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(preamble.check_code),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(preamble.data_offset),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(preamble.record_size),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(preamble.check),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(preamble.edr),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(preamble.fil1),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(preamble.foreign_hd),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
 
 
-    fwrite(&(fhdr.thirteen),sizeof(short),1,fd);
-    fwrite(&(fhdr.sdr_size),sizeof(short),1,fd);
-    fwrite(&(fhdr.magic),sizeof(int),1,fd);
-    fwrite(&(fhdr.date),sizeof(char),26,fd);
-    fwrite(&(fhdr.version),sizeof(char),8,fd);
-    fwrite(&(fhdr.prog),sizeof(char),16,fd);
-    fwrite(&(fhdr.vers),sizeof(char),8,fd);
-    fwrite(&(fhdr.progcompdate),sizeof(char),26,fd);
-    fwrite(&(fhdr.num_samples),sizeof(int),1,fd);
-    fwrite(&(fhdr.filler),sizeof(int),1,fd);
-    fwrite(&(fhdr.num_doubles),sizeof(int),1,fd);
-    fwrite(&(fhdr.num_floats),sizeof(int),1,fd);
-    fwrite(&(fhdr.num_ints),sizeof(int),1,fd);
-    fwrite(&(fhdr.num_shorts),sizeof(int),1,fd);
-    fwrite(&(fhdr.num_chars),sizeof(int),1,fd);
-    fwrite(&(fhdr.fsize),sizeof(int),1,fd);
-    fwrite(&(fhdr.hsize),sizeof(int),1,fd);
-    fwrite(&(fhdr.username),sizeof(char),8,fd);
-    fwrite(&(fhdr.fil1),sizeof(int),5,fd);
-    fwrite(&(fhdr.fea_type),sizeof(short),1,fd);
-    fwrite(&(fhdr.fil2),sizeof(short),1,fd);
-    fwrite(&(fhdr.num_fields),sizeof(short),1,fd);
-    fwrite(&(fhdr.fil3),sizeof(short),1,fd);
-    fwrite(&(fhdr.fil4),sizeof(int),9,fd);
-    fwrite(&(fhdr.fil5),sizeof(int),8,fd);
-    fseek(fd,preamble.data_offset,SEEK_SET);
+    if (fwrite(&(fhdr.thirteen),sizeof(short),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.sdr_size),sizeof(short),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.magic),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.date),sizeof(char),26,fd) != 26) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.version),sizeof(char),8,fd) != 8) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.prog),sizeof(char),16,fd) != 16) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.vers),sizeof(char),8,fd) != 8) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.progcompdate),sizeof(char),26,fd) != 26) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.num_samples),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.filler),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.num_doubles),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.num_floats),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.num_ints),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.num_shorts),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.num_chars),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.fsize),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.hsize),sizeof(int),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.username),sizeof(char),8,fd) != 8) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.fil1),sizeof(int),5,fd) != 5) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.fea_type),sizeof(short),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.fil2),sizeof(short),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.num_fields),sizeof(short),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.fil3),sizeof(short),1,fd) != 1) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.fil4),sizeof(int),9,fd) != 9) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fwrite(&(fhdr.fil5),sizeof(int),8,fd) != 8) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
+    if (fseek(fd,preamble.data_offset,SEEK_SET) != 0) {
+		fprintf(stderr, "esps write header: Write error\n");
+		return misc_write_error;
+	}
     
     return write_ok;
 }
