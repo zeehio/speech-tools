@@ -56,6 +56,7 @@
 
 #include "EST_String.h"
 #include "EST_rw_status.h"
+#include "EST_FileType.h"
 
 #define NAMED_ENUM_MAX_SYNONYMS (10)
 
@@ -93,7 +94,7 @@ protected:
   void initialise(ENUM unknown_e, VAL unknown_v) {initialise(); p_unknown_enum=unknown_e; p_unknown_value = unknown_v;};
 
 protected:
-  EST_TValuedEnumI(void) {initialise();};
+  EST_TValuedEnumI(void) {initialise();p_unknown_enum = ENUM(); p_unknown_value=VAL();};
 
 public:
   EST_TValuedEnumI(EST_TValuedEnumDefinition<ENUM,VAL,INFO> defs[]) 

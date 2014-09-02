@@ -311,7 +311,8 @@ public:
     {
         int i; 
         for (i = 0; i < m.n(); ++i) 
-            st << m(i) << " "; st << std::endl; 
+            st << m(i) << " ";
+        st << std::endl; 
         return st;
     }
 

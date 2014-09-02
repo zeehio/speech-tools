@@ -254,10 +254,10 @@ static EST_read_status load_relations(EST_TokenStream &ts,
 EST_write_status EST_UtteranceFile::save_est_ascii(ostream &outf,const EST_Utterance &utt)
 {
     EST_write_status v = write_ok;
-    
-    outf.precision(8);
-    outf.setf(ios::fixed, ios::floatfield);
-    outf.width(8);
+
+	std::streamsize oldprecision = outf.precision(8);
+	std::ios_base::fmtflags oldsetf = outf.setf(ios::fixed, ios::floatfield);
+	std::streamsize oldwidth = outf.width(8);
     
     outf << "EST_File utterance\n"; // EST header identifier.
     outf << "DataType ascii\n";
@@ -286,6 +286,12 @@ EST_write_status EST_UtteranceFile::save_est_ascii(ostream &outf,const EST_Utter
     outf << "End_of_Relations\n";
 
     outf << "End_of_Utterance\n";
+
+	outf.precision(oldprecision);
+	outf.setf(oldsetf);
+	outf.width(oldwidth);
+
+
     return write_ok;
 }
 
@@ -451,7 +457,10 @@ EST_read_status EST_UtteranceFile::load_apml(EST_TokenStream &ts,
     return read_format_error;
   }
 
-  EST_fseek(stream, pos, 0);
+  if (EST_fseek(stream, pos, 0) != 0) {
+      cerr << "Error reading DOCTYPE apml header" << endl;
+	  return read_error;
+  }
 
   EST_read_status stat = apml_read(stream, ts.filename(),u, max_id);
 
@@ -474,6 +483,10 @@ EST_read_status EST_UtteranceFile::load_genxml(EST_TokenStream &ts,
     return read_error;
 
   EST_FilePos pos=EST_ftell(stream);
+  if (pos < 0 ) {
+	cerr << "Error reading xml header" << endl;
+    return read_error;
+  }
 
   {
   char buf[81];
@@ -490,7 +503,10 @@ EST_read_status EST_UtteranceFile::load_genxml(EST_TokenStream &ts,
     return read_format_error;
   }
 
-  EST_fseek(stream, pos, 0);
+  if (EST_fseek(stream, pos, 0) != 0) {
+      cerr << "Error reading xml file" << endl;
+	  return read_error;
+  }
 
   EST_read_status stat = EST_GenXML::read_xml(stream, ts.filename(),u, max_id);
 
@@ -636,7 +652,7 @@ EST_String EST_UtteranceFile::options_supported(void)
 	      if (nm==NULL)
 		break;
 	
-	      s += EST_String::cat("        ", (nm?nm:"NULL"), EST_String(" ")*(12-strlen((nm?nm:"NULL"))), (d?d:"NULL"), "\n");
+	      s += EST_String::cat("        ", nm, EST_String(" ")*(12-strlen((nm?nm:"NULL"))), (d?d:"NULL"), "\n");
 	    }
 	}
     }

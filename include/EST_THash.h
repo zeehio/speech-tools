@@ -80,6 +80,12 @@ public:
   /// The value
   V v;
 
+  /// A constructor:
+  EST_Hash_Pair() {
+	  k=K();
+	  v=V();
+	  next=0;
+  }
 private:
   /// Pointer used to chain entries into buckets.
   EST_Hash_Pair<K,V> *next;

@@ -87,9 +87,9 @@ void quantize(EST_Relation &a, float q)
 int edit_labels(EST_Relation &a, EST_String sedfile)
 {
     EST_Item *a_ptr;
-    char command[100], name[100], newname[100], sf[100];
+    EST_String command;
+    char name[100], newname[100];
     FILE *fp;
-    strcpy(sf, sedfile);
     EST_String file1, file2;
     int system_result;
     file1 = make_tmp_filename();
@@ -108,15 +108,11 @@ int edit_labels(EST_Relation &a, EST_String sedfile)
 	fprintf(fp, "%s\n", name);
     }
     fclose(fp);
-    strcpy(command, "cat ");
-    strcat(command, file1);
-    strcat(command, " | sed -f ");
-    strcat(command, sedfile);
-    strcat(command, " > ");
-    strcat(command, file2);
 
-    printf("command: %s\n", command);
-    system_result = system(command);
+    command = "cat \"" + file1 + "\" | sed -f \"" + sedfile + "\" > " + file2;
+
+    printf("command: %s\n", (const char*) command);
+    system_result = system((const char*) command);
     if (system_result != 0)
     {
         fprintf(stderr, "Error running command. Command returned %d\n",
@@ -446,7 +442,7 @@ int relation_divide(EST_RelationList &slist, EST_Relation &lab,
 		 (k->F("end") - start(n))) || 
 		is_in_class(n->name(), blank))
 	    {
-		a.append(s);
+		t = a.append(s);
 		t->set("end", (s->F("end") - kstart));
 
 		t = a.append(n);

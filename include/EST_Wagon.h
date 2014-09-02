@@ -82,6 +82,7 @@ class WDataSet : public WVectorList {
     EST_IVector p_ignore;
     EST_StrVector p_name;
   public:
+	WDataSet(): WVectorList() { dlength = 0;};
     void load_description(const EST_String& descfname,LISP ignores);
     void ignore_non_numbers();
 
@@ -159,7 +160,7 @@ class WImpurity {
     float score;
     int l,width;
 
-    WImpurity() { t=wnim_unset; a.reset(); trajectory=0; l=0; width=0; data=0;}
+    WImpurity() { t=wnim_unset; a.reset(); trajectory=0; l=0; width=0; data=0; score=WGN_HUGE_VAL;}
     ~WImpurity();
     WImpurity(const WVectorVector &ds);
     void copy(const WImpurity &s) 
@@ -202,7 +203,12 @@ class WDlist {
     int p_samples;
     WDlist *next;
   public:
-    WDlist() { next=0; }
+    WDlist() { 
+		next=0; 
+		p_score = WGN_HUGE_VAL;
+		p_freq = 0;
+		p_samples = 0;
+		}
     ~WDlist() { if (next != 0) delete next; }
     void set_score(float s) { p_score = s; }
     void set_question(const WQuestion &q) { p_question = q; }
