@@ -175,8 +175,8 @@ static void extract_ids(XML_Attribute_List &attributes,
   else if (attributes.present("href"))
     {
       val = attributes.val("href");
-      int starts[EST_Regex_max_subexpressions];
-      int ends[EST_Regex_max_subexpressions];
+      size_t starts[EST_Regex_max_subexpressions];
+      size_t ends[EST_Regex_max_subexpressions];
       
       if (val.matches(simpleIDRegex, 0, starts, ends))
 	{

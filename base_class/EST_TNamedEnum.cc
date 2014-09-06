@@ -251,7 +251,7 @@ EST_read_status EST_TNamedEnum<ENUM>::priv_load(EST_String name, EST_TNamedEnum<
 	{
 	  // parameter
 
-	  int mlen;
+	  size_t mlen;
 	  int eq = line.search("=", 1, mlen);
 
 	  if (eq <0)

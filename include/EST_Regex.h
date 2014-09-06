@@ -89,9 +89,9 @@ public:
     int  size() const { return EST_String::size; };
 
     /// Run to find a matching substring
-    int  run(const char *on, int from, int &start, int &end, int *starts=NULL, int *ends=NULL);
+    int  run(const char *on, size_t from, size_t &start, size_t &end, size_t *starts=NULL, size_t *ends=NULL);
     /// Run to see if it matches the entire string.
-    int  run_match(const char *on, int from=0, int *starts=NULL, int *ends=NULL);
+    int  run_match(const char *on, size_t from=0, size_t *starts=NULL, size_t *ends=NULL);
 
     /// Get the expression as a string.
     EST_String tostring(void) const {return (*this);};

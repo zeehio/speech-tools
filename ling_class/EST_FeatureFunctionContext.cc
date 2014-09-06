@@ -147,13 +147,13 @@ bool EST_FeatureFunctionContext::package_included(const EST_String name) const
 EST_Item_featfunc EST_FeatureFunctionContext::get_featfunc(const EST_String name, 
 							   int must)
 {
-  int pos, len;
+  size_t pos, len;
 
 
   if (cache.present(name))
       return cache.val(name);
 
-  if ((pos= name.search(separator, len, 0))>=0)
+  if ((pos= name.search(separator, len, 0))!= EST_STRING_ERR_IDX)
     {
 	const EST_Item_featfunc func2 = 
 	    get_featfunc(name.before(pos,separator.length()), 

@@ -43,8 +43,6 @@
 #if ! defined(__EST_CHUNK_H__)
 #define __EST_CHUNK_H__
 
-#define HAVE_WALLOC_H (1)
-
 #include <iostream>
 
 #include <climits>
@@ -55,7 +53,7 @@
 
 /* #define __INCLUDE_CHUNK_WARNINGS__ (1) */
 
-#if defined(__INCULDE_CHUNK_WARNINGS__)
+#if defined(__INCLUDE_CHUNK_WARNINGS__)
 #    define CHUNK_WARN(WHAT) do { cerr << "chunk: " <<WHAT << "\n";} while (0)
 #else
 #    define CHUNK_WARN(WHAT) // empty
@@ -69,23 +67,8 @@
 #    define CII(BODY) /* empty */
 #endif
 
-#define __CHUNK_USE_WALLOC__ (1)
 
-#if __CHUNK_USE_WALLOC__
-
-#if HAVE_WALLOC_H
-
-# include "EST_walloc.h"
-
-#else
-
-#    define walloc(T,N) ((T *)malloc(sizeof(T)*(N)))
-#    define wfree(P) free(P)
-#    define wrealloc(P,T,N) ((T *)realloc((P),sizeof(T)*(N)))
-
-#endif
-
-#endif
+#include "EST_walloc.h"
 
 using std::ostream;
 
@@ -121,7 +104,7 @@ class EST_Chunk  {
     ~EST_Chunk();
 
     EST_Chunk *operator & ();
-    void *operator new (size_t size, int bytes);
+    void *operator new (size_t size, size_t bytes);
     void operator delete (void *it);
     
     void operator ++ ()
@@ -133,9 +116,9 @@ class EST_Chunk  {
   public:
     friend class EST_ChunkPtr;
 
-    friend EST_ChunkPtr chunk_allocate(int bytes);
-    friend EST_ChunkPtr chunk_allocate(int bytes, const char *initial, int initial_len);
-    friend EST_ChunkPtr chunk_allocate(int bytes, const EST_ChunkPtr &initial, int initial_start, int initial_len);
+    friend EST_ChunkPtr chunk_allocate(size_t bytes);
+    friend EST_ChunkPtr chunk_allocate(size_t bytes, const char *initial, size_t initial_len);
+    friend EST_ChunkPtr chunk_allocate(size_t bytes, const EST_ChunkPtr &initial, size_t initial_start, size_t initial_len);
 
     friend void cp_make_updatable(EST_ChunkPtr &shared, EST_chunk_size inuse);
     friend void cp_make_updatable(EST_ChunkPtr &shared);
@@ -221,8 +204,8 @@ class EST_ChunkPtr {
     });
 
 
-    char operator [] (int i) const { return ptr->memory[i]; };
-    char &operator () (int i) CII({ 
+    char operator [] (size_t i) const { return ptr->memory[i]; };
+    char &operator () (size_t i) CII({ 
       if (ptr->count>1) 
 	{
 	  CHUNK_WARN("getting writable version of shared chunk\n");
@@ -232,9 +215,9 @@ class EST_ChunkPtr {
     });
 
     // Creating a new one
-    friend EST_ChunkPtr chunk_allocate(int size);
-    friend EST_ChunkPtr chunk_allocate(int bytes, const char *initial, int initial_len);
-    friend EST_ChunkPtr chunk_allocate(int bytes, const EST_ChunkPtr &initial, int initial_start, int initial_len);
+    friend EST_ChunkPtr chunk_allocate(size_t size);
+    friend EST_ChunkPtr chunk_allocate(size_t bytes, const char *initial, size_t initial_len);
+    friend EST_ChunkPtr chunk_allocate(size_t bytes, const EST_ChunkPtr &initial, size_t initial_start, size_t initial_len);
 
     // Make sure the memory isn`t shared.
     friend void cp_make_updatable(EST_ChunkPtr &shared, EST_Chunk::EST_chunk_size inuse);
@@ -249,5 +232,10 @@ class EST_ChunkPtr {
 
     friend void tester(void);
 };
+
+EST_ChunkPtr chunk_allocate(size_t bytes);
+EST_ChunkPtr chunk_allocate(size_t bytes, const char *initial, size_t initial_len);
+EST_ChunkPtr chunk_allocate(size_t bytes, const EST_ChunkPtr &initial, size_t initial_start, size_t initial_len);
+
 
 #endif

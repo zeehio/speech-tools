@@ -35,7 +35,7 @@ void pprintf(FILE *fd,LISP exp,int indent,int width, int depth,int length)
     else 
     {
 	EST_String p = siod_sprint(exp);
-	if (p.length() < width-indent)
+	if (p.length() < (size_t) width-indent)
 	    fprintf(fd,"%s",(const char *)p);
 	else
 	{

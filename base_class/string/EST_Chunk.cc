@@ -105,7 +105,7 @@ void EST_Chunk::operator -- ()
 }
 #endif
 
-void *EST_Chunk::operator new (size_t size, int bytes)
+void *EST_Chunk::operator new (size_t size, size_t bytes)
 {
 
   if (bytes > MAX_CHUNK_SIZE)
@@ -113,12 +113,9 @@ void *EST_Chunk::operator new (size_t size, int bytes)
       cerr<<"trying to make chunk of size "<<bytes<<"\n";
     }
 
-#if defined(__CHUNK_USE_WALLOC__)
-  void *it = walloc(char, size+bytes);
-  ((EST_Chunk *)it) -> malloc_flag = 1;
-#else
-  void *it = new char[size + bytes];
-#endif
+void *it = walloc(char, size+bytes);
+((EST_Chunk *)it) -> malloc_flag = 1;
+
 
   //  cerr<<"allocated "<<bytes+size<<" byte for chunk\n";
 
@@ -129,12 +126,7 @@ void *EST_Chunk::operator new (size_t size, int bytes)
 
 void EST_Chunk::operator delete (void *it)
 {
-
-#if defined(__CHUNK_USE_WALLOC__)
   wfree(it);
-#else
-  delete it;
-#endif
 
 }
 
@@ -236,14 +228,14 @@ char &EST_ChunkPtr::operator () (int i) {
  /*                                                                      */
  /************************************************************************/
 
-EST_ChunkPtr chunk_allocate(int bytes)
+EST_ChunkPtr chunk_allocate(size_t bytes)
 {
   EST_Chunk *cp = new(bytes) EST_Chunk;
 
   return (EST_ChunkPtr)cp;
 }
 
-EST_ChunkPtr chunk_allocate(int bytes, const char *initial, int initial_len)
+EST_ChunkPtr chunk_allocate(size_t bytes, const char *initial, size_t initial_len)
 {
   if (initial_len >= bytes)
     {
@@ -260,7 +252,7 @@ EST_ChunkPtr chunk_allocate(int bytes, const char *initial, int initial_len)
   return (EST_ChunkPtr)cp;
 }
 
-EST_ChunkPtr chunk_allocate(int bytes, const EST_ChunkPtr &initial, int initial_start, int initial_len)
+EST_ChunkPtr chunk_allocate(size_t bytes, const EST_ChunkPtr &initial, size_t initial_start, size_t initial_len)
 {
   if (initial_len >= bytes)
     {
@@ -335,7 +327,8 @@ void grow_chunk(EST_ChunkPtr &cp, EST_Chunk::EST_chunk_size inuse, EST_Chunk::ES
     {
 	cp_make_updatable(cp, inuse);
       EST_Chunk *newchunk = new(newsize) EST_Chunk;
-      memcpy(newchunk->memory, cp.ptr->memory, inuse);
+      if (cp.ptr)
+		memcpy(newchunk->memory, cp.ptr->memory, inuse);
       cp = newchunk;
     }
 }

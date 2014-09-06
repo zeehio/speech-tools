@@ -857,7 +857,7 @@ EST_String quote_string(const EST_String &s,
 	(s.length() == 0))
     {
 	// bigger than the quoted form could ever be
-	int i,j;
+	size_t i,j;
 	char *quoted = new char[s.length()*(quote.length()+escape.length())+
 		       1+quote.length()+quote.length()];
 	quoted[0] = quote(0);

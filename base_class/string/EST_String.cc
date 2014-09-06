@@ -70,7 +70,7 @@ struct subst {
 
 #if !__GSUB_REENTRANT__
 static struct subst *substitutions=NULL;
-int num_substitutions=0;
+size_t num_substitutions=0;
 #endif
   
 
@@ -82,7 +82,7 @@ int num_substitutions=0;
  *                                                                    *
  \********************************************************************/
 
-int EST_String::locate(const char *s, int len, int from, int &start, int &end) const
+size_t EST_String::locate(const char *s, size_t len, ssize_t from, size_t &start, size_t &end) const
 {
   CHECK_STRING_ARG(s);
       
@@ -91,10 +91,10 @@ int EST_String::locate(const char *s, int len, int from, int &start, int &end) c
   if (!s)
     return 0;
 
-  if (from < 0 && -from < size)
+  if (from < 0 && -from < (ssize_t) size)
     {
-      int endpos=size+from+1;
-      int p=0;
+      size_t endpos=size+from+1;
+      size_t p=0;
       const char *nextsub;
 
       while ((nextsub=strstr(str()+p, s)))
@@ -105,7 +105,7 @@ int EST_String::locate(const char *s, int len, int from, int &start, int &end) c
 	  sub=nextsub;
 	}
     }
-  else if (from>=0 && from <= size)
+  else if (from>=0 && from <= (ssize_t) size)
     sub= strstr(str()+from, s);
   
   if (sub != NULL)
@@ -121,14 +121,14 @@ int EST_String::locate(const char *s, int len, int from, int &start, int &end) c
 
 }
 
-int EST_String::locate(EST_Regex &ex, int from, int &start, int &end, int *starts, int *ends) const
+size_t EST_String::locate(EST_Regex &ex, ssize_t from, size_t &start, size_t &end, size_t *starts, size_t *ends) const
 {
-  int match_start, match_end;
+  size_t match_start, match_end;
 
-  if (from < 0 && -from < size)
+  if (from < 0 && -from < (ssize_t) size)
     {
-      int endpos=size+from+1;
-      int p=0;
+      size_t endpos=size+from+1;
+      size_t p=0;
       int found=0;
 
       while (ex.run(str(), p, match_start, match_end, starts, ends))
@@ -142,7 +142,7 @@ int EST_String::locate(EST_Regex &ex, int from, int &start, int &end, int *start
 	}
       return found >0;
     }
-  else if (from >=0 && from <= size)
+  else if (from >=0 && from <= (ssize_t) size)
     {
       if (ex.run(str(), from, match_start, match_end, starts, ends))
 	{
@@ -157,7 +157,7 @@ int EST_String::locate(EST_Regex &ex, int from, int &start, int &end, int *start
     return 0;
 }
 
-int EST_String::extract(const char *s, int len, int pos, int &start, int &end) const
+int EST_String::extract(const char *s, size_t len, ssize_t pos, size_t &start, size_t &end) const
 {
   CHECK_STRING_ARG(s);
       
@@ -167,7 +167,7 @@ int EST_String::extract(const char *s, int len, int pos, int &start, int &end) c
   if (pos < 0)
     return locate(s, len, 0, start, end);
 
-  if (pos <= size-len && memcmp(str()+pos, s, len)==0)
+  if (pos <= (ssize_t) (size-len) && memcmp(str()+pos, s, len)==0)
     {
       start = pos;
       end = pos + len;
@@ -177,14 +177,14 @@ int EST_String::extract(const char *s, int len, int pos, int &start, int &end) c
       return 0;
 }
 
-int EST_String::extract(EST_Regex &ex, int pos, int &start, int &end) const
+int EST_String::extract(EST_Regex &ex, ssize_t pos, size_t &start, size_t &end) const
 {
-  int match_start, match_end;
+  size_t match_start, match_end;
 
   if (pos < 0)
     return locate(ex, 0, start, end);
 
-  if (pos < size && ex.run(str(), pos, match_start, match_end) && match_start == pos)
+  if (pos < (ssize_t) size && ex.run(str(), pos, match_start, match_end) && match_start == (size_t)pos)
     {
       start = match_start;
       end = match_end;
@@ -194,9 +194,9 @@ int EST_String::extract(EST_Regex &ex, int pos, int &start, int &end) const
       return 0;
 }
 
-EST_String EST_String::chop_internal(int from, int len, EST_chop_direction mode) const
+EST_String EST_String::chop_internal(ssize_t from, size_t len, EST_chop_direction mode) const
 {
-  int start, end;
+  size_t start, end;
 
   if (from < 0)
     {
@@ -209,7 +209,7 @@ EST_String EST_String::chop_internal(int from, int len, EST_chop_direction mode)
 
   end=start+len;
 
-  if (start >=0 && end <=size && size > 0)
+  if (end <=size && size > 0)
     switch (mode)
       {
       case Chop_Before:
@@ -223,11 +223,11 @@ EST_String EST_String::chop_internal(int from, int len, EST_chop_direction mode)
 
 }
 
-EST_String EST_String::chop_internal(const char *it, int len, int from, EST_chop_direction mode) const
+EST_String EST_String::chop_internal(const char *it, size_t len, ssize_t from, EST_chop_direction mode) const
 {
   CHECK_STRING_ARG(it);
       
-  int start, end;
+  size_t start, end;
   
   if (it && locate(it, len, from, start, end))
     switch (mode)
@@ -243,9 +243,9 @@ EST_String EST_String::chop_internal(const char *it, int len, int from, EST_chop
 
 }
 
-EST_String EST_String::chop_internal (EST_Regex &it, int from, EST_chop_direction mode) const
+EST_String EST_String::chop_internal (EST_Regex &it, ssize_t from, EST_chop_direction mode) const
 {
-  int start=0, end=0;
+  size_t start=0, end=0;
   
   if (locate(it, from, start, end))
     switch (mode)
@@ -285,7 +285,7 @@ int EST_String::gsub_internal (const char *os, int olength, const char *s, int l
   if (s && os && size > 0 && *os != '\0' && from)
     {
       {
-	int start, end;
+	size_t start, end;
 	while (locate(os, olength, pos, start, end))
 	  {
 	    if (num_substitutions <= n)
@@ -377,8 +377,8 @@ int EST_String::gsub_internal (EST_Regex &ex, const char *s, int length)
   if (size > 0 && from != NULL)
     {
       {
-	int start, starts[EST_Regex_max_subexpressions], ends[EST_Regex_max_subexpressions], mlen;
-	while ((start = search(ex, mlen, pos, starts, ends))>=0)
+	size_t start, starts[EST_Regex_max_subexpressions], ends[EST_Regex_max_subexpressions], mlen;
+	while ((start = search(ex, mlen, pos, starts, ends)) != EST_STRING_ERR_IDX)
 	  {
 	    // printf("match %d-%d, %d-%d, %d-%d\n", start, start+mlen, starts[0], ends[0], starts[1], ends[1]);
 	    if (num_substitutions <= n)
@@ -463,10 +463,11 @@ int EST_String::gsub_internal (EST_Regex &ex, const char *s, int length)
 }
 
 int EST_String::subst(EST_String source, 
-		      int (&starts)[EST_Regex_max_subexpressions], 
-		      int (&ends)[EST_Regex_max_subexpressions])
+		      size_t (&starts)[EST_Regex_max_subexpressions], 
+		      size_t (&ends)[EST_Regex_max_subexpressions])
 {
-  int n=0, change=0;
+  size_t n=0;
+  ssize_t change=0;
   EST_ChunkPtr new_memory;
 
   const char *from;
@@ -475,12 +476,12 @@ int EST_String::subst(EST_String source,
 #if __GSUB_REENTRANT__
   struct subst *substitutions=NULL;
 
-  int num_substitutions=0;
+  size_t num_substitutions=0;
 #endif
 
   // printf("match '%s'\n", (const char *)(*this));
 
-  int i;
+  size_t i;
   if (size > 0)
     {
     int escaped=0;
@@ -492,7 +493,7 @@ int EST_String::subst(EST_String source,
 	      if (memory[i] >= '0' &&memory[i] <= '9')
 		{
 		  int snum = memory[i] - '0';
-		  if (ends[snum] >= 0 && starts[snum] >=0)
+		  if (ends[snum] != EST_STRING_ERR_IDX && starts[snum] != EST_STRING_ERR_IDX)
 		    {
 		      if (num_substitutions <= n)
 			substitutions = wrealloc(substitutions, struct subst, (num_substitutions +=10));
@@ -568,14 +569,14 @@ int EST_String::subst(EST_String source,
 // takes care of the pretty interface.
 
 int EST_String::split_internal(EST_String result[], int max, 
-			       const char *s_seperator, int slen,
+			       const char *s_seperator, size_t slen,
 			       EST_Regex *re_seperator, 
 			       char quote) const
 {
   int n=0;
-  int pos=0;
-  int start, end;
-  int lastspace=0;
+  size_t pos=0;
+  size_t start, end;
+  size_t lastspace=0;
 
   if (size>0)
     {
@@ -604,7 +605,7 @@ int EST_String::split_internal(EST_String result[], int max,
 	    }
 	  else
 	    {
-	      int mstart, mend, matched;
+	      size_t mstart, mend, matched;
 	      if (s_seperator)
 		matched = locate(s_seperator, slen, pos, mstart, mend);
 	      else
@@ -637,7 +638,7 @@ int EST_String::split_internal(EST_String result[], int max,
 		  pos=end;
 		}
 	    }
-	  if (start>=0)
+	  if (start!= EST_STRING_ERR_IDX)
 	    result[n++] = EST_String(*this, start, end-start);
 	  if (n==max)
 	    break;
@@ -647,34 +648,34 @@ int EST_String::split_internal(EST_String result[], int max,
   return n;
 }
 
-int EST_String::matches(const char *s, int pos) const
+int EST_String::matches(const char *s, ssize_t pos) const
 {
   CHECK_STRING_ARG(s);
       
-  int start, end;
+  size_t start, end;
 
   if (!s)
     return 0;
 
-  int len=safe_strlen(s);
+  size_t len=safe_strlen(s);
 
   if (extract(s, len, pos, start, end))
-      return start==pos && end==len;
+      return ((ssize_t)start)==pos && end==len;
   else
       return 0;
 }
 
-int EST_String::matches(const EST_String &s, int pos) const
+int EST_String::matches(const EST_String &s, ssize_t pos) const
 {
-  int start, end;
+  size_t start, end;
 
   if (extract(s.str(), s.size, pos, start, end))
-      return start==pos && end==s.size;
+      return ((ssize_t)start)==pos && end==s.size;
   else
       return 0;
 }
 
-int EST_String::matches(EST_Regex &e, int pos, int *starts, int *ends) const
+int EST_String::matches(EST_Regex &e, ssize_t pos, size_t *starts, size_t *ends) const
 {
   if (size==0)
     return e.run_match("", pos, starts, ends) >0;
@@ -827,7 +828,7 @@ EST_String::EST_String(const char *s)
     }
 
 
-EST_String::EST_String(const char *s, int start_or_fill, int len) 
+EST_String::EST_String(const char *s, int start_or_fill, ssize_t len) 
 {
 
   if (s)
@@ -860,7 +861,7 @@ EST_String::EST_String(const char *s, int start_or_fill, int len)
     }
 }
 
-EST_String::EST_String(const char *s, int s_size, int start, int len) 
+EST_String::EST_String(const char *s, size_t s_size, size_t start, ssize_t len) 
 {
   CHECK_STRING_ARG(s);
       
@@ -874,17 +875,20 @@ EST_String::EST_String(const char *s, int s_size, int start, int len)
     memory=NULL;
 }
 
-EST_String::EST_String(const EST_String &s, int start, int len) 
+EST_String::EST_String(const EST_String &s, size_t start, ssize_t len) 
 {
+  size_t actual_len;
   if (len <0)
-    len=s.size-start;
+    actual_len = s.size-start;
+  else
+    actual_len = len;
       
   size=len;
 
-  if (start == 0 && len == s.size)
+  if (start == 0 && actual_len == s.size)
     memory = NON_CONST_CHUNKPTR(s.memory);
   else if (size != 0)
-    memory = chunk_allocate(len+1, s.memory, start, len);
+    memory = chunk_allocate(len+1, s.memory, start, actual_len);
   else
     memory = NULL;
 }
@@ -902,18 +906,10 @@ EST_String::EST_String(const EST_String &s)
 }
 */
 
-#if __FSF_COMPATIBILITY__
-EST_String::EST_String(const char c) 
-{
-      size=1;
-      memory= chunk_allocate(2, &c, 1);
-}
-#endif
-
 EST_String &EST_String::operator = (const char *str) 
 {
       CHECK_STRING_ARG(str);
-      int len = safe_strlen(str);
+      size_t len = safe_strlen(str);
       if (!len)
 	memory = NULL;
       else if (!shareing() && len < size)
@@ -946,7 +942,7 @@ EST_String &EST_String::operator = (const EST_String &s)
 EST_String downcase(const EST_String &s)
 {
     EST_String t = EST_String(s.size, chunk_allocate(s.size+1, s.str(), s.size));
-    int i;
+    size_t i;
 
     for (i=0; i < s.length(); i++)
 	if (isupper(s(i)))
@@ -959,7 +955,7 @@ EST_String downcase(const EST_String &s)
 EST_String upcase(const EST_String &s)
 {
     EST_String t = EST_String(s.size, chunk_allocate(s.size+1, s.str(), s.size));
-    int i;
+    size_t i;
 
     for (i=0; i < s.length(); i++)
 	if (islower(s(i)))
@@ -970,12 +966,12 @@ EST_String upcase(const EST_String &s)
 }	
 
 
-int
+size_t
 EST_String::freq(const EST_String &s) const
 {
-  int pos=0;
-  int n=0;
-  int start, end;
+  ssize_t pos=0;
+  size_t n=0;
+  size_t start, end;
 
   while (locate(s, pos, start, end))
     {
@@ -985,15 +981,15 @@ EST_String::freq(const EST_String &s) const
   return n;
 }
 
-int
+size_t
 EST_String::freq(const char *s) const
 {
   CHECK_STRING_ARG(s);
       
-  int pos=0;
-  int n=0;
-  int start, end;
-  int len=safe_strlen(s);
+  ssize_t pos=0;
+  size_t n=0;
+  size_t start, end;
+  size_t len=safe_strlen(s);
 
   while (locate(s, len, pos, start, end))
     {
@@ -1003,12 +999,12 @@ EST_String::freq(const char *s) const
   return n;
 }
 
-int
+size_t
 EST_String::freq(EST_Regex &ex) const
 {
-  int pos=0;
-  int n=0;
-  int start, end=0;
+  ssize_t pos=0;
+  size_t n=0;
+  size_t start, end=0;
 
   while (locate(ex, pos, start, end))
     {

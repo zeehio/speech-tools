@@ -81,9 +81,10 @@ while(! file.eof())
     if (line == "\n")
 	line_no++;
 
-    int p=0, len;
+    ssize_t p=0;
+    size_t len;
 
-    while((p = line.search(RX_Word, len, p)) >= 0)
+    while((size_t)(p = line.search(RX_Word, len, p)) != EST_STRING_ERR_IDX)
       {
 	EST_String word(line.at(p, len));
 

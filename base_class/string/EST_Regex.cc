@@ -241,12 +241,12 @@ void EST_Regex::compile_match()
       cerr << "EST_Regex: can't compile '" << str() << "'\n";
 }
 
-int EST_Regex::run(const char *on, int from, int &start, int &end, int *starts, int *ends) 
+int EST_Regex::run(const char *on, size_t from, size_t &start, size_t &end, size_t *starts, size_t *ends) 
 {
 
   compile();
 
-  if (compiled && from <= (int)strlen(on))
+  if (compiled && from <= strlen(on))
     {
       if (hs_regexec((hs_regexp *)compiled, on+from))
 	{
@@ -259,13 +259,13 @@ int EST_Regex::run(const char *on, int from, int &start, int &end, int *starts, 
 	    {
 	      int i;
 	      for (i=0; i<EST_Regex_max_subexpressions; i++)
-		starts[i] = re->startp[i]?(re->startp[i] - on):-1;
+		starts[i] = re->startp[i]?(re->startp[i] - on):EST_STRING_ERR_IDX;
 	    }
 	  if (ends)
 	    {
 	      int i;
 	      for (i=0; i<EST_Regex_max_subexpressions; i++)
-		  ends[i] = re->endp[i]?(re->endp[i] - on):-1;
+		  ends[i] = re->endp[i]?(re->endp[i] - on):EST_STRING_ERR_IDX;
 	    }
 
 	  return 1;
@@ -274,27 +274,27 @@ int EST_Regex::run(const char *on, int from, int &start, int &end, int *starts, 
   return 0;
 }
 
-int EST_Regex::run_match(const char *on, int from, int *starts, int *ends) 
+int EST_Regex::run_match(const char *on, size_t from, size_t *starts, size_t *ends) 
 {
 
   compile_match();
 
   hs_regexp *re = (hs_regexp *)compiled_match;
 
-  if (compiled_match && from <= (int)strlen(on))
+  if (compiled_match && from <= strlen(on))
     if (hs_regexec(re, on+from))
       {
 	  if (starts)
 	    {
-	      int i;
+	      size_t i;
 	      for (i=0; i<EST_Regex_max_subexpressions; i++)
-		starts[i] = re->startp[i]?(re->startp[i] - on):-1;
+		starts[i] = re->startp[i]?(re->startp[i] - on):EST_STRING_ERR_IDX;
 	    }
 	  if (ends)
 	    {
-	      int i;
+	      size_t i;
 	      for (i=0; i<EST_Regex_max_subexpressions; i++)
-		ends[i] = re->endp[i]?(re->endp[i] - on):-1;
+		ends[i] = re->endp[i]?(re->endp[i] - on):EST_STRING_ERR_IDX;
 	    }
 	  return 1;
       }

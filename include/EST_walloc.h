@@ -42,13 +42,14 @@
 #if defined(__cplusplus)
 extern "C" {
 #include <stdlib.h>
+#include <stddef.h>
 #endif
 
 void *safe_walloc(size_t size);
-void *safe_wcalloc(int size);
-void *safe_wrealloc(void *ptr, int size);
-#define walloc(TYPE,SIZE) ((TYPE *)safe_walloc(sizeof(TYPE)*(SIZE)))
-#define wcalloc(TYPE,SIZE) ((TYPE *)safe_wcalloc(sizeof(TYPE)*(SIZE)))
+void *safe_wcalloc(size_t num, size_t size);
+void *safe_wrealloc(void *ptr, size_t size);
+#define wcalloc(TYPE,SIZE) ((TYPE *)safe_wcalloc(sizeof(TYPE),(SIZE)))
+#define walloc(TYPE,SIZE) wcalloc(TYPE,SIZE)
 #define wrealloc(PTR,TYPE,SIZE) ((TYPE *)safe_wrealloc((void *)(PTR), sizeof(TYPE)*(SIZE)))
 char *wstrdup(const char *s);
 void wfree(void *p);

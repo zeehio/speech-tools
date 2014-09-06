@@ -42,6 +42,7 @@ class EST_Regex;
 #include <cstring>
 #include <iostream>
 #include <climits>
+#include <limits>
 
 #include "EST_Chunk.h"
 #include "EST_strcasecmp.h"
@@ -73,13 +74,6 @@ int fcompare(const EST_String &a, const char *b, const unsigned char *table=NULL
   * @version $Id: EST_String.h,v 1.7 2009/07/03 17:13:56 awb Exp $
   */
 class EST_String {
-
-    /** For better libg++ compatibility. 
-      * 
-      * Includes String from char constructor which
-      * tends to mask errors in use. Also reverses the () and [] operators.
-      */
-#   define __FSF_COMPATIBILITY__ (0)
 
     /** Allow gsub() to be used in multi-threaded applications
       * This will cause gsub to use a local table of substitution points
@@ -116,9 +110,10 @@ public:
     static const EST_String Empty;
 
     /// Type of string size field.
-    typedef int EST_string_size;
+    typedef size_t EST_string_size;
     /// Maximum string size.
-#  define MAX_STRING_SIZE (INT_MAX)
+#  define MAX_STRING_SIZE (std::numeric_limits<std::size_t>::max()-1)
+#  define EST_STRING_ERR_IDX ((std::numeric_limits<std::size_t>::max()))
 
 private:
     /// Smart pointer to actual memory.
@@ -146,7 +141,7 @@ private:
 	{ return const_cast<EST_ChunkPtr&> (ecp);}
 
     /// private constructor which uses the buffer given.
-    EST_String(int len, EST_ChunkPtr cp) {
+    EST_String(size_t len, EST_ChunkPtr cp) {
 	size=len;
 	memory = cp;
     }
@@ -157,32 +152,32 @@ private:
     /**@name Finding substrings */
     ///@{
     /// Find substring 
-    int locate(const char *it, int len, int from, int &start, int &end) const;
+    size_t locate(const char *it, size_t len, ssize_t from, size_t &start, size_t &end) const;
     /// Find substring
-    int locate(const EST_String &s, int from, int &start, int &end) const
+    size_t locate(const EST_String &s, ssize_t from, size_t &start, size_t &end) const
 	{ return locate((const char *)s.memory, s.size, from, start, end); }
     /// Find match for regexp.
-    int locate(EST_Regex &ex, int from, int &start, int &end, int *starts=NULL, int *ends=NULL) const;
+    size_t locate(EST_Regex &ex, ssize_t from, size_t &start, size_t &end, size_t *starts=NULL, size_t *ends=NULL) const;
     ///@}
 
 
     /**@name Extract Substrings */
     ///@{
-    int extract(const char *it, int len, int from, int &start, int &end) const;
-    int extract(const EST_String &s, int from, int &start, int &end) const
+    int extract(const char *it, size_t len, ssize_t from, size_t &start, size_t &end) const;
+    int extract(const EST_String &s, ssize_t from, size_t &start, size_t &end) const
 	{ return extract((const char *)s.memory, s.size, from, start, end); }
-    int extract(EST_Regex &ex, int from, int &start, int &end) const;
+    int extract(EST_Regex &ex, ssize_t from, size_t &start, size_t &end) const;
     ///@}
 
     /**@name Chop out part of string */
     ///@{
     /// Locate subsring and chop.
-    EST_String chop_internal(const char *s, int length, int pos, EST_chop_direction directionult) const;
+    EST_String chop_internal(const char *s, size_t length, ssize_t pos, EST_chop_direction directionult) const;
     /// Chop at given position.
-    EST_String chop_internal(int pos, int length, EST_chop_direction directionult) const;
+    EST_String chop_internal(ssize_t pos, size_t length, EST_chop_direction directionult) const;
   
     /// Locate match for expression and chop.
-    EST_String chop_internal(EST_Regex &ex, int pos, EST_chop_direction directionult) const;
+    EST_String chop_internal(EST_Regex &ex, ssize_t pos, EST_chop_direction directionult) const;
     ///@}
 
     /**@name Global search and replace */
@@ -194,7 +189,7 @@ private:
     ///@}
 
     /// Split the string down into parts. 
-    int split_internal(EST_String result[], int max, const char* s_seperator, int slen, EST_Regex *re_separator, char quote) const;
+    int split_internal(EST_String result[], int max, const char* s_seperator, size_t slen, EST_Regex *re_separator, char quote) const;
 
     int Int(bool *ok_p) const;
     long Long(bool *ok_p) const;
@@ -209,13 +204,13 @@ public:
     EST_String(const char *s);
 
     /// Construct from part of char * or fill with given character.
-    EST_String(const char *s, int start_or_fill, int len);
+    EST_String(const char *s, int start_or_fill, ssize_t len);
 
     /// Construct from C string.
-    EST_String(const char *s, int s_size, int start, int len);
+    EST_String(const char *s, size_t s_size, size_t start, ssize_t len);
 
     // Create from EST_String
-    EST_String(const EST_String &s, int start, int len);
+    EST_String(const EST_String &s, size_t start, ssize_t len);
 
     /** Copy constructor
       * We have to declare our own copy constructor to lie to the
@@ -226,14 +221,6 @@ public:
       size = s.size;
     }
 
-#if __FSF_COMPATIBILITY__
-    /** Construct from single char.
-      * This constructor is not usually included as it can mask errors.
-      * @see  __FSF_COMPATIBILITY__
-      */
-    EST_String(const char c);
-#endif
-
     /// Destructor.
     ~EST_String() {
 	size=0;
@@ -241,7 +228,7 @@ public:
     }
 
     /// Length of string ({\em not} length of underlying chunk)
-    int length(void) const { return size; }
+    size_t length(void) const { return size; }
     /// Size of underlying chunk.
     int space (void) const { return memory.size(); }
     /// Get a const-pointer to the actual memory.
@@ -334,27 +321,27 @@ public:
     /**@name Search for something */
     ///@{
     /// Find a substring.
-    int search(const char *s, int len, int &mlen, int pos=0) const
-	{ int start, end;
+    size_t search(const char *s, size_t len, size_t &mlen, ssize_t pos=0) const
+	{ size_t start, end;
 	if (locate(s, len, pos, start, end))
 	{ mlen=end-start; return start; }
-	return -1;
+	return EST_STRING_ERR_IDX;
 	}
 
     /// Find a substring.
-    int search(const EST_String s, int &mlen, int pos=0) const
-	{ int start, end;
+    size_t search(const EST_String s, size_t &mlen, ssize_t pos=0) const
+	{ size_t start, end;
 	if (locate(s, pos, start, end))
 	{ mlen=end-start; return start; }
-	return -1;
+	return EST_STRING_ERR_IDX;
 	}
 
     /// Find a match of the regular expression.
-    int search(EST_Regex &re, int &mlen, int pos=0, int *starts=NULL, int *ends=NULL) const
-	{ int start=0, end=0;
+    size_t search(EST_Regex &re, size_t &mlen, ssize_t pos=0, size_t *starts=NULL, size_t *ends=NULL) const
+	{ size_t start=0, end=0;
 	if (locate(re, pos, start, end, starts, ends))
 	{ mlen=end-start; return start; }
-	return -1;
+	return EST_STRING_ERR_IDX;
 	}
     ///@}
 
@@ -362,40 +349,40 @@ public:
     /**@name Get position of something */
     ///@{
     /// Position of substring (starting at pos)
-    int index(const char *s, int pos=0) const
-	{ int start, end; return locate(s, safe_strlen(s), pos, start, end)?start:-1; }
+    size_t index(const char *s, ssize_t pos=0) const
+	{ size_t start, end; return locate(s, safe_strlen(s), pos, start, end)?start:EST_STRING_ERR_IDX; }
     /// Position of substring (starting at pos)
-    int index(const EST_String &s, int pos=0) const
-	{ int start, end; return locate(s, pos, start, end)?start:-1; }
+    size_t index(const EST_String &s, ssize_t pos=0) const
+	{ size_t start, end; return locate(s, pos, start, end)?start:EST_STRING_ERR_IDX; }
     /// Position of match of regexp (starting at pos)
-    int index(EST_Regex &ex, int pos=0) const
-	{ int start, end; return locate(ex, pos, start, end)?start:-1; }
+    size_t index(EST_Regex &ex, ssize_t pos=0) const
+	{ size_t start, end; return locate(ex, pos, start, end)?start:EST_STRING_ERR_IDX; }
     ///@}
   
     /**@name Does string contain something? */
     ///@{
     /// Does it contain this substring?
-    int contains(const char *s, int pos=-1) const
-	{ int start, end; return extract(s, safe_strlen(s), pos, start, end); }
+    int contains(const char *s, ssize_t pos=-1) const
+	{ size_t start, end; return extract(s, safe_strlen(s), pos, start, end); }
     /// Does it contain this substring?
-    int contains(const EST_String &s, int pos=-1) const
-	{ int start, end; return extract(s, pos, start, end); }
+    int contains(const EST_String &s, ssize_t pos=-1) const
+	{ size_t start, end; return extract(s, pos, start, end); }
     /// Does it contain this character?
-    int contains(const char c, int pos=-1) const
-	{ int start, end; char s[2] = {c,0}; return extract(s, 1, pos, start, end); }
+    int contains(const char c, ssize_t pos=-1) const
+	{ size_t start, end; char s[2] = {c,0}; return extract(s, 1, pos, start, end); }
     /// Does it contain a match for  this regular expression?
-    int contains(EST_Regex &ex, int pos=-1) const
-	{ int start, end; return extract(ex, pos, start, end); }
+    int contains(EST_Regex &ex, ssize_t pos=-1) const
+	{ size_t start, end; return extract(ex, pos, start, end); }
     ///@}
 
     /**@name Does string exactly match? */
     ///@{
     /// Exactly match this string?
-    int matches(const char *e, int pos=0) const;
+    int matches(const char *e, ssize_t pos=0) const;
     /// Exactly match this string?
-    int matches(const EST_String &e, int pos=0) const;
+    int matches(const EST_String &e, ssize_t pos=0) const;
     /// Exactly matches this regular expression, can return ends of sub-expressions.
-    int matches(EST_Regex &e, int pos=0, int *starts=NULL, int *ends=NULL) const;
+    int matches(EST_Regex &e, ssize_t pos=0, size_t *starts=NULL, size_t *ends=NULL) const;
     ///@}
 
     /**@name Global replacement */
@@ -424,18 +411,18 @@ public:
 	{ return gsub_internal(ex, NULL, bracket_num); }
     /// Substitute the result of a match into a string.
     int subst(EST_String source, 
-	      int (&starts)[EST_Regex_max_subexpressions], 
-	      int (&ends)[EST_Regex_max_subexpressions]);
+	      size_t (&starts)[EST_Regex_max_subexpressions], 
+	      size_t (&ends)[EST_Regex_max_subexpressions]);
     ///@}
 
     /**@name Frequency counts */
     ///@{
     /// Number of occurrences of substring
-    int freq(const char *s) const;
+    size_t freq(const char *s) const;
     /// Number of occurrences of substring
-    int freq(const EST_String &s) const;
+    size_t freq(const EST_String &s) const;
     /// Number of matches of regular expression.
-    int freq(EST_Regex &s) const;
+    size_t freq(EST_Regex &s) const;
     ///@}
 
     /**@name Quoting */
@@ -452,15 +439,11 @@ public:
 
     /**@name Operators */
     ///@{
-#if __FSF_COMPATIBILITY__
-    char operator [] (int i) const { return memory[i]; }
-    char &operator () (int i) { return memory(i); }
-#else
+
     /// Function style access to constant strings.
     char operator () (int i) const { return memory[i]; }
     /// Array style access to writable strings.
     char &operator [] (int i) { return memory(i); }
-#endif
 
     /// Cast to const char * by simply giving access to pointer.
     operator const char*() const {return str(); }
@@ -641,10 +624,6 @@ public:
     friend class EST_Regex;
 
 }; 
-
-EST_ChunkPtr chunk_allocate(int bytes);
-EST_ChunkPtr chunk_allocate(int bytes, const char *initial, int initial_len);
-EST_ChunkPtr chunk_allocate(int bytes, const EST_ChunkPtr &initial, int initial_start, int initial_len);
 
 int operator == (const char *a, const EST_String &b);
 int operator == (const EST_String &a, const EST_String &b);

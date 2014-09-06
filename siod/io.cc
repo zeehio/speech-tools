@@ -84,8 +84,8 @@ int parse_url(const EST_String &url,
 	       EST_String &path)
 {
   EST_String bitpath;
-  int start_of_bracket[EST_Regex_max_subexpressions];
-  int end_of_bracket[EST_Regex_max_subexpressions];
+  size_t start_of_bracket[EST_Regex_max_subexpressions];
+  size_t end_of_bracket[EST_Regex_max_subexpressions];
 
   if (url.matches(RxFILEURL,0,start_of_bracket, end_of_bracket))
   {

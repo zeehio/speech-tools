@@ -128,8 +128,8 @@ InputSource XML_Parser_Class::try_and_open(Entity ent)
   EST_String id = ent->publicid?ent->publicid:ent->systemid;
   EST_Litem *p;
 
-  int starts[EST_Regex_max_subexpressions];
-  int ends[EST_Regex_max_subexpressions];
+  size_t starts[EST_Regex_max_subexpressions];
+  size_t ends[EST_Regex_max_subexpressions];
   for (p = known_ids.head(); p != 0; p = p->next())
     {
       EST_Regex &re = known_ids.key(p);
