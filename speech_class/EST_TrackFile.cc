@@ -563,8 +563,8 @@ EST_read_status EST_TrackFile::load_est_ts(EST_TokenStream &ts,
 	    if (ascii)
 	      {
 		tr.aux(i, j) = ts.get().string();
-		if (!ok)
-		  return misc_read_error;
+		/*if (!ok)
+		  return misc_read_error;*/
 	      }
 	    else
 	    {

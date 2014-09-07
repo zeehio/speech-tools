@@ -464,7 +464,7 @@ void EST_SCFG_traintest::reestimate_grammar_probs(int passes,
 	    rules(r).set_prob(n_prob);
 	}
 	printf("pass %d cross entropy %g RMSE %f %f %d\n",
-	       pass,-(lPc/mC),sqrt(se/rules.length()),
+	       pass,-(lPc/mC),(rules.length()?sqrt(se/rules.length()):INFINITY),
 	       se,rules.length());
 	
 	if (checkpoint != -1) 

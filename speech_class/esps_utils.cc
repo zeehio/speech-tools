@@ -1207,7 +1207,11 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
     /* There's other gunk after this but I think I've done enough */
     /* The rest seems to be mostly previous headers               */
 
-    EST_fseek(fd,hdr->hdr_size,SEEK_SET); /* skip the rest of the header */
+    if (EST_fseek(fd,hdr->hdr_size,SEEK_SET) != 0) /* skip the rest of the header */
+    {
+		fprintf(stderr, "ESPS hdr: fseek error\n");        
+        return misc_read_error;
+    }
     *uhdr = hdr;
 	
     if (err == 1) {

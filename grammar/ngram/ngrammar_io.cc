@@ -77,7 +77,7 @@ load_ngram_arpa(const EST_String filename, EST_Ngrammar &n, const EST_StrList &v
     EST_TokenStream ts;
     EST_String s;
     int i,j,k, order=0;
-    double weight;
+    //double weight;
     /*double occur;*/
     int this_num,this_order;
 
@@ -183,6 +183,7 @@ load_ngram_arpa(const EST_String filename, EST_Ngrammar &n, const EST_StrList &v
 	    
 	    cerr << "ooooooooops" << endl;
 	    return wrong_format;
+        /* BEGIN COMMENT: This code is unreachable
 	    //n.accumulate(window,occur);
 
 	    // backoff weight ?
@@ -199,6 +200,8 @@ load_ngram_arpa(const EST_String filename, EST_Ngrammar &n, const EST_StrList &v
 		ts.close();
 		return misc_read_error;
 	    }
+        END COMMENT: This code is unreachable */
+
 	}
 	
     } // loop through orders

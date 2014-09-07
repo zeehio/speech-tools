@@ -84,7 +84,6 @@ static LISP siod_doc(LISP args,LISP penv)
 	return rintern("No documentation available for symbol.");
     }
 	
-    return rintern("No documentation available for symbol.");
 }
 
 static LISP siod_all_function_docstrings(void)
