@@ -611,6 +611,11 @@ esps_fea read_esps_fea(FILE *fd, esps_hdr hdr)
 	return r;  
     if (fread(&idata,sizeof(int),1,fd) != 1) err = 1;
     if (hdr->swapped) idata = SWAPINT(idata);
+    if (idata < 0 ) {
+        fprintf(stderr, "ESPS: negative r->count: Bad header\n");
+        wfree(r);
+        return NULL;
+    }
     r->count = idata;
     if (fread(&sdata,sizeof(short),1,fd) != 1) err = 1;
     if (hdr->swapped) sdata = SWAPSHORT(sdata);
@@ -1092,6 +1097,11 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
         wfree(hdr);
 		return misc_read_error;
 	}
+    if (preamble.data_offset < 0) { /* Nonsense */
+        delete_esps_hdr(hdr);
+        wfree(hdr);
+		return misc_read_error;
+    }
 	fhdr.num_samples = (end - preamble.data_offset)/preamble.record_size;
     }
     hdr->num_records = fhdr.num_samples;
@@ -1108,7 +1118,11 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
 	hdr->field_type[0] = ESPS_SHORT;
 	hdr->field_name = walloc(char *,1);
 	hdr->field_name[0] = wstrdup("samples");
-	EST_fseek(fd,hdr->hdr_size,SEEK_SET);
+	if (EST_fseek(fd,hdr->hdr_size,SEEK_SET) != 0) {
+        delete_esps_hdr(hdr);
+        wfree(hdr);
+		return misc_read_error;        
+    }
 	/* In this cases its just in the header as a float */
     float *tmpfloat = (float *)&fhdr.fil4[0];
 	sd_sample_rate = *tmpfloat;
@@ -1210,6 +1224,8 @@ enum EST_read_status read_esps_hdr(esps_hdr *uhdr,FILE *fd)
     if (EST_fseek(fd,hdr->hdr_size,SEEK_SET) != 0) /* skip the rest of the header */
     {
 		fprintf(stderr, "ESPS hdr: fseek error\n");        
+        delete_esps_hdr(hdr);
+        wfree(hdr);
         return misc_read_error;
     }
     *uhdr = hdr;

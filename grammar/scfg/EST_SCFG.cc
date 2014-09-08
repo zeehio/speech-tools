@@ -74,6 +74,7 @@ EST_SCFG::EST_SCFG()
 {
     p_prob_B=0;
     p_prob_U=0;
+    p_distinguished_symbol = 0;
 }
 
 EST_SCFG::EST_SCFG(LISP rs)

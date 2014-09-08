@@ -325,7 +325,7 @@ enum EST_write_status save_wave_nist_header(FILE *fp,
     
     memset(h,0,1024);
     
-    strcat(h, NIST_SIG);
+    strncat(h, NIST_SIG, 512);
     sprintf(p, "channel_count -i %d\n", num_channels);
     strcat(h, p);
     sprintf(p, "sample_count -i %d\n", num_samples);	
