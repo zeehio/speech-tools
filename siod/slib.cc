@@ -160,9 +160,6 @@ static const char *user_te_readm = "";
 LISP (*user_readm)(int, struct gen_readio *) = NULL;
 LISP (*user_readt)(char *,long, int *) = NULL;
 void (*fatal_exit_hook)(void) = NULL;
-#ifdef THINK_C
-int ipoll_counter = 0;
-#endif
 FILE *fwarn=NULL;
 int siod_interactive = 1;
 static void err(const char *message, LISP x, const char *s) EST_NORETURN;
@@ -185,12 +182,7 @@ int num_dead_pointers = 0;
 static LISP set_restricted(LISP l);
 
 char *stack_limit_ptr = NULL;
-long stack_size = 
-#ifdef THINK_C
-  10000;
-#else
-  500000;
-#endif
+long stack_size = 500000;
 
 void NNEWCELL(LISP *_into,long _type)
 {if NULLP(freelist)               
@@ -432,7 +424,7 @@ double myruntime(void)
  total += b.tms_stime;
  return(total / 60.0);}
 #else
-#if defined(THINK_C) | defined(WIN32) | defined(VMS)
+#if defined(WIN32) | defined(VMS)
 #ifndef CLOCKS_PER_SEC
 #define CLOCKS_PER_SEC CLK_TCK
 #endif
@@ -1119,10 +1111,6 @@ static void gc_mark_and_sweep(void)
  mark_protected_registers();
  mark_locations((LISP *) stack_start_ptr,
 		(LISP *) &stack_end);
-#ifdef THINK_C
- mark_locations((LISP *) ((char *) stack_start_ptr + 2),
-		(LISP *) ((char *) &stack_end + 2));
-#endif
  gc_sweep();
  gc_ms_stats_end();}
 

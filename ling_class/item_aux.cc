@@ -227,6 +227,8 @@ EST_Item *item_jump(EST_Item *from, const EST_String &to)
     case 4:
       // IntEvent
       return(from->as_relation("SylStructure")->up()->as_relation("Intonation")->down()->as_relation("IntEvent"));
+    default:
+      return NULL;
     }
 
   case 2:
@@ -241,6 +243,8 @@ EST_Item *item_jump(EST_Item *from, const EST_String &to)
       // IntEvent
     case 4:
       return(from->as_relation("Intonation")->down()->as_relation("IntEvent"));
+    default:
+      return NULL;
     }
 
   case 3:
@@ -254,6 +258,8 @@ EST_Item *item_jump(EST_Item *from, const EST_String &to)
       return(from->as_relation("SylStructure")->down()->as_relation("Syllable"));
     case 4:
       return(from->as_relation("SylStructure")->down()->as_relation("Intonation")->down()->as_relation("IntEvent"));
+    default:
+      return NULL;
     }
 
   case 4:
@@ -268,10 +274,12 @@ EST_Item *item_jump(EST_Item *from, const EST_String &to)
     case 3:
       // Word
       return(from->as_relation("Intonation")->up()->as_relation("SylStructure")->up()->as_relation("Word"));
+    default:
+      return NULL;
     }
+  default:
+   return NULL;
   }
-
-  return NULL;
 }
 
 

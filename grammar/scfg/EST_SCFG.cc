@@ -46,6 +46,7 @@ using namespace std;
 EST_SCFG_Rule::EST_SCFG_Rule(double prob,int p, int m)
 { 
     set_rule(prob,p,m); 
+    p_daughter2 = 0;
 }
 
 EST_SCFG_Rule::EST_SCFG_Rule(double prob,int p, int q, int r)

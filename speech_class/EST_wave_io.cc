@@ -1200,11 +1200,27 @@ enum EST_read_status load_wave_snd(EST_TokenStream &ts, short **data, int
     enum EST_sample_type_t encoding_type;
     int data_length, sample_width, bytes, samps, n;
     unsigned char *file_data;
-    int current_pos;
+    EST_FilePos current_pos;
     
     current_pos = ts.tell();
-    if (ts.fread(&header, sizeof(Sun_au_header), 1) != 1)
+    if (ts.fread(&(header.magic), sizeof(unsigned int), 1) != 1) {
         return misc_read_error;
+    }
+    if (ts.fread(&(header.hdr_size), sizeof(unsigned int), 1) != 1) {
+        return misc_read_error;
+    }
+    if (ts.fread(&(header.data_size), sizeof(int), 1) != 1) {
+        return misc_read_error;
+    }
+    if (ts.fread(&(header.encoding), sizeof(unsigned int), 1) != 1) {
+        return misc_read_error;
+    }
+    if (ts.fread(&(header.sample_rate), sizeof(unsigned int), 1) != 1) {
+        return misc_read_error;
+    }
+    if (ts.fread(&(header.channels), sizeof(unsigned int), 1) != 1) {
+        return misc_read_error;
+    }
     
     /* test for magic number */
     if ((EST_LITTLE_ENDIAN) && 
