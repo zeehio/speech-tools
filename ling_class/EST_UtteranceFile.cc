@@ -652,7 +652,7 @@ EST_String EST_UtteranceFile::options_supported(void)
 	      if (nm==NULL)
 		break;
 	
-	      s += EST_String::cat("        ", nm, EST_String(" ")*(12-strlen((nm?nm:"NULL"))), (d?d:"NULL"), "\n");
+	      s += EST_String::cat("        ", nm, EST_String(" ")*(12-strlen((nm))), (d?d:"NULL"), "\n");
 	    }
 	}
     }

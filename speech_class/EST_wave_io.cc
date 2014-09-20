@@ -44,6 +44,8 @@
 #include <cstdio>
 #include "EST_unix.h"
 #include <cstring>
+#include <limits>
+
 #include "EST_wave_aux.h"
 #include "EST_wave_utils.h"
 #include "EST_strcasecmp.h"
@@ -1274,6 +1276,10 @@ enum EST_read_status load_wave_snd(EST_TokenStream &ts, short **data, int
 		fprintf(stderr, "WAVE read: seek error\n");
 		return misc_read_error;
 	}
+    if (data_length < 0 || (size_t) data_length > std::numeric_limits<std::size_t>::max()/(sample_width*sizeof(unsigned char))) {
+		fprintf(stderr, "WAVE read: Too much data\n");
+        return misc_read_error;
+    }
     file_data = walloc(unsigned char, sample_width * data_length);
     if ((n=ts.fread(file_data,sample_width,data_length)) != data_length)
     {

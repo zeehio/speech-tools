@@ -97,7 +97,7 @@ static FILE16 *file_open(const char *url,
 		       const char *host, int port, const char *path,
 		       const char *type);
 
-static void parse_url(const char *url, 
+static int parse_url(const char *url, 
 		      char **scheme, char **host, int *port, char **path);
 
 /* Mapping of scheme names to opening functions */
@@ -188,7 +188,9 @@ char *url_merge(const char *url, const char *base,
     
     /* First see if we have an absolute URL */
 
-    parse_url(url, &scheme, &host, &port, &path);
+    if (parse_url(url, &scheme, &host, &port, &path) < 0) {
+        goto bad;
+    }
     if(scheme && (host || *path == '/'))
     {
 	merged_scheme = scheme;
@@ -204,7 +206,9 @@ char *url_merge(const char *url, const char *base,
     if(!base)
 	base = default_base = default_base_url();
 
-    parse_url(base, &base_scheme, &base_host, &base_port, &base_path);
+    if (parse_url(base, &base_scheme, &base_host, &base_port, &base_path) < 0) {
+        goto bad;
+    }
     if(base_scheme && (base_host || *base_path == '/'))
 	;
     else 
@@ -751,7 +755,7 @@ static FILE16 *file_open(const char *url,
     return f16;
 }
 
-static void parse_url(const char *url, 
+static int parse_url(const char *url, 
 		      char **scheme, char **host, int *port, char **path)
 {
     char *p, *q;
@@ -769,6 +773,9 @@ static void parse_url(const char *url,
     if(p > url && *p == ':')
     {
 	*scheme = Malloc(p - url + 1);
+    if (scheme == NULL) {
+        return -1;
+    }
 	strncpy(*scheme, url, p - url);
 	(*scheme)[p - url] = '\0';
 	url = p+1;
@@ -796,6 +803,9 @@ static void parse_url(const char *url,
 	    q = p;
 
 	*host = Malloc(q - url + 1);
+    if (*host == NULL) {
+        return -1;
+    }
 	strncpy(*host, url, q - url);
 	(*host)[q - url] = '\0';
 	url = p;
@@ -822,5 +832,6 @@ static void parse_url(const char *url,
 
 	    *p = '/';
 	}
+    return 0;
 }
 
