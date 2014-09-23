@@ -882,9 +882,34 @@ enum EST_read_status load_wave_aiff(EST_TokenStream &ts, short **data, int
  		data_length = (comm_samples-offset)*comm_channels;
   	    else
  		data_length = length*comm_channels;
-	    file_data = walloc(unsigned char, 
-			       data_length*comm_channels*
-			       get_word_size(actual_sample_type));
+        
+        if (data_length < 0 || comm_channels < 0 || get_word_size(actual_sample_type) < 0) {
+            fprintf(stderr, "AIFF: Read error\n");
+            return misc_read_error;
+        }
+        
+        size_t bytes_to_read;
+        if ((size_t)data_length < std::numeric_limits<std::size_t>::max()/comm_channels) {
+            bytes_to_read = data_length * comm_channels;
+        } else {
+            fprintf(stderr, "AIFF: Read error\n");
+            return misc_read_error;
+        }
+        if ((size_t)bytes_to_read < std::numeric_limits<std::size_t>::max()/get_word_size(actual_sample_type)) {
+            bytes_to_read *= get_word_size(actual_sample_type);
+        } else {
+            fprintf(stderr, "AIFF: Read error\n");
+            return misc_read_error;
+        }
+        /*
+        if ((size_t)bytes_to_read < std::numeric_limits<std::size_t>::max()/sizeof(unsigned char)) {
+            bytes_to_read *= sizeof(unsigned char);
+        } else {
+            fprintf(stderr, "AIFF: Read error\n");
+            return misc_read_error;
+        }
+        */
+	    file_data = walloc(unsigned char, bytes_to_read);
 	    if ((n=ts.fread(file_data,get_word_size(actual_sample_type),
 			 data_length)) != data_length)
 	    {
