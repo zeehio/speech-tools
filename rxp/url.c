@@ -773,7 +773,7 @@ static int parse_url(const char *url,
     if(p > url && *p == ':')
     {
 	*scheme = Malloc(p - url + 1);
-    if (scheme == NULL) {
+    if (*scheme == NULL) {
         return -1;
     }
 	strncpy(*scheme, url, p - url);

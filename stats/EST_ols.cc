@@ -264,8 +264,10 @@ static int ols_stepwise_find_best(const EST_FMatrix &X,
 	    float cor, rmse;
 	    EST_FMatrix pred;
 	    included.a_no_check(i) = TRUE;
-	    if (!robust_ols(X,Y,included,coeffsl))
+	    if (!robust_ols(X,Y,included,coeffsl)) {
+            included.a_no_check(i) = FALSE; /* restore previous status */
 		    return FALSE;  // failed for some reason
+        }
 	    ols_apply(Xtest,coeffsl,pred);
         ols_test(Ytest,pred,cor,rmse);
             printf("tested %d %s %f best %f\n",

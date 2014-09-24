@@ -128,9 +128,11 @@ void collapse(EST_FMatrix &d, EST_CBK &cbk, int row, int col)
 	if (contains(cbk(pj), col))
 	    break;
 
-    cbk(pi) += cbk(pj);
-    remove_distances(d, cbk(pi));
-    cbk.remove(pj);
+    if (pi != 0 && pj != 0) {
+        cbk(pi) += cbk(pj);
+        remove_distances(d, cbk(pi));
+        cbk.remove(pj);
+    }
 }
 
 float min(float a, float b)
