@@ -181,7 +181,15 @@ protected:
     * pointer into the bucket.
     */
     // struct IPointer{  unsigned int b; EST_Hash_Pair<K, V> *p; };
-    class IPointer{ public: unsigned int b; EST_Hash_Pair<K, V> *p; };
+    class IPointer{
+      public:
+      unsigned int b;
+      EST_Hash_Pair<K, V> *p;
+      IPointer() {
+        b = 0;
+        p = 0;
+      };
+    };
 
     //typedef class IPointer_s IPointer;
 
@@ -234,7 +242,15 @@ protected:
   /** A position in the table is given by a bucket number and a
     * pointer into the bucket.
     */
-  class IPointer_k { public: unsigned int b; EST_Hash_Pair<K, V> *p; };
+  class IPointer_k {
+    public:
+    unsigned int b;
+    EST_Hash_Pair<K, V> *p;
+    IPointer_k() {
+      b=0;
+      p=0;
+    };
+  };
 
   //typedef struct IPointer_k_s IPointer_k;
 

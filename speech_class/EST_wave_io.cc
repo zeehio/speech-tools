@@ -645,8 +645,11 @@ enum EST_read_status load_wave_riff(EST_TokenStream &ts, short **data, int
 		fprintf(stderr, "Read error\n");
 		return misc_read_error;
 	}
-	
-    if (data_length > 0 && (size_t) data_length > std::numeric_limits<std::size_t>::max()/sample_width) {
+	if (data_length < 0) {
+		fprintf(stderr, "Read error\n");
+		return misc_read_error;
+    }
+    if ((size_t) data_length > std::numeric_limits<std::size_t>::max()/sample_width) {
 		fprintf(stderr, "Read error: Data length too big\n");
         return misc_read_error;
     }
