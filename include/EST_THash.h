@@ -181,9 +181,9 @@ protected:
     * pointer into the bucket.
     */
     // struct IPointer{  unsigned int b; EST_Hash_Pair<K, V> *p; };
-    struct IPointer_s{  unsigned int b; EST_Hash_Pair<K, V> *p; };
+    class IPointer{ public: unsigned int b; EST_Hash_Pair<K, V> *p; };
 
-    typedef struct IPointer_s IPointer;
+    //typedef class IPointer_s IPointer;
 
   /// Shift to point at something.
   void skip_blank(IPointer &ip) const 
@@ -234,9 +234,9 @@ protected:
   /** A position in the table is given by a bucket number and a
     * pointer into the bucket.
     */
-  struct IPointer_k_s {  unsigned int b; EST_Hash_Pair<K, V> *p; };
+  class IPointer_k { public: unsigned int b; EST_Hash_Pair<K, V> *p; };
 
-  typedef struct IPointer_k_s IPointer_k;
+  //typedef struct IPointer_k_s IPointer_k;
 
   /// Shift to point at something.
   void skip_blank(IPointer_k &ip) const 
