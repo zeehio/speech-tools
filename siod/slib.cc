@@ -1105,7 +1105,11 @@ void gc_for_newcell(void)
 static void gc_mark_and_sweep(void)
 {LISP stack_end;
  gc_ms_stats_start();
- setjmp(save_regs_gc_mark);
+ if (setjmp(save_regs_gc_mark)) {
+     fprintf(stderr, "[GC mark and sweep: setjmp failed: Aborting GC collection]\n");
+     gc_ms_stats_end();
+     return;
+ }
  mark_locations((LISP *) save_regs_gc_mark,
                 (LISP *) (((char *) save_regs_gc_mark) + sizeof(save_regs_gc_mark)));
  mark_protected_registers();

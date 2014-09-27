@@ -1479,10 +1479,12 @@ float &EST_Track::a(ssize_t i, EST_ChannelType type, int offset)
 EST_Track::IPointer_f::IPointer_f()
 {
   frame = new EST_Track();
+  i = 0;
 }
 
 EST_Track::IPointer_f::IPointer_f(const IPointer_f &p)
 {
+  i = 0;
   frame=new EST_Track(*(p.frame));
 }
 

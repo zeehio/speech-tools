@@ -81,7 +81,11 @@ void meansd(EST_Wave &tr, float &mean, float &sd, int channel)
 	    mean += tr.a(i, channel);
 	    ++n;
 	}
-    
+    if (n == 0) {
+        mean = NAN;
+        sd = NAN;
+        return;
+    }
     mean /= n;
     
     for (i = 0, mean = 0.0; i < tr.num_samples(); ++i)

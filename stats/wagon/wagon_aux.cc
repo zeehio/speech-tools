@@ -404,6 +404,7 @@ double WImpurity::samples(void)
 WImpurity::WImpurity(const WVectorVector &ds)
 {
     int i;
+    score = NAN;
 
     t=wnim_unset;
     a.reset(); trajectory=0; l=0; width=0;

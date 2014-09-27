@@ -352,6 +352,8 @@ float mean( const EST_Track &tr, ssize_t channel )
       ++n;
     }
 
+  if (n == 0) return NAN;
+  
   return mean/(float)n;
 }
 
@@ -488,6 +490,11 @@ void meansd(EST_TrackList &tl, float &mean, float &sd, ssize_t channel)
 		mean += tl(p).a(i, channel);
 		++n;
 	    }
+    }
+    if (n == 0) {
+        mean = NAN;
+        sd = NAN;
+        return;
     }
 
     mean /= n;

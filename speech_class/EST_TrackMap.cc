@@ -88,6 +88,7 @@ EST_TrackMap::EST_TrackMap(const EST_TrackMap *parent, int offset, int refcount)
 
 EST_TrackMap::EST_TrackMap(EST_TrackMap &from, int refcount)
 {
+  init();
   copy(from);
   if (refcount)
     start_refcounting();

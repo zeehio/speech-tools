@@ -79,8 +79,6 @@ XML_Parser *XML_Parser_Class::make_parser(FILE *input,
 					   const EST_String desc, 
 					   void *data)
 {
-  Entity ent = NewExternalEntity("",0,strdup8(desc),0,0);
-
   FILE16 *input16=MakeFILE16FromFILE(input, "r");
 
   if (input16==NULL) {
@@ -89,6 +87,8 @@ XML_Parser *XML_Parser_Class::make_parser(FILE *input,
   }
 
   SetCloseUnderlying(input16, 0);
+
+  Entity ent = NewExternalEntity("",0,strdup8(desc),0,0);
 
   return make_parser(NewInputSource(ent, input16), ent, data);
 }
@@ -252,6 +252,9 @@ XML_Parser::XML_Parser(XML_Parser_Class &pc,
 		       Entity ent,
 		       void *d)
 {
+  p_track_context = 0;
+  p_track_contents = 0;
+  current_bit = 0;
   pclass=&pc;
   source=s;
   initial_entity=ent;
