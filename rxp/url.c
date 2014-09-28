@@ -569,7 +569,14 @@ static FILE16 *http_open(const char *url,
 #else
     fin = fdopen(s, "r");
     setvbuf(fin, 0, _IONBF, 0);
-    fout = fdopen(dup(s), "w");
+    int newfd = dup(s);
+    if (newfd < 0) {
+        LT_ERROR(LEFILE,
+                 "Error: http_open: Can't copy file descriptor\n");
+        close(s);
+    return 0;
+    }
+    fout = fdopen(newfd, "w");
 #endif
 #endif
 

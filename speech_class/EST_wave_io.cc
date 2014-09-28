@@ -351,6 +351,9 @@ enum EST_write_status save_wave_nist_header(FILE *fp,
 	strcat(h, p);
     }
     
+    if (strlen(h)+ strlen(NIST_END_SIG) > 1024) {
+        return misc_write_error;
+    }
     strcat(h, NIST_END_SIG);
     /*makes it nice to read */
     strcat(h, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); 

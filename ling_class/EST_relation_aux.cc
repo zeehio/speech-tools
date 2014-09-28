@@ -88,7 +88,7 @@ int edit_labels(EST_Relation &a, EST_String sedfile)
 {
     EST_Item *a_ptr;
     EST_String command;
-    char name[100], newname[100];
+    char newname[100];
     FILE *fp;
     EST_String file1, file2;
     int system_result;
@@ -104,8 +104,7 @@ int edit_labels(EST_Relation &a, EST_String sedfile)
     }
     for (a_ptr = a.head(); a_ptr != 0; a_ptr = a_ptr->next())
     {
-	strcpy(name,  a_ptr->name());
-	fprintf(fp, "%s\n", name);
+	fprintf(fp, "%s\n", (const char*) a_ptr->name());
     }
     fclose(fp);
 
@@ -117,6 +116,7 @@ int edit_labels(EST_Relation &a, EST_String sedfile)
     {
         fprintf(stderr, "Error running command. Command returned %d\n",
                 system_result);
+        return -1;
     }
 
     fp = fopen(file2, "rb");
