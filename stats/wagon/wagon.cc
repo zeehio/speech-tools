@@ -565,7 +565,7 @@ static float test_tree_cluster(WNode &tree,WDataSet &dataset,ostream *output)
 
     if (output != NULL)
     {
-        int rightnumber = NAN;
+        int rightnumber = 0;
         if (dataset.length() > 0) {
             rightnumber = (int)(100.0*(float)right_cluster/(float)dataset.length());
         }
