@@ -467,7 +467,7 @@ void EST_SCFG_traintest::reestimate_grammar_probs(int passes,
 	       pass,-(lPc/mC),(rules.length()?sqrt(se/rules.length()):INFINITY),
 	       se,rules.length());
 	
-	if (checkpoint != -1) 
+	if (checkpoint != -1 && checkpoint != 0) 
 	{
 	    if ((pass % checkpoint) == checkpoint-1)
 	    {

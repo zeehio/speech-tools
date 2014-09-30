@@ -136,6 +136,9 @@ char *default_base_url(void)
 	    *p = '/';
     }
     url = Malloc(6 + strlen(buf) + 2);
+    if (url == NULL) {
+        return NULL;
+    }
     sprintf(url, "file:/%s/", buf);
 
 #else
@@ -153,6 +156,9 @@ char *default_base_url(void)
 	    *p = 0;
     }
     url = Malloc(6 + strlen(buf) + 2);
+    if (url == NULL) {
+        return NULL;
+    }
     sprintf(url, "file:/%s/", buf);
 
 #else
@@ -160,6 +166,9 @@ char *default_base_url(void)
     /* Unix: translate /a/b to file:/a/b/ */
 
     url = Malloc(5 + strlen(buf) + 2);
+    if (url == NULL) {
+        return NULL;
+    }
     sprintf(url, "file:%s/", buf);
 
 #endif
@@ -322,6 +331,9 @@ char *url_merge(const char *url, const char *base,
     merged_url = Malloc(strlen(merged_scheme) + 1 + 
 			(merged_host ? 2 + strlen(merged_host) + 10 : 0) +
 			strlen(merged_path) + 1);
+    if (merged_url == NULL) {
+        goto bad;
+    }
     if(merged_host) 
     {
 	if(merged_port == -1)
@@ -574,6 +586,7 @@ static FILE16 *http_open(const char *url,
         LT_ERROR(LEFILE,
                  "Error: http_open: Can't copy file descriptor\n");
         close(s);
+        fclose(fin);
     return 0;
     }
     fout = fdopen(newfd, "w");

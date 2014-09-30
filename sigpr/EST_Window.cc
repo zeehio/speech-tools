@@ -247,7 +247,9 @@ static float find_dc(const EST_Wave &sig, int start, int size)
 
     start = max(0, start);
     size = min(size, sig.num_samples()-start);
-
+    if (size == 0) {
+      return NAN;
+    }
     for(i=0; i<size; i++)
       sum += sig.a_no_check(start+i);
 

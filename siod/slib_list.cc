@@ -161,7 +161,7 @@ LISP equal(LISP a,LISP b)
       return(NIL);
     default:
       p = get_user_type_hooks(atype);
-      if (p->equal)
+      if (p && p->equal)
 	return((*p->equal)(a,b));
       else if (p)  /* a user type */
 	  return ((USERVAL(a) == USERVAL(b)) ? truth : NIL);

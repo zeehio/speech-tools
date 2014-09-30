@@ -516,10 +516,14 @@ void EST_Wave::rescale(float gain, int normalize)
 	  for (ssize_t j = 0; j < num_channels(); ++j)
 	    if (abs(a_no_check(i,j)) > max)
 		max = abs(a_no_check(i,j));
-	if (fabs(max/32766.0-gain) < 0.001)
+	if (fabs(max/32766.0-gain) < 0.001) {
 	    return; /* already normalized */
-	else
-	    factor *= 32766.0/(float)max;
+    } else {
+        if (max != 0.0) /* prevent div by zero */
+            factor *= 32766.0/(float)max;
+        else /* signal is zero everywhere */
+            factor = 1.0;
+    }
     }
     
     for (ssize_t i = 0; i < num_samples(); ++i)

@@ -345,6 +345,8 @@ void FR4TR(int in, int nn, float *b0, float *b1, float *b2, float* b3) {
     switch (signum(L[k-1] - 2)) {
     case -1:
       L[k-1]=2;
+      L[k]=2;
+      break;
     case 0:
       L[k]=2;
       break;

@@ -1658,14 +1658,15 @@ STATIC STATUS c_possible()
     ECHAR	**av;
     ECHAR	*word;
     int		ac;
-
+    ac = 0;
     word = find_word();
     /* The (char ***) ((void *) &av) below is to avoid a warning
      * from GCC about casting an unsigned char *** to char ***
      */
-    ac = rl_list_possib((char *)word, (char ***) ((void *) &av));
-    if (word)
-	DISPOSE(word);
+    if (word != NULL) {
+        ac = rl_list_possib((char *)word, (char ***) ((void *) &av));
+        DISPOSE(word);
+    }
     if (ac) {
 	print_columns(ac, (char **)av);
 	reposition(0);

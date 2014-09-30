@@ -565,14 +565,18 @@ static float test_tree_cluster(WNode &tree,WDataSet &dataset,ostream *output)
 
     if (output != NULL)
     {
+        int rightnumber = NAN;
+        if (dataset.length() > 0) {
+            rightnumber = (int)(100.0*(float)right_cluster/(float)dataset.length());
+        }
 	// Want number in right class, mean distance in sds, mean ranking
 	if (output != &cout)   // save in output file
 	    *output << ";; Right cluster " << right_cluster << " (" <<
-		(int)(100.0*(float)right_cluster/(float)dataset.length()) << 
+		rightnumber << 
 		    "%) mean ranking " << ranking.mean() << " mean distance "
 			<< meandist.mean() << endl;
 	cout << "Right cluster " << right_cluster << " (" <<
-	    (int)(100.0*(float)right_cluster/(float)dataset.length()) << 
+	    rightnumber << 
 		"%) mean ranking " << ranking.mean() << " mean distance "
 		    << meandist.mean() << endl;
     }
