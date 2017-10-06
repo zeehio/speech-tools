@@ -1,0 +1,25 @@
+var structparser__state =
+[
+    [ "state", "structparser__state.html#afa1d1949044e7182d878403df1e2113b", null ],
+    [ "document_entity", "structparser__state.html#a9f091b9cb845f241209836ab1a0f7ab5", null ],
+    [ "have_dtd", "structparser__state.html#aec6a80523f2a94cdbc945b70356771ba", null ],
+    [ "standalone", "structparser__state.html#a90e828d1c82d23c2b98e8bb577e4b533", null ],
+    [ "source", "structparser__state.html#abb380220cb7f10db3e91385c57759f34", null ],
+    [ "name", "structparser__state.html#a98f417eb2c45822b6670a811df1166df", null ],
+    [ "pbuf", "structparser__state.html#a6faaba339d82177808c282623634d8f5", null ],
+    [ "namelen", "structparser__state.html#a3b7c74854999e928e7dac332cb6aa190", null ],
+    [ "pbufsize", "structparser__state.html#a1d9037237710927354a400630d0d5f01", null ],
+    [ "pbufnext", "structparser__state.html#a8d0ff6a09dcb39c6cb82cb56cfeee31e", null ],
+    [ "xbit", "structparser__state.html#a812c495c046669ffd2317546efdd971d", null ],
+    [ "peeked", "structparser__state.html#a114c82c2af3d805d8daffd3cd4925c2e", null ],
+    [ "dtd", "structparser__state.html#a0b88728e316c6fac11caf633d814e5cf", null ],
+    [ "dtd_callback", "structparser__state.html#a8f08c283da8f208468dfeb51779b31ad", null ],
+    [ "warning_callback", "structparser__state.html#a343012708c0022cd2ec6f69ac44dfcb0", null ],
+    [ "entity_opener", "structparser__state.html#aee1a2344df8a6d1d4f17005d5e68da7c", null ],
+    [ "flags", "structparser__state.html#aafff66eae42845518641f70e0aa0164e", null ],
+    [ "element_stack", "structparser__state.html#a2e176f95d79b9412cdfc17563b712749", null ],
+    [ "element_stack_alloc", "structparser__state.html#a879e7fdfdfa5b01ee52dd9ac8434dc22", null ],
+    [ "element_depth", "structparser__state.html#a364267cb5c96f0b91725ffc4510d8056", null ],
+    [ "callback_arg", "structparser__state.html#a7233b47db5d24b742c827a518ce42d2d", null ],
+    [ "external_pe_depth", "structparser__state.html#a72e91eef7557bc28805bb5774975353a", null ]
+];

@@ -1,0 +1,28 @@
+var structESPS__FIXED__HDR =
+[
+    [ "thirteen", "structESPS__FIXED__HDR.html#a078572dd78719a624ba28375bb111538", null ],
+    [ "sdr_size", "structESPS__FIXED__HDR.html#a784dd6d0dbf213da5d8a7567dbdc2f4a", null ],
+    [ "magic", "structESPS__FIXED__HDR.html#ad3aad3963c5837432c74260f9596d0f6", null ],
+    [ "date", "structESPS__FIXED__HDR.html#a9828a6bec5dded7f8fe72f808e0fe3c5", null ],
+    [ "version", "structESPS__FIXED__HDR.html#a05171b1d0c13d13ba75a8967995de801", null ],
+    [ "prog", "structESPS__FIXED__HDR.html#abce069168923f4a8885ecfaaecf659be", null ],
+    [ "vers", "structESPS__FIXED__HDR.html#a8a6762ce9c738d66fbcbb82bd42e6dbb", null ],
+    [ "progcompdate", "structESPS__FIXED__HDR.html#a8943f217181b83b14b0a1084c6f58513", null ],
+    [ "num_samples", "structESPS__FIXED__HDR.html#a9c27332b0ac2b28af3c40df429e0a132", null ],
+    [ "filler", "structESPS__FIXED__HDR.html#a640eaca973e00a0e3e2e8785ce0e97f6", null ],
+    [ "num_doubles", "structESPS__FIXED__HDR.html#a425000adc2a4a81f24e88dc62e5808d5", null ],
+    [ "num_floats", "structESPS__FIXED__HDR.html#ac962b9650e0ebac818618dacb2a6b36a", null ],
+    [ "num_ints", "structESPS__FIXED__HDR.html#a8ba2b675d232e572629665597a9a06b7", null ],
+    [ "num_shorts", "structESPS__FIXED__HDR.html#a09a718f15265e8c5431bb77402ceb847", null ],
+    [ "num_chars", "structESPS__FIXED__HDR.html#a1cea06e2adbc5e2556abdb5ad434047f", null ],
+    [ "fsize", "structESPS__FIXED__HDR.html#aac3c76ce38d1b5038b8c0acfd9e57f07", null ],
+    [ "hsize", "structESPS__FIXED__HDR.html#a5a5dbf0bf01beeaf092a72113f2a97cb", null ],
+    [ "username", "structESPS__FIXED__HDR.html#a9d7557e233d33e32ae4d74c136ce664e", null ],
+    [ "fil1", "structESPS__FIXED__HDR.html#a06f9f5e74985416be22bfb839bb561f2", null ],
+    [ "fea_type", "structESPS__FIXED__HDR.html#aecc09b796101126dda0ae7876da9fb20", null ],
+    [ "fil2", "structESPS__FIXED__HDR.html#a2771d155aaac8d19007ef5f4b5b5991a", null ],
+    [ "num_fields", "structESPS__FIXED__HDR.html#a11381976212556d1a20522af5bd0d240", null ],
+    [ "fil3", "structESPS__FIXED__HDR.html#a008b2bc41ce4759dc3c2f2789127b1d2", null ],
+    [ "fil4", "structESPS__FIXED__HDR.html#aec714589cbb2cd839d500c8075f9aaf9", null ],
+    [ "fil5", "structESPS__FIXED__HDR.html#a49df9ad5a528f3963050e68b1fd24bc7", null ]
+];

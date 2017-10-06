@@ -1,0 +1,25 @@
+var EST__multistats_8h =
+[
+    [ "OLS_IGNORE", "EST__multistats_8h.html#a88c94384d71e7bbc5947f5687911e52a", null ],
+    [ "mean", "EST__multistats_8h.html#a1755f8e220503f06e7209f3a66ae271a", null ],
+    [ "mean", "EST__multistats_8h.html#a7364c247f94278aa32303c34cd5befa0", null ],
+    [ "sample_variance", "EST__multistats_8h.html#a2d7b1687db3d5468220e8f4bf408b255", null ],
+    [ "sample_stdev", "EST__multistats_8h.html#a6f8bbd000844dc41950a7cac684317bd", null ],
+    [ "sample_covariance", "EST__multistats_8h.html#a03353d9571d798924e62b242a0a8e36d", null ],
+    [ "sample_correlation", "EST__multistats_8h.html#a213ac753121981d591634bf3bf555d14", null ],
+    [ "euclidean_distance", "EST__multistats_8h.html#a5a6addad3b6986bea3e13db73c92e3e2", null ],
+    [ "penrose_distance", "EST__multistats_8h.html#a90f1b36c85e9501f3d37fc7a9d651430", null ],
+    [ "normalise", "EST__multistats_8h.html#a2315e5e5993c70d68e71346d15e1dc61", null ],
+    [ "penrose_distance", "EST__multistats_8h.html#ab441b30a0dd6141ecaefcd8fb1bdf9a2", null ],
+    [ "mahalanobis_distance", "EST__multistats_8h.html#af27ddf1fd953714775ed3703c886798f", null ],
+    [ "population_mean", "EST__multistats_8h.html#afabe64627e226d7c1947d28e274b107e", null ],
+    [ "add_populations", "EST__multistats_8h.html#ae808dbe179159da1edcef606172fe4c6", null ],
+    [ "confusion", "EST__multistats_8h.html#a5fae58ccc7a9069e322711e18a20a7d1", null ],
+    [ "print_confusion", "EST__multistats_8h.html#a99d35468af60c435aeb65fd5bc1cdf10", null ],
+    [ "ols", "EST__multistats_8h.html#a39fe469d670eb82cae998304b8ed4678", null ],
+    [ "robust_ols", "EST__multistats_8h.html#a61c523614c7e26635ad5915c56f7085d", null ],
+    [ "robust_ols", "EST__multistats_8h.html#a1ca4fb5491b56ae8c93de8c77c671761", null ],
+    [ "stepwise_ols", "EST__multistats_8h.html#a70811829a34a05be9ccffcc21d7f4526", null ],
+    [ "ols_apply", "EST__multistats_8h.html#abe236b778463ea44f186a3e10df0b553", null ],
+    [ "ols_test", "EST__multistats_8h.html#a8694b81ef366e8f06e6e09b2c4b7a797", null ]
+];

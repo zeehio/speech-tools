@@ -1,0 +1,51 @@
+\form#0:\[ \left [ \begin{array}{ll} \mbox{POS} & \mbox{\emph{Noun}} \\ \mbox{NAME} & \mbox{\emph{example}} \\ \mbox{FOCUS} & \mbox{+} \\ \end{array} \right ] \]
+\form#1:\[ \left [ \begin{array}{ll} \mbox{NAME} & \mbox{\emph{sh}} \\ \mbox{PLACE OF ARTICULATION} & \mbox{\emph{palatal}} \\ \mbox{MANNER} & \mbox{\emph{fricative}} \\ \mbox{VOICE} & \mbox{--} \\ \mbox{DURATION} & 0.234 \\ \end{array} \right ] \]
+\form#2:\[ \left [ \begin{array}{ll} \mbox{NAME} & \mbox{\emph{d}} \\ \mbox{CORONAL} & + \\ \mbox{ANTERIOR} & + \\ \mbox{VOICE} & + \\ \mbox{CONTINUANT} & \mbox{--} \\ \mbox{SONORANT} & \mbox{--} \\ \end{array} \right ] \]
+\form#3:\[ \left [ \begin{array}{ll} \mbox{NAME} & \mbox{\emph{d}} \\ \mbox{PLACE OF ARTICULATION \boxed{1} } & \left [ \begin{array}{ll} \mbox{CORONAL} & \mbox{\emph{+}} \\ \mbox{ANTERIOR} & \mbox{\emph{+}} \\ \end{array} \right ] \\ \mbox{VOICE} & \mbox{\emph{+}} \\ \mbox{CONTINUANT} & \mbox{\emph{--}} \\ \mbox{SONORANT} & \mbox{\emph{--}} \\ \end{array} \right ] \]
+\form#4:$\boxed{1}$
+\form#5:\[ \left [ \begin{array}{ll} \mbox{NAME} & \mbox{\emph{d}} \\ \mbox{PLACE OF ARTICULATION } & \mbox{\boxed{1}}\\ \mbox{VOICE} & \mbox{\emph{+}} \\ \mbox{CONTINUANT} & \mbox{\emph{--}} \\ \mbox{SONORANT} & \mbox{\emph{--}} \\ \end{array} \right ] \]
+\form#6:\[ \left [ \begin{array}{ll} \mbox{NAME} & \mbox{\emph{d}} \\ \mbox{PHONOLOGICAL FEATURES} & \left [ \begin{array}{ll} \mbox{PLACE OF ARTICULATION } & \left [ \begin{array}{ll} \mbox{CORONAL} & \mbox{\emph{+}} \\ \mbox{ANTERIOR} & \mbox{\emph{+}} \\ \end{array} \right ] \\ \mbox{VOICE} & \mbox{\emph{+}} \\ \mbox{CONTINUANT} & \mbox{\emph{--}} \\ \mbox{SONORANT} & \mbox{\emph{--}} \\ \end{array} \right ] \\ \mbox{TIMING} & \left [ \begin{array}{ll} \mbox{START} & 0.412 \\ \mbox{END} & 0.489 \\ \mbox{DURATION} & 0.077 \\ \end{array} \right ] \\ \end{array} \right ] \]
+\form#7:\[ tilt_{amp} = \frac{ \left | A_{rise} \right | - \left | A_{fall}\right |}{ \left | A_{rise} \right | + \left | A_{fall}\right |} \]
+\form#8:\[ tilt_{dur} = \frac{ D_{rise} - D_{fall}}{ D_{rise} + D_{fall}} \]
+\form#9:\[ tilt = \frac{ \left | A_{rise} \right | - \left | A_{fall}\right |}{ 2 \left (\left | A_{rise} \right | + \left | A_{fall}\right | \right )} + \frac{ D_{rise} - D_{fall}}{ 2 ( D_{rise} + D_{fall})} \]
+\form#10:\[ A_{event} = \left | A_{rise} \right | + \left | A_{fall} \right | \]
+\form#11:\[ D_{event} = D_{rise} + D_{fall} \]
+\form#12:\[ A_{rise} = \frac{A_{event} (1 + tilt)}{2} \]
+\form#13:\[ A_{rise} = \frac{A_{event} (1 - tilt)}{2} \]
+\form#14:\[ A_{rise} = \frac{D_{event} (1 + tilt)}{2} \]
+\form#15:\[ A_{rise} = \frac{D_{event} (1 - tilt)}{2} \]
+\form#16:\begin{eqnarray*} f_0(t) = A_{abs} + A - 2 A \cdot (t/D)^2 & 0 < t < D/2 \\ f_0(t) = A_{abs} + 2 A \cdot (1-t/D)^2 & D/2 < t < D \end{eqnarray*}
+\form#17:\[ f_0(t) = A_{abs} + A \cdot (t/D) ~~ 0 < t < D \]
+\form#18:\[ E = \sum_{x \in class} prob(x) * \log(prob(x)) \]
+\form#19:$V^N$
+\form#20:\[H = -\frac{1}{Q} \sum_{i=1}^{Q} log P(w_i | w_{i-1}, w_{i-2},... w_{i-N+1}) \]
+\form#21:$Q$
+\form#22:$N$
+\form#23:\[B = 2^H \]
+\form#24:\[ W_{i,j} \]
+\form#25:\[ -\sum_{i=1}^N(prob(i)*log(prob(i))) \]
+\form#26:\[\frac{1}{n}\sum_{i=1}^{n}|a_{i} - b_{i}|\]
+\form#27:\[a_{i+1} - a_{i}\]
+\form#28:\[y_k = \sum_{t=0}^{n-1} x_t \; \omega_{n}^{kt} \; ; \; k=0...n-1 \]
+\form#29:$y = (y_0,y_1,... y_{n-1})$
+\form#30:$n$
+\form#31:$x = (x_0,x_1,... x_{n-1})$
+\form#32:$\omega_{n}^{0},\omega_{n}^{1},... \omega_{n}^{n-1}$
+\form#33:\[y_t=\sum_{i=0}^{O-1} c_i \; x_{t-i}\]
+\form#34:$O$
+\form#35:$c_i$
+\form#36:$x_t$
+\form#37:$t$
+\form#38:$y_t$
+\form#39:\[s_{n} = \sum_{i=1}^{P} a_{i}.s_{n-i} + e_{n}\]
+\form#40:\[T = D / floor(D/def)\]
+\form#41:\[c_{k}= a_{k} + \frac{1}{k}\sum_{i=1}^{k-1} i c_{i} a_{k-1}\]
+\form#42:\[\frac{A_{i+1}}{A_{i}} = \frac{i - k_{i}}{1 + k_{i}} \]
+\form#43:\[power=\frac{1}{n}\sum_{i=1}^{n}a_{i}^2\]
+\form#44:\[energy=\sqrt{\frac{1}{n}\sum_{i=1}^{n}a_{i}^2}\]
+\form#45:\[c_i' = \{ 1 + \frac{L}{2} sin \frac{\Pi i}{L} \} \; c_i\]
+\form#46:\[f_{\mbox{Mel}} = 1127 \; log( 1 + \frac{f_{\mbox{Hertz}}}{700} )\]
+\form#47:\[w_{n} = \left\{ \begin{array}{ll} 1 & \mbox{$0 \leq n \leq N$} \\ 0 & \mbox{otherwise} \end{array} \right. \]
+\form#48:\[w_{n} = \left\{ \begin{array}{ll} 0.5 - 0.5 \cos(2\pi n / (N-1)) & \mbox{$0 \leq n \leq N$} \\ 0 & \mbox{otherwise} \end{array} \right. \]
+\form#49:\[w_{n} = \left\{ \begin{array}{ll} 0.54 - 0.46 \cos(2\pi n / (N-1)) & \mbox{$0 \leq n \leq N$} \\ 0 & \mbox{otherwise} \end{array} \right. \]
+\form#50:$2^{N}$

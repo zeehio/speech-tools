@@ -1,0 +1,36 @@
+var xmlparser_8c =
+[
+    [ "require", "xmlparser_8c.html#a9cbb11a5fc04eb8542d36fd5dad83d16", null ],
+    [ "require0", "xmlparser_8c.html#a038d20fad8127725c33e96e88e457d19", null ],
+    [ "Consume", "xmlparser_8c.html#ab4d380560a2cd2192844529e70cf3734", null ],
+    [ "ExpandBuf", "xmlparser_8c.html#a141d92c8b591e50c0cf710220c77a336", null ],
+    [ "CopyName", "xmlparser_8c.html#a3d9676c5f958442bd46d5b1c400debe3", null ],
+    [ "CopyName0", "xmlparser_8c.html#a5defedd4d40b7053d9f7327a8678fe0f", null ],
+    [ "literal_type", "xmlparser_8c.html#aa0c0ca258997591d521b60abee577a1d", [
+      [ "LT_cdata_attr", "xmlparser_8c.html#aa0c0ca258997591d521b60abee577a1daa84b5f1a173a68aa51cd5d329ed17a38", null ],
+      [ "LT_tok_attr", "xmlparser_8c.html#aa0c0ca258997591d521b60abee577a1da4743a7ea363d6088f53cab4fbefe362e", null ],
+      [ "LT_plain", "xmlparser_8c.html#aa0c0ca258997591d521b60abee577a1dac06f20049899dd7d278c1c9f746ec37d", null ],
+      [ "LT_entity", "xmlparser_8c.html#aa0c0ca258997591d521b60abee577a1dae911b28830a85b48b6d51d2cdd0b9b72", null ]
+    ] ],
+    [ "FreeContentParticle", "xmlparser_8c.html#a33c31ca8e2b95a7435717159a2f42265", null ],
+    [ "ParserInit", "xmlparser_8c.html#aa2f33dc5c0a81fec710f50ec335567c5", null ],
+    [ "FreeXBit", "xmlparser_8c.html#ad2074cca4e33d31811d54dee70f329ad", null ],
+    [ "NewParser", "xmlparser_8c.html#a3e2b69b52340414a1d67ad5d44373dc6", null ],
+    [ "FreeParser", "xmlparser_8c.html#a4e63db2ed0be4bf5f6e8ca79acf9bc74", null ],
+    [ "ParserRootSource", "xmlparser_8c.html#aafa7d584bc29a46ef27795cfc42e5d1d", null ],
+    [ "ParserRootEntity", "xmlparser_8c.html#a223913038a5560113586db8f7726e563", null ],
+    [ "ParserSetCallbackArg", "xmlparser_8c.html#ae2ae6d5bc2bf641c485f2f4c17c75e5e", null ],
+    [ "ParserSetDtdCallback", "xmlparser_8c.html#aa0dbead9f431b3a41d209904a1015825", null ],
+    [ "ParserSetWarningCallback", "xmlparser_8c.html#ab4865cff27c7473dcd378b768907b4a6", null ],
+    [ "ParserSetEntityOpener", "xmlparser_8c.html#a7607c20d2d6829efbc2a511c677ef33d", null ],
+    [ "ReadXTree", "xmlparser_8c.html#a1d3995ad8aad9274622f58ffaa7576b8", null ],
+    [ "FreeXTree", "xmlparser_8c.html#a4e1a2e7ada545b8fe30212a9dcca15d6", null ],
+    [ "ReadXBit", "xmlparser_8c.html#ab93a37ad5262996ed229447e98013e42", null ],
+    [ "PeekXBit", "xmlparser_8c.html#a70266fc04bc1a0234c5e1e813968c302", null ],
+    [ "ParserPush", "xmlparser_8c.html#aec42c3b04520eec24f1eca471bc0460b", null ],
+    [ "ParserPop", "xmlparser_8c.html#aacdfb2edf639cba3ea97f8d09445ea41", null ],
+    [ "ParserSetFlag", "xmlparser_8c.html#af2289cb713cb33586c365d7bd56bfd95", null ],
+    [ "ParserPerror", "xmlparser_8c.html#a286fbf80701cc33cb840ed751486a8be", null ],
+    [ "ParseDtd", "xmlparser_8c.html#a03b8cab0cde7e8f4d20c47e4723dd464", null ],
+    [ "XBitTypeName", "xmlparser_8c.html#af6f14a80bf16071164ae8b13c1dbe8cb", null ]
+];

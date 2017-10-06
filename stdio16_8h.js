@@ -1,0 +1,25 @@
+var stdio16_8h =
+[
+    [ "STD_API", "stdio16_8h.html#a0df13a63adc9a192de2f11647f9f66e6", null ],
+    [ "MakeFILE16FromFILE", "stdio16_8h.html#ac43e13285f17b2cf024a9e19d47ce6e3", null ],
+    [ "MakeFILE16FromString", "stdio16_8h.html#a21097f6094ce9e1a604b49431f61bf42", null ],
+    [ "Readu", "stdio16_8h.html#ad534b806fcd50ffa9b7398b0da72f67a", null ],
+    [ "Writeu", "stdio16_8h.html#aa2df3788ddadf9364db1aef8e573dbc2", null ],
+    [ "Fclose", "stdio16_8h.html#aab79ede43d6685993cafa9f6ffe4510d", null ],
+    [ "Fflush", "stdio16_8h.html#aec47c3efe1599a18f691e6c75ab77a52", null ],
+    [ "Fseek", "stdio16_8h.html#aa22f9bfe608dcb2492fe0397109e8c51", null ],
+    [ "GetFILE", "stdio16_8h.html#ab28c3f3ca42ac0148e2412372dd865ee", null ],
+    [ "SetCloseUnderlying", "stdio16_8h.html#af4c1c7d74eb826a92521c40fe94d0862", null ],
+    [ "SetFileEncoding", "stdio16_8h.html#a329d7462b6e61d75e54fbda9e15fc1f3", null ],
+    [ "GetFileEncoding", "stdio16_8h.html#a4002483638fffa13a6c9d68f60ed87c4", null ],
+    [ "Fprintf", "stdio16_8h.html#a5cb40ee808b8a0514d7f1410a4b16991", null ],
+    [ "Vfprintf", "stdio16_8h.html#a5f00c8666c01509b71eacd81bbfc94e9", null ],
+    [ "Printf", "stdio16_8h.html#a992cbf002ebb6c2575ece648b32de5dc", null ],
+    [ "Vprintf", "stdio16_8h.html#a96e0695358edf9ebfca95569e286a555", null ],
+    [ "Sprintf", "stdio16_8h.html#abfe4d0dd65d1105a728155b38df22136", null ],
+    [ "Vsprintf", "stdio16_8h.html#a3790ccbe771c3be162150a92bfed4213", null ],
+    [ "init_stdio16", "stdio16_8h.html#a0f984d7298c869a926f8b50faafee743", null ],
+    [ "Stdin", "stdio16_8h.html#a8855c019e48b135311f2b9d6bbeea484", null ],
+    [ "Stdout", "stdio16_8h.html#ae9aa6f974760c540153fada6551205eb", null ],
+    [ "Stderr", "stdio16_8h.html#a923b2820fd9d846bea1603e4ab028877", null ]
+];

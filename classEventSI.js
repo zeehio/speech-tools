@@ -1,0 +1,25 @@
+var classEventSI =
+[
+    [ "init", "classEventSI.html#ab87553358472ffdf1711bf9de998054d", null ],
+    [ "amp", "classEventSI.html#a7ab6e46316fc0f81951254a2ae46ac2a", null ],
+    [ "dur", "classEventSI.html#a64881380e0169162c888e0d36925b573", null ],
+    [ "rise_amp", "classEventSI.html#a9fa03a581fef4a0ccb4659d444cc64e9", null ],
+    [ "rise_dur", "classEventSI.html#a7ab7803648ef2764c3dadd260c2950ba", null ],
+    [ "fall_amp", "classEventSI.html#ab32a000fc62e9464b84af54a4013b5cc", null ],
+    [ "fall_dur", "classEventSI.html#ae3d23b27884521af47bdcf56949060e1", null ],
+    [ "start_f0", "classEventSI.html#a6ba3f9f53191e7537c6ce4fb4d975759", null ],
+    [ "start_pos", "classEventSI.html#af6722186c7b0060875dcbb28e9144a3c", null ],
+    [ "peak_f0", "classEventSI.html#adb6c3f3036a87d72a1036a42d0c68d8c", null ],
+    [ "peak_pos", "classEventSI.html#adf880c6f274bee5fe243c70bc64f0044", null ],
+    [ "end_f0", "classEventSI.html#a396291150ebb1facff09bbb0774cfc54", null ],
+    [ "end_pos", "classEventSI.html#a6530ca7ce11ace489975efa9d9f4c792", null ],
+    [ "set_start_f0", "classEventSI.html#a3df8b81cdb3b7025f8f0228489f4a4bc", null ],
+    [ "set_start_pos", "classEventSI.html#a4994cdd8cf686c64c86f2c803230a37b", null ],
+    [ "set_peak_f0", "classEventSI.html#a7a010faf4d7d503f50a37ba1d6436f79", null ],
+    [ "set_peak_pos", "classEventSI.html#a82373772d369fd24a049ccf1f10bac4f", null ],
+    [ "set_end_f0", "classEventSI.html#ac2959c2f4491a3e64dece71db56d6859", null ],
+    [ "set_end_pos", "classEventSI.html#a11e92d6cc26d731e687c83c150ee259f", null ],
+    [ "operator<<", "classEventSI.html#a59764488b18fcab465036875cef59497", null ],
+    [ "sn", "classEventSI.html#a9c212f92d96560e5ffe46efde0d278e8", null ],
+    [ "sp", "classEventSI.html#ad4027d96d630f3e5bc429ce13c45a50a", null ]
+];

@@ -1,0 +1,26 @@
+var htk_8h =
+[
+    [ "htk_header", "structhtk__header.html", "structhtk__header" ],
+    [ "HTK_ENERGY", "htk_8h.html#a8526d2f65d6eb55349096cf817ecc889", null ],
+    [ "HTK_NO_E", "htk_8h.html#aca46b8c08df9a01c229f7590b61f50a5", null ],
+    [ "HTK_DELTA", "htk_8h.html#a24c62308fdc4a1bf9741228d05ef1c90", null ],
+    [ "HTK_AC", "htk_8h.html#ac4c0ca9d515c4698f7fdf3e57ef93b0e", null ],
+    [ "HTK_COMP", "htk_8h.html#a86c4a69a600d2ddf8169de3e68c6f857", null ],
+    [ "HTK_ZM", "htk_8h.html#aa07228bf8d9164462cc02db9262a788a", null ],
+    [ "HTK_CRC", "htk_8h.html#ae2679dfcb97b177a0bea818a13d49d6c", null ],
+    [ "HTK_0CEP", "htk_8h.html#a8c260184c919591fe12af07a65b0e66c", null ],
+    [ "HTK_EST_PS", "htk_8h.html#ab85e536a28789c57a66e120ca1d58e02", null ],
+    [ "HTK_MASK", "htk_8h.html#a954ec2b1e1d0e822e050be05fb3dcea4", null ],
+    [ "HTK_WAVE", "htk_8h.html#a470ed837dfdcb2a90d4038390265bdbf", null ],
+    [ "HTK_LPC", "htk_8h.html#ab1aba419a3dd1e02ab5ec63bb2b0303a", null ],
+    [ "HTK_LPCREFC", "htk_8h.html#ad2ba7827173d8e19727d92defaf36e90", null ],
+    [ "HTK_LPCCEP", "htk_8h.html#ac41149f44d33a9e49eca8237f07c2799", null ],
+    [ "HTK_LPDELCEP", "htk_8h.html#a49b73bfd2a3dc38c2c083c07e1cb3a39", null ],
+    [ "HTK_IREFC", "htk_8h.html#a4dd9be6635300af1ef43e3bcbe2104fb", null ],
+    [ "HTK_MFCC", "htk_8h.html#a4a46e21112e976afd21ef1fe9002e02a", null ],
+    [ "HTK_FBANK", "htk_8h.html#aaa5a087102df36b67bd8eadfbcf61490", null ],
+    [ "HTK_MELSPEC", "htk_8h.html#a232b30d576726ec4c0451a0dcdb57499", null ],
+    [ "HTK_USER", "htk_8h.html#af0ab58db4477ef55fd17e545586ef8cc", null ],
+    [ "HTK_DISCRETE", "htk_8h.html#a480459406bc5cb8707aeb5bc2e5d107b", null ],
+    [ "HTK_UNITS_PER_SECOND", "htk_8h.html#a5b5c72fb9c0ead493741ba8c889671bc", null ]
+];

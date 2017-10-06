@@ -1,0 +1,26 @@
+var EST__wave__utils_8cc =
+[
+    [ "st_alaw_to_short", "EST__wave__utils_8cc.html#aa58fbb92c370656cb60ffcec6274bbf4", null ],
+    [ "ZEROTRAP", "EST__wave__utils_8cc.html#a1caa68a3493eb2e437d1c84a917307c6", null ],
+    [ "BIAS", "EST__wave__utils_8cc.html#adbb32e6744a151dde6686dbc26bdd342", null ],
+    [ "CLIP", "EST__wave__utils_8cc.html#aeb447a7da70893212e1e61e6086c6e80", null ],
+    [ "HUGE_VAL", "EST__wave__utils_8cc.html#af2164b2db92d8a0ed3838ad5c28db971", null ],
+    [ "FloatToUnsigned", "EST__wave__utils_8cc.html#a143540dd77e0385e092e2e9370d461ba", null ],
+    [ "UnsignedToFloat", "EST__wave__utils_8cc.html#afd8de94c42627e5b7d2ba53263d45cb8", null ],
+    [ "ulaw_to_short", "EST__wave__utils_8cc.html#a152b2b431e8f7e797f74da2ce492541d", null ],
+    [ "alaw_to_short", "EST__wave__utils_8cc.html#a251ab97e7e00c6b77451bceadc3723f4", null ],
+    [ "shorten_to_short", "EST__wave__utils_8cc.html#af2b9f01c466acfc9486c3beb6b989c43", null ],
+    [ "uchar_to_short", "EST__wave__utils_8cc.html#a29741a298497ffda72b4358d6b5abf8c", null ],
+    [ "schar_to_short", "EST__wave__utils_8cc.html#a174991590eb89dec50355001b1956366", null ],
+    [ "short_to_uchar", "EST__wave__utils_8cc.html#aba1d447842f28ab40f1d924ba268416a", null ],
+    [ "short_to_schar", "EST__wave__utils_8cc.html#abf290219dba5c3841907c0b1817e6e4b", null ],
+    [ "short_to_ulaw", "EST__wave__utils_8cc.html#a8f479b98d524d3d91846f5386ef481ce", null ],
+    [ "short_to_alaw", "EST__wave__utils_8cc.html#a544f26ba8eb741c1d0b205c22e40cf9a", null ],
+    [ "convert_raw_data", "EST__wave__utils_8cc.html#ab7b92da566e472e46f0528d3ec613655", null ],
+    [ "save_raw_data", "EST__wave__utils_8cc.html#a08c5f0961304d95b425dbf48c28d1d04", null ],
+    [ "get_word_size", "EST__wave__utils_8cc.html#a3b45e9b385f8c6a675338b6b03e0b25c", null ],
+    [ "str_to_sample_type", "EST__wave__utils_8cc.html#a19fd53c7d3c7904b1debba0706f4c76b", null ],
+    [ "sample_type_to_str", "EST__wave__utils_8cc.html#a092a603f2a121bf68339e29fb64820bd", null ],
+    [ "ConvertToIeeeExtended", "EST__wave__utils_8cc.html#adb3ead18e8fa0786a4c0637da0a83537", null ],
+    [ "ConvertFromIeeeExtended", "EST__wave__utils_8cc.html#a6e10c65d80c9b5c81efa1251cd9c6bf3", null ]
+];
